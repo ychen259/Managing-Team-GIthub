@@ -1,5 +1,5 @@
 # workflow
-This assignment will help in understanding how to use Github to collaborate with your team members. 
+This assignment will help in understanding how to use GitHub to collaborate with your team members. 
 
 
 ## Common Git Commands + Using Git
@@ -9,13 +9,14 @@ This assignment will help in understanding how to use Github to collaborate with
 ### Making Commits
 A "commit" is a record that creates a snapshot of your code, which is added to your repository's history. In order to create this snapshot, you must first *stage* the files you want to include in the snapshot. Once you have staged the files, you must physically create the snapshot within your project's history by making a *commit*.
 
-- `git status` : Tells you which files you've modified/added, and which files are staged for a commit
-- `git diff`: Shows you the changes you have made (line insertions and line deletions) by file
-- `git add <filename>` : Allows you to stage a file in order to commit it
-- `git add .`: Adds all files to staging 
-- `git commit -m <message>` : This creates the commit (you must specify a message with every commit you make)
+- To see which files you've modified/added/deleted, and which changes are *staged* to be commited, use `git status`
+- To view the changes you've made to each file use `git diff`
+- `git add <file_name>` will add the file you specify to *staging*
+- To stage all files you've changed, use `git add .`
+- To create a new commit with all the files you have staged, type `git commit -m <message>`
+- `git hist` will show you a history of all the commits you have added to your project
 
-###Branching 
+### Branching 
 
 Branching allows you to experiment with changes to your code base without impacting the working version. 
 
@@ -30,5 +31,9 @@ Each team must create changes to their own version of this repository. In order 
 
 1. Click the 'fork' button
 ![](tutorial_img/fork1.png)
+
 2. Choose the location for your fork (this should be your team's organization)
-![](tutorial_img/fork2.png)
+3. To get a copy of the repository onto your local machine, use `git clone <remote_repository_uri>`
+
+Here is a visual representation of the forking/cloning process
+![](tutorial_img/clone_fork_diagram.jpg)
