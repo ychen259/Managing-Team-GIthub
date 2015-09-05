@@ -18,22 +18,43 @@ A "commit" is a record that creates a snapshot of your code, which is added to y
 
 ### Branching 
 
-Branching allows you to experiment with changes to your code base without impacting the working version. 
+Branching allows you to experiment with changes to your code base without impacting the working version. Your main branch is usually referred to as **master**. When you commit changes to a branch, they will not be reflected in other branches, unless you **merge** the changes. 
 
-- `git branch <branch_name>`: Creates a new branch
-- `git checkout <branch_name>`: Switch between branches
-- `git checkout -b <branch_name>`: A shortcut that creates a new branch, then switches to it
+To see the branch you are currently working on, use `git status`.
 
+- `git branch <branch_name>` creates a new branch
+- To move to a different branch, use `git checkout <branch_name>`
+- `git checkout -b <branch_name>` is a shortcut that creates a new branch, then switches to it
+- `git merge <branch_name>` will merge changes from the branch you specify into the branch you are currently working on
+
+###Working with remote repositories
+**Remote repositories** refer to repositories stored in a different location. In our case, the remote repositories are stored on GitHub. 
+
+You can add a remote repository to your local machine with the command 
+
+```git remote add <remote_name> <remote_uri>```
+
+`git remote` will provide you the names of remote versions of the repository that exist on your local machine. 
+
+Once you've made changes to your code and commited the results, you may want to add those changes to your repository on GitHub. We can **push** the local changes to a remote repository with the command 
+
+```git push <remote_name> <branch_name>```
+
+Say your team members have made contributions to the codebase and have pushed those changes to GitHub. In order to get those changes on your local repository, you must **pull** changes from a remote repository using  
+
+```pit pull <remote_name> <branch_name>```
+
+If you have used `git push origin master` or `git pull origin master`, this refers to pushing/pulling changes from a remote repository named *origin* into the *master* branch. 
 
 ## Forking the repository 
 
 Each team must create changes to their own version of this repository. In order to accomplish this, it is necessary to **fork** the repository. **Forking** creates a copy of the repository that you can then make changes to without changing the original. In order to accomplish this: 
 
 1. Click the 'fork' button
+
 ![](tutorial_img/fork1.png)
 
 2. Choose the location for your fork (this should be your team's organization)
 3. To get a copy of the repository onto your local machine, use `git clone <remote_repository_uri>`
 
-Here is a visual representation of the forking/cloning process
 ![](tutorial_img/clone_fork_diagram.jpg)
