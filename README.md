@@ -78,9 +78,15 @@ The **scrum master** is responsible for enforcing the use of a workflow when con
 
 ![](tutorial_img/push_branch.png)
 
-Once you are confident that a feature is complete, you should make a **pull request** to merge the branch's content into another branch. 
+- When you are done with a feature, create a pull request
 
-The **master** branch should be used to describe the working/deployable version of your code. All completed features should be merged into your master branch. 
+![](tutorial_img/compare_PR.png)
 
+The **master** branch should be used to describe the working/deployable version of your code. All completed features will be merged into your master branch. 
 
+The **scrum master** ultimately merges the pull request into the master branch. All team members should be responsible for reviewing code in a pull request before it gets merged. If the code in a pull request needs to be modified before being merged, the pull request should be **closed**. A new pull request should be made to reflect changes made to the feature. 
+
+![](tutorial_img/create_PR)
+![](tutorial_img/merged_PR)
+![](tutorial_img/close_pr)
 
