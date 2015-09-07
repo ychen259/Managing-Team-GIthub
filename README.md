@@ -14,7 +14,7 @@ A "commit" is a record that creates a snapshot of your code, which is added to y
 - `git add <file_name>` will add the file you specify to *staging*
 - To stage all files you've changed, use `git add .`
 - To create a new commit with all the files you have staged, type `git commit -m <message>`
-- `git hist` will show you a history of all the commits you have added to your project
+- `git hist` will show you a history of all the commits you have added to your repository
 
 ### Branching 
 
@@ -78,6 +78,15 @@ The **scrum master** is responsible for enforcing the use of a workflow when con
 
 ![](tutorial_img/push_branch.png)
 
-Once you are confident that a feature is complete, you should make a **pull request** to merge the branches content into another branch. 
+- When you are done with a feature, create a pull request
 
+![](tutorial_img/compare_PR.png)
+
+The **master** branch should be used to describe the working/deployable version of your code. All completed features will be merged into your master branch. 
+
+The **scrum master** ultimately merges the pull request into the master branch. All team members should be responsible for reviewing code in a pull request before it gets merged. If the code in a pull request needs to be modified before being merged, the pull request should be **closed**. A new pull request should be made to reflect changes made to the feature. 
+
+![](tutorial_img/create_PR)
+![](tutorial_img/merged_PR)
+![](tutorial_img/close_pr)
 
