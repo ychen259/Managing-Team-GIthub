@@ -86,7 +86,7 @@ The **master** branch should be used to describe the working/deployable version 
 
 The **scrum master** ultimately merges the pull request into the master branch. All team members should be responsible for reviewing code in a pull request before it gets merged. If the code in a pull request needs to be modified before being merged, the pull request should be **closed**. A new pull request should be made to reflect changes made to the feature. 
 
-![](tutorial_img/create_PR)
-![](tutorial_img/merged_PR)
-![](tutorial_img/close_pr)
+![](tutorial_img/create_PR.png)
+![](tutorial_img/merged_PR.png)
+![](tutorial_img/close_pr.png)
 
