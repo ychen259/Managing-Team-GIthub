@@ -47,7 +47,7 @@ git push <remote_name> <branch_name>
 Say your team members have made contributions to the codebase and have pushed those changes to GitHub. In order to get those changes on your local repository, you must **pull** changes from a remote repository using  
 
 ```
-pit pull <remote_name> <branch_name>
+git pull <remote_name> <branch_name>
 ```
 
 If you have used `git push origin master` or `git pull origin master`, this refers to pushing/pulling changes from a remote repository named *origin* into the *master* branch. 
@@ -72,10 +72,12 @@ The **scrum master** is responsible for enforcing the use of a workflow when con
 
 - For each user story, you should create a feature branch with a name that describes what you are working on. 
 - Commit your changes to this branch
-- You can push your branch to GitHub, which allows you to: 
+- Push your branch to GitHub, which allows you to: 
     - make a pull request to merge the code into another branch
     - allow other team members to commit code to your branch
 
 ![](tutorial_img/push_branch.png)
+
+Once you are confident that a feature is complete, you should make a **pull request** to merge the branches content into another branch. 
 
 
