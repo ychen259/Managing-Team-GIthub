@@ -78,7 +78,7 @@ The **scrum master** is responsible for enforcing the use of a workflow when con
 
 **Merge conflicts** result when 2 different branches have changed the same line number in a file. Learn more about how to fix merge conflicts [here](https://help.github.com/articles/resolving-a-merge-conflict-from-the-command-line/).
 
-- For each user story, you should create a feature branch with a name that describes what you are working on. 
+- For each task in a user story, you should create a feature branch with a name that describes what you are working on. 
 - Commit your changes to this branch
 - Push your branch to GitHub, which allows you to: 
     - make a pull request to merge the code into another branch
@@ -97,3 +97,8 @@ The **scrum master** ultimately merges the pull request into the master branch. 
 ![](tutorial_img/close_pr.png)
 
 ## Assignment
+[This document](collaboration.pdf) provides details on Scrum fundamentals, as well as individual tasks for your team to complete.
+
+1. Create a GitHub organization for your team. Fork this repository to that organization. 
+2. Complete the tasks described [here](collaboration.pdf).
+3. Make sure to follow the workflow. Create a new branch for each task, and make pull requests to merge changes into your code base. 
