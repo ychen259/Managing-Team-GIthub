@@ -80,6 +80,7 @@ The **scrum master** is responsible for enforcing the use of a workflow when con
 
 - For each task in a user story, you should create a feature branch with a name that describes what you are working on. 
 - Commit your changes to this branch
+- **Before pushing your branch to GitHub** make sure to update your code to reflect any changes made by team members using `git pull origin master`, which will pull changes from the *master* branch into your *feature* branch
 - Push your branch to GitHub, which allows you to: 
     - make a pull request to merge the code into another branch
     - allow other team members to commit code to your branch
@@ -106,13 +107,13 @@ You will be demonstrating your knowledge of GitHub workflow and Scrum fundamenta
 
 1. Change the background color of the to-do app
 2. Give the option to assign a priority to a to-do item  
--- For example: ["Now", "Tomorrow", "Someday"]
+ - For example: ["Now", "Tomorrow", "Someday"]
 3. Add an "edit" button with appropiate functionality
 4. Add a button to mark an item as "complete"    
--- this should signify that the item is complete somehow, but not delete it.   
--- You can do this by striking out the text or whatever other way you see fit.   
+ - this should signify that the item is complete somehow, but not delete it.   
+ - You can do this by striking out the text or whatever other way you see fit.   
 5. Show the total number of items in the to-do list at above the list.  
--- This number should change when items are added / deleted (duh).
+ - This number should change when items are added / deleted (duh).
 6. A button to clear all "completed" tasks
 
 #####In order to complete these tasks, you will need to:
@@ -122,6 +123,6 @@ You will be demonstrating your knowledge of GitHub workflow and Scrum fundamenta
 2. Follow the timeline and tasks described [here](collaboration.pdf).
 3. Make sure to follow the workflow. Create a new branch for each task, and make pull requests to merge changes into your code base. 
 4. At the end, your forked version of this repo should have had 5/6 (or more) completed pull requests to merge branches for each feature update into the master branch.   
--- Your repos master branch, should have the updated code (in the todo-src directory) to reflect each task/ticket.
+ - Your repo's master branch should have the updated code (in the todo-src directory) to reflect each task/ticket.
 
 Have fun! :sunglasses: :+1:
