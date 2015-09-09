@@ -98,7 +98,7 @@ The **scrum master** ultimately merges the pull request into the master branch. 
 ![](tutorial_img/close_pr.png)
 
 ## Assignment
-[This document](collaboration.pdf) provides details on Scrum fundamentals, as well as individual tasks for your team to complete.
+[This document](collaborating.pdf) provides details on Scrum fundamentals, as well as individual tasks for your team to complete.
 
 You will be demonstrating your knowledge of GitHub workflow and Scrum fundamentals in this assignment. You will be making simple changes to the sample to-do app that was shown in discussions and lecture. The Scrum Master will assign these tickets/tasks to the team. **All** members of the team must complete 1 ticket/task. There may be more tasks than you have group members, in that case it is **fine** to not do a task. Just make sure that every team member does one task.
 
@@ -120,7 +120,7 @@ You will be demonstrating your knowledge of GitHub workflow and Scrum fundamenta
 
 1. Create a GitHub organization for your team. Fork this repository to that organization. 
 2. You will not need to use Pivotal Tracker to track your tasks/user stories/tickets for this assignment.
-2. Follow the timeline and tasks described [here](collaboration.pdf).
+2. Follow the timeline and tasks described [here](collaborating.pdf).
 3. Make sure to follow the workflow. Create a new branch for each task, and make pull requests to merge changes into your code base. 
 4. At the end, your forked version of this repo should have had 5/6 (or more) completed pull requests to merge branches for each feature update into the master branch.   
  - Your repo's master branch should have the updated code (in the todo-src directory) to reflect each task/ticket.
