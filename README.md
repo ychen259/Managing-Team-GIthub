@@ -5,8 +5,7 @@ This assignment will help in understanding how to use GitHub to collaborate with
   * [Making Commits](#making-commits)
   * [Branching](#branching)
 * [Remote repositories](#remote-repositories)
-* [Forking the repository](#forking-the-repository)
-* [Collaborating with GitHub](#collaborating-with-github)
+* [Forking the repository](#forkingasdsadsadaddaborating-with-github)
 * [Assignment](#assignment)
 
   
