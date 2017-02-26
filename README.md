@@ -114,7 +114,7 @@ You will be demonstrating your knowledge of GitHub workflow and Scrum fundamenta
  - You can do this by striking out the text or whatever other way you see fit.   
 5. Show the total number of items in the to-do list at above the list.  
  - This number should change when items are added / deleted (duh).
-6. A button to clear all "completed" tasks
+6. A button to clear all "completed" tasks   
 
 #####In order to complete these tasks, you will need to:
 
