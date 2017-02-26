@@ -9,7 +9,7 @@ This assignment will help in understanding how to use GitHub to collaborate with
 * [Collaborating with GitHub](#collaborating-with-github)
 * [Assignment](#assignment)
 
-
+  
 ## Common Git Commands
 
 **Git** is the version control software we will be using to keep track of changes made to your web application. There are GUI interfaces available to work with git, but you will benefit greatly as a software developer by learning how to use command line tools to accomplish tasks. These are a few commands that will allow you to effectively use git to version control your project.  
