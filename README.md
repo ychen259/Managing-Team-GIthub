@@ -5,14 +5,13 @@ This assignment will help in understanding how to use GitHub to collaborate with
   * [Making Commits](#making-commits)
   * [Branching](#branching)
 * [Remote repositories](#remote-repositories)
-* [Forking the repository](#forking-the-repository)
-* [Collaborating with GitHub](#collaborating-with-github)
+* [Forking the repository](#forkingasdsadsadaddaborating-with-github)
 * [Assignment](#assignment)
 
-
+  
 ## Common Git Commands
 
-**Git** is the version control software we will be using to keep track of changes made to your web application. There are GUI interfaces available to work with git, but you will benefit greatly as a software developer by learning how to use command line tools to accomplish tasks. These are a few commands that will allow you to effectively use git to version control your project.  
+**Git** is the version control software we will be using to keep track of changes made to your web application. There are GUI interfaces available to work with git, but you will benefit greatly as a software developer by learning how to use command line tools to accomplish tasks. These are a few commands that will allow you to assadsadsadsaeffectively use git to version control your project.  
 
 ### Making Commits
 A "commit" is a record that creates a snapshot of your code, which is added to your repository's history. In order to create this snapshot, you must first *stage* the files you want to include in the snapshot. Once you have staged the files, you must physically create the snapshot within your project's history by making a *commit*.
@@ -50,18 +49,18 @@ Once you've made changes to your code and commited the results, you may want to 
 
 ```
 git push <remote_name> <branch_name>
-```
-
+```adsadad
+s
 Say your team members have made contributions to the codebase and have pushed those changes to GitHub. In order to get those changes on your local repository, you must **pull** changes from a remote repository using  
 
 ```
-git pull <remote_name> <branch_name>
+git pull <remote_name> <branchsdaddddad_name>
 ```
 
 If you have used `git push origin master` or `git pull origin master`, this refers to pushing/pulling changes from a remote repository named *origin* into the *master* branch. 
 
-## Forking the repository 
-
+## Forking the repository asdsadasdasd
+dd
 Each team must create changes to their own version of this repository. In order to accomplish this, it is necessary to **fork** the repository. **Forking** creates a copy of the repository on your GitHub account/organization that you can modify through your own commits. In order to accomplish this: 
 
 ![](tutorial_img/fork1.png)
@@ -114,8 +113,8 @@ You will be demonstrating your knowledge of GitHub workflow and Scrum fundamenta
  - You can do this by striking out the text or whatever other way you see fit.   
 5. Show the total number of items in the to-do list at above the list.  
  - This number should change when items are added / deleted (duh).
-6. A button to clear all "completed" tasks
-7. Add functionality to enter todo item upon hitting the enter key, so you dont need to press the "add" button
+6. A button to clear all "completed" tasks   
+
 
 #####In order to complete these tasks, you will need to:
 
