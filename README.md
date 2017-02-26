@@ -61,7 +61,7 @@ git pull <remote_name> <branch_name>
 If you have used `git push origin master` or `git pull origin master`, this refers to pushing/pulling changes from a remote repository named *origin* into the *master* branch. 
 
 ## Forking the repository 
-
+dd
 Each team must create changes to their own version of this repository. In order to accomplish this, it is necessary to **fork** the repository. **Forking** creates a copy of the repository on your GitHub account/organization that you can modify through your own commits. In order to accomplish this: 
 
 ![](tutorial_img/fork1.png)
