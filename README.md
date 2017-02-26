@@ -115,6 +115,7 @@ You will be demonstrating your knowledge of GitHub workflow and Scrum fundamenta
  - This number should change when items are added / deleted (duh).
 6. A button to clear all "completed" tasks   
 
+
 #####In order to complete these tasks, you will need to:
 
 1. Create a GitHub organization for your team. Fork this repository to that organization. 
