@@ -5,7 +5,7 @@ var myApp = angular.module('app', []);
 myApp.controller('MainCtrl', function ($scope){
   $scope.todos = ["Learn Angular", "Learn node"];
   $scope.newItem = "";
-  
+  /*************change in local*/////////////////
   $scope.addItem = function(){
     console.log("in add");
     if ($scope.newItem !== ""){
