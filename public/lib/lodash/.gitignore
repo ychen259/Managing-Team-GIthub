@@ -1,6 +1,4 @@
-# osx
 .DS_Store
-
-# node
+*.log
+doc/*.html
 node_modules
-
