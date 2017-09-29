@@ -13,7 +13,7 @@ module.exports = {
   // Binding to 127.0.0.1 is safer in production.
   host: process.env.HOST || '0.0.0.0',
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean',
+    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://student:classcen3031@ds045465.mlab.com:45465/class',
     options: {
       /**
       * Uncomment to enable ssl certificate based authentication to mongodb
@@ -79,12 +79,13 @@ module.exports = {
     sandbox: false
   },
   mailer: {
-    from: process.env.MAILER_FROM || 'MAILER_FROM',
+    from: process.env.MAILER_FROM || 'MAILER_FROM' || 'meanjsproject123@gmail.com',
     options: {
-      service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER',
+      service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER' || 'Gmail',
+      //host: process.env.MAILER_HOST || 'out.provider.tld',
       auth: {
-        user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID',
-        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+        user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID' || 'meanjsproject123@gmail.com',
+        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD' || 'Aa123698745'
       }
     }
   },

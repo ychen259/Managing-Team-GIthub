@@ -4,7 +4,7 @@ var defaultEnvConfig = require('./default');
 
 module.exports = {
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean-dev',
+    uri: process.env.MONGOHQ_URL||process.env.MONGOLAB_URI || 'mongodb://alwaystrue:Cen3031@ds155414.mlab.com:55414/duc',
     options: {},
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
@@ -57,14 +57,26 @@ module.exports = {
     sandbox: true
   },
   mailer: {
-    from: process.env.MAILER_FROM || 'MAILER_FROM',
+    /*from: process.env.MAILER_FROM || 'MAILER_FROM' || 'meanjsproject123@gmail.com',
     options: {
-      service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER',
+      service: 'Gmail',
+      secure: false,
+      port:25,
       auth: {
-        user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID',
-        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+        user: 'meanjsproject123@gmail.com',
+        pass: 'Aa123698745'
+      }*/
+      from: process.env.MAILER_FROM || 'MAILER_FROM' || 'ducalwaystrue@gmail.com',
+    options: {
+      service: 'Gmail',
+      secure: false,
+      port:25,
+      auth: {
+        user: 'ducalwaystrue@gmail.com',
+        pass: '#Cen3031'
       }
     }
+    
   },
   livereload: true,
   seedDB: {
