@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Ducs</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="duc in vm.ducs"
+       ui-sref="ducs.view({ ducId: duc._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="duc.created | date:'mediumDate'"></span>
+        by
+        <span ng-if="duc.user" ng-bind="duc.user.displayName"></span>
+        <span ng-if="!duc.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="duc.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="vm.ducs.$resolved && !vm.ducs.length">
+    No Ducs yet, why don't you <a ui-sref="ducs.create">create one</a>?
+  </div>
+</section>
