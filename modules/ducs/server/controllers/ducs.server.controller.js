@@ -115,3 +115,74 @@ exports.ducByID = function(req, res, next, id) {
     next();
   });
 };
+
+/*********************************calculation function*****************************************************/
+/*calculation the uniform destribution*/
+function uniformDistribution(req){
+  var canArray = req.body.can_depths; // req.body.can_depths should be array of depth of cans
+  var sortArray = mergeSort(canArray);
+  var lowerquarter = Math.floor((sortArray.length/4)); // # of lowerest one forth value
+  var i;
+  var sum = 0;
+  for(i = 0; i < lowerquarter; i++){
+    sum += sortArray[i];
+  }
+
+  var quarterAvg = sum / lowerquarter;  // average of lowerest one forth values
+
+  sum = 0;
+  for(i = 0; i < sortArray.length; i++){
+    sum += sortArray[i];
+  }
+
+  var totalAvg = sum / (sortArray.length); // total average of all number
+
+  var uniformDistribution = (quarterAvg / totalAvg).toFixed(2);
+
+  return uniformDistribution;
+};
+
+function mergeSort(arr){
+   if (arr.length < 2)
+        return arr;
+ 
+    var middle = parseInt(arr.length / 2);
+    var left   = arr.slice(0, middle);
+    var right  = arr.slice(middle, arr.length);
+ 
+    return merge(mergeSort(left), mergeSort(right));
+};
+ 
+function merge(left, right){
+    var result = [];
+ 
+    while (left.length && right.length) {
+        if (left[0] <= right[0]) {
+            result.push(left.shift());
+        } else {
+            result.push(right.shift());
+        }
+    }
+ 
+    while (left.length)
+        result.push(left.shift());
+ 
+    while (right.length)
+        result.push(right.shift());
+ 
+    return result;
+};
+
+/*return value in mm*/
+function avgIrrigation(req){
+  var canArray = req.body.can_depths;
+  var length = canArray.length;
+  var sum = 0;
+  var i = 0;
+  for(; i< length; i++){
+  	sum += canArray[i];
+  }
+
+  return (sum/length).toFixed(2);
+}
+/********************************* my code is here *****************************************************/
