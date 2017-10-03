@@ -1,3 +1,5 @@
+'use strict';
+
 //Schema for measurements model
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
