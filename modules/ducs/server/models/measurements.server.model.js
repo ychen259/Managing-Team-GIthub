@@ -17,7 +17,7 @@ var measurementSchema = new Schema({
   },
   results: {
     uniformity: {type: Number, required: true},
-    distribution: {type: Number, required: true},
+    distribution: {type: Number, required: true}
   },
   zipcode: {
     type: Number,

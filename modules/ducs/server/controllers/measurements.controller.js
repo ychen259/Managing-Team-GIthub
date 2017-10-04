@@ -1,5 +1,5 @@
-var mongoose = require('mongoose'), 
-Measurement = require('../models/measurements.controller.js');
+var mongoose = require('mongoose'),
+Measurement = require('../models/measurements.server.model.js');
 
 
 
@@ -7,10 +7,10 @@ Measurement = require('../models/measurements.controller.js');
 exports.create = function(req, res) {
 
     var measurement = new Measurement(req.body);
-  
+
     /* save the coordinates (located in req.results if there is an address property) */
-    
-  
+
+
     /* Then save the listing */
     measurement.save(function(err) {
       if(err) {
@@ -18,7 +18,7 @@ exports.create = function(req, res) {
         res.status(400).send(err);
       } else {
         console.log("CREATED MEASUREMENT");
-        
+
         res.json(measurement);
       }
     });
@@ -27,7 +27,7 @@ exports.create = function(req, res) {
   /* Delete a measurement */
 exports.delete = function(req, res) {
     var measurement = req.measurement;
-  
+
     /* Remove the article */
     measurement.remove(function(err) {
       if(err) {
@@ -50,7 +50,7 @@ exports.list = function(req, res) {
     });
   };
 
-  exports.listingByID = function(req, res, next, id) {
+  exports.measurementByID = function(req, res, next, id) {
     Measurement.findById(id).exec(function(err, measurement) {
       if(err) {
         res.status(400).send(err);
@@ -60,4 +60,3 @@ exports.list = function(req, res) {
       }
     });
   };
-
