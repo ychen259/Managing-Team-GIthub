@@ -15,7 +15,7 @@ module.exports = function(app) {
       .get(measurements.list)
       .post(measurements.create);
 
-    app.route('/api/measurement/:measureId')
+    app.route('/api/measurements/:measureId')
       .delete(measurements.delete);
 
     // Finish by binding the Duc middleware

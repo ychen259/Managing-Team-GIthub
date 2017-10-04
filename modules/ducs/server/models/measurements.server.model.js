@@ -7,8 +7,7 @@ var mongoose = require('mongoose'),
 var measurementSchema = new Schema({
   email: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   //depth of cans in mm
   can_depths: {
