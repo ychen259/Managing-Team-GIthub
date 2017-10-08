@@ -66,22 +66,16 @@
         templateUrl: 'modules/ducs/client/views/admin.map.client.view.html',
         controller: 'DucsController',
         controllerAs: 'vm',
-        resolve: {
-          ducResolve: getDuc
-        },
         data: {
           roles: ['user', 'admin'],
           pageTitle: 'Duc County Map'
         }
       })
       .state('ducs.admin-list', {
-        url: '/admin',
+        url: '/admin/list',
         templateUrl: 'modules/ducs/client/views/admin.list-ducs.client.view.html',
         controller: 'DucsListController',
         controllerAs: 'vm',
-        resolve: {
-          ducResolve: getDuc
-        },
         data: {
           roles: ['user', 'admin'],
           pageTitle: 'View all Ducs'
