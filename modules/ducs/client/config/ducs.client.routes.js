@@ -70,8 +70,8 @@
           ducResolve: getDuc
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Duc {{ ducResolve.name }}'
+          roles: ['admin'],
+          pageTitle: 'Duc County Map'
         }
       })
       .state('ducs.admin.list', {
@@ -83,8 +83,8 @@
           ducResolve: getDuc
         },
         data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Duc {{ ducResolve.name }}'
+          roles: ['admin'],
+          pageTitle: 'View all Ducs'
         }
       });
   }

@@ -28,5 +28,17 @@
       state: 'ducs.create',
       roles: ['user']
     });
+
+    // Add DUC Admin entries to the existing Admin dropbown
+    menuService.addSubMenuItem('topbar', 'admin', {
+      title: 'View all Ducs',
+      state: 'ducs.admin.list',
+      roles: ['admin']
+    });
+    menuService.addSubMenuItem('topbar', 'admin', {
+      title: 'County Map',
+      state: 'ducs.admin.map',
+      roles: ['admin']
+    });
   }
 }());
