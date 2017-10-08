@@ -32,13 +32,13 @@
     // Add DUC Admin entries to the existing Admin dropbown
     menuService.addSubMenuItem('topbar', 'admin', {
       title: 'View all Ducs',
-      state: 'ducs.admin.list',
-      roles: ['admin']
+      state: 'ducs.admin-list',
+      roles: ['user', 'admin']
     });
     menuService.addSubMenuItem('topbar', 'admin', {
       title: 'County Map',
-      state: 'ducs.admin.map',
-      roles: ['admin']
+      state: 'ducs.admin-map',
+      roles: ['user', 'admin']
     });
   }
 }());

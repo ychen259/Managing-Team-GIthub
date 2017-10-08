@@ -61,7 +61,7 @@
           pageTitle: 'Duc {{ ducResolve.name }}'
         }
       })
-      .state('ducs.admin.map', {
+      .state('ducs.admin-map', {
         url: '/admin/map',
         templateUrl: 'modules/ducs/client/views/admin.map.client.view.html',
         controller: 'DucsController',
@@ -70,20 +70,20 @@
           ducResolve: getDuc
         },
         data: {
-          roles: ['admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Duc County Map'
         }
       })
-      .state('ducs.admin.list', {
+      .state('ducs.admin-list', {
         url: '/admin',
         templateUrl: 'modules/ducs/client/views/admin.list-ducs.client.view.html',
-        controller: 'DucsController',
+        controller: 'DucsListController',
         controllerAs: 'vm',
         resolve: {
           ducResolve: getDuc
         },
         data: {
-          roles: ['admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'View all Ducs'
         }
       });
