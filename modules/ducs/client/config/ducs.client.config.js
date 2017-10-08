@@ -28,5 +28,12 @@
       state: 'ducs.create',
       roles: ['user']
     });
+
+    menuService.form({
+       user:
+      zipcode: 0 ;
+      can_depths:[]
+      time: 0;
+    });
   }
 }());
