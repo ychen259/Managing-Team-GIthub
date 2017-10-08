@@ -1,13 +1,18 @@
 <section>
   <div class="page-header">
-    <h1>{{Input Data}}</h1>
+    <form name = "InputData">
+      <label class="control-label" for="Zip">Zipcode </label>
+      <input type="text" name="Zip" ng-model="vm.duc.name" id="Zip" class="form-control" placeholder="zipcode" required>
+      <label class="control-label" for="Location">Name of Location</label>
+      <input type="text" name="Location" ng-model="vm.duc.name" id="Location" class="form-control" placeholder="location" required>
+   </form>
   </div>
   <div class="col-md-12">
     <form name="vm.form.ducForm" class="form-horizontal" ng-submit="vm.save(vm.form.ducForm.$valid)" novalidate>
       <fieldset>
 
         <!-- Units -->
-        <div class="unit-switch">
+        <div class="unit-switch"> 
           <div class="unit-switch-container">
             <strong>Units:</strong>
             <ul>
@@ -25,7 +30,7 @@
         <!-- Catch Cans -->
         <div class="form-group" show-errors>
           <label class="control-label" for="NumCC">Number of Catch Cans</label>
-          <input name="NumCC" type="number" ng-model="vm.duc.name" id="NumCC" class="form-control" placeholder="#" required>
+          <input name= "NumCC" type="number" ng-model="vm.duc.name" id="NumCC" class="form-control" placeholder="#" required>
           <div ng-messages="vm.form.ducForm.name.$error" role="alert">
           </div>
         </div>
@@ -38,21 +43,41 @@
           </div>
         </div>
 
+        
+
         <!-- Amount of Water Collected -->
         <ul>
-          <% for (var i=0; i< NumCC; itt){%>
         <div class="form-group" show-errors>
           <label class="control-label" for="name">Amount of Water</label>
           <input name="name" type="number" ng-model="vm.duc.name" id="name" class="form-control" placeholder="amount" required>
           <div ng-messages="vm.form.ducForm.name.$error" role="alert">
           </div>
         </div>
-        <% } %>
       </ul>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.duc._id ? 'Update' : 'Create'}}</button>
+          <button type="submit" class="btn btn-default" onclick="buttonclick()"> {{vm.duc._id ? 'Update' : 'Create'}}</button>
         </div>
+
+        
+        <script>
+
+        
+
+        function buttonclick(){
+          var UserInput = document.getElementById('NumCC').value;
+
+           for (i=0;i<=UserInput;i++)
+          {
+            document.write( ' <label class="control-label" for="name">Amount of Water</label><input name="name" type="number" ng-model="vm.duc.name" id="name" class="form-control" placeholder="amount" required></br>');
+
+          }
+          document.write('<div class="form-group"><button type="submit" class="btn btn-default" > {{vm.duc._id ? Update : Create}}</button></br></div>');
+        }
+       
+
+         
+        </script>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>
         </div>
