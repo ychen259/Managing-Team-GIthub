@@ -60,6 +60,32 @@
         data: {
           pageTitle: 'Duc {{ ducResolve.name }}'
         }
+      })
+      .state('ducs.admin.map', {
+        url: '/admin/map',
+        templateUrl: 'modules/ducs/client/views/admin.map.client.view.html',
+        controller: 'DucsController',
+        controllerAs: 'vm',
+        resolve: {
+          ducResolve: getDuc
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Duc {{ ducResolve.name }}'
+        }
+      })
+      .state('ducs.admin.list', {
+        url: '/admin',
+        templateUrl: 'modules/ducs/client/views/admin.list-ducs.client.view.html',
+        controller: 'DucsController',
+        controllerAs: 'vm',
+        resolve: {
+          ducResolve: getDuc
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Duc {{ ducResolve.name }}'
+        }
       });
   }
 

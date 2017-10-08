@@ -1,0 +1,15 @@
+<section>
+    <div class="page-header">
+      <h1>Ducs Admin</h1>
+    </div>
+    <div class="list-group">
+      <a ng-repeat="duc in vm.ducs"
+         ui-sref="ducs.view({ ducId: duc._id })"
+         class="list-group-item">
+        <h4 class="list-group-item-heading" ng-bind="duc.name"></h4>
+      </a>
+    </div>
+    <div class="alert alert-warning text-center" ng-if="vm.ducs.$resolved && !vm.ducs.length">
+      <a>No Ducs yet.</a>
+    </div>
+  </section>
