@@ -5,9 +5,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var measurementSchema = new Schema({
-  email: {
-    type: String,
-    required: true
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User'
   },
   //depth of cans in mm
   can_depths: {
@@ -15,8 +15,8 @@ var measurementSchema = new Schema({
     required: true
   },
   results: {
-    uniformity: {type: Number, required: true},
-    distribution: {type: Number, required: true}
+    uniformity_distribution: {type: Number, required: true},
+    irrigation_rate: {type: Number, required: true}
   },
   zipcode: {
     type: Number,
@@ -33,6 +33,7 @@ var measurementSchema = new Schema({
   }
 });
 
+
 measurementSchema.pre('save', function(next) {
   var currentTime = new Date;
   this.updated_at = currentTime;
@@ -42,6 +43,7 @@ measurementSchema.pre('save', function(next) {
   }
   next();
 });
+
 
 var Measurement = mongoose.model('Measurement', measurementSchema);
 
