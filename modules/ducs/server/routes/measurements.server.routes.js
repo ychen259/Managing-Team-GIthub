@@ -1,7 +1,7 @@
 'use strict';
 /* Dependencies */
 var measurements = require('../controllers/measurements.controller.js');
-var measurementsPolicy = require('../policies/measurement.server.policy');
+
 
 /*
 These method calls are responsible for routing requests to the correct request handler.
@@ -11,11 +11,11 @@ Take note that it is possible for different controller functions to handle reque
 
 module.exports = function(app) {
     // Ducs Routes
-    app.route('/api/measurements').all(measurementsPolicy.isAllowed)
+    app.route('/api/measurements')
       .get(measurements.list)
       .post(measurements.create);
 
-    app.route('/api/measurements/:measureId').all(measurementsPolicy.isAllowed)
+    app.route('/api/measurements/:measureId')
       .delete(measurements.delete);
 
     // Finish by binding the Duc middleware
