@@ -9,7 +9,7 @@
   DucsService.$inject = ['$resource'];
 //$http
   function DucsService($resource) {
-    return $resource('api/ducs/:ducId', {
+    return $resource('/api/ducs/:ducId', {
       ducId: '@_id'
     }, {
       update: {
