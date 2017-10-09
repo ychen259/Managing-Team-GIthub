@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 var measurementSchema = new Schema({
   user: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   //depth of cans in mm
   can_depths: {
@@ -30,7 +30,10 @@ var measurementSchema = new Schema({
   time: {
     type: Number,
     required: true
-  }
+  },  
+  created_at: Date,
+  updated_at: Date
+
 });
 
 
