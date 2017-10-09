@@ -34,10 +34,10 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/measurements',
-      permissions: []
+      permissions: '*'
     }, {
       resources: '/api/measurements/:measureId',
-      permissions: []
+      permissions: '*'
     }]
   }]);
 };

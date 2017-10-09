@@ -28,9 +28,7 @@
         templateUrl: 'modules/ducs/client/views/form-duc.client.view.html',
         controller: 'DucsController',
         controllerAs: 'vm',
-        resolve: {
-          ducResolve: newDuc
-        },
+
         data: {
           roles: ['user', 'admin'],
           pageTitle: 'Ducs Create'

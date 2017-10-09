@@ -34,10 +34,10 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/ducs',
-      permissions: ['get']
+      permissions: '*'
     }, {
       resources: '/api/ducs/:ducId',
-      permissions: ['get']
+      permissions: '*'
     }]
   }]);
 };
