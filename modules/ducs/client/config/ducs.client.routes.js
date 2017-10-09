@@ -16,7 +16,7 @@
       })
       .state('ducs.list', {
         url: '',
-        templateUrl: 'modules/ducs/client/views/list-ducs.client.view.html',
+        templateUrl: '/modules/ducs/client/views/list-ducs.client.view.html',
         controller: 'DucsListController',
         controllerAs: 'vm',
         data: {
@@ -35,7 +35,7 @@
       })
       .state('ducs.edit', {
         url: '/:ducId/edit',
-        templateUrl: 'modules/ducs/client/views/form-duc.client.view.html',
+        templateUrl: '/modules/ducs/client/views/form-duc.client.view.html',
         controller: 'DucsController',
         controllerAs: 'vm',
         resolve: {
@@ -48,7 +48,7 @@
       })
       .state('ducs.view', {
         url: '/:ducId',
-        templateUrl: 'modules/ducs/client/views/view-duc.client.view.html',
+        templateUrl: '/modules/ducs/client/views/view-duc.client.view.html',
         controller: 'DucsController',
         controllerAs: 'vm',
         resolve: {
@@ -56,6 +56,26 @@
         },
         data: {
           pageTitle: 'Duc {{ ducResolve.name }}'
+        }
+      })
+      .state('ducs.admin-map', {
+        url: '/admin/map',
+        templateUrl: '/modules/ducs/client/views/admin.map.client.view.html',
+        controller: 'AdminMapController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Duc County Map'
+        }
+      })
+      .state('ducs.admin-list', {
+        url: '/admin/list',
+        templateUrl: '/modules/ducs/client/views/admin.list-ducs.client.view.html',
+        controller: 'DucsListController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'View all Ducs'
         }
       });
   }

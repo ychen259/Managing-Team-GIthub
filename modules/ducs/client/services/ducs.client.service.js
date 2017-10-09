@@ -7,9 +7,9 @@
     .factory('DucsService', ['$http', function($http){
     var methods = {
 
-
       create: function(listing) {
         return $http.post('/api/measurements', listing);
+
       }
 
 
