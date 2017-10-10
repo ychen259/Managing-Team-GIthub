@@ -12,24 +12,25 @@ exports.create = function(req, res) {
   measurement.user = req.user;
 
   /***uniformity distribution calculation**/
-  var canArray = req.body.can_depths; // req.body.can_depths should be array of depth of cans
-  
+  var canArray = measurement.can_depths; // req.body.can_depths should be array of depth of cans
   var i;
   var j;
   var temp;
 
-  for(i=0; i<canArray.length; i++){
+  for(i=0; i<canArray.length-1; i++){
   	for(j = (i+1); j<canArray.length; j++)
   		if(canArray[i] > canArray[j]){
-          temp = canArray[i];
-          canArray[i] = canArray[j];
-          canArray[j] = temp;
+          temp = canArray[j];
+          canArray[j] = canArray[i];
+          canArray[i] = temp;
 
         }
   }
 
   var sortArray = canArray;
-  console.log(sortArray);
+
+  //console.log("length 11:" + canArray.length);
+  //console.log("sorted array: " + sortArray);
   var lowerquarter;
   if(sortArray.length/4 < 1) lowerquarter = 1;
   else
@@ -49,12 +50,12 @@ exports.create = function(req, res) {
 
   var totalAvg = sum / (sortArray.length); // total average of all number
 
-  measurement.results.uniformity_distribution = (quarterAvg / totalAvg).toFixed(2);
+  measurement.results.uniformity_distribution =  (quarterAvg/totalAvg).toFixed(2);
   /*****Uniformity distribution calculation end here*/
 
   /*Irrigation calculation*/
-  var canArray = req.body.can_depths;
-  var time = req.body.time;
+  var canArray = measurement.can_depths;
+  var time = measurement.time;
   var length = canArray.length;
   var sum = 0;
   var i = 0;
