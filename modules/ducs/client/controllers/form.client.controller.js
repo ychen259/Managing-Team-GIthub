@@ -54,9 +54,8 @@
       /* Save the article using the Listings factory */
       DucsService.create(data)
               .then(function(response) {
-                //if the object is successfully saved redirect back to the list page
-                $state.go('ducs.result', {can_depth: $scope.can_depth});
-                //console.log("You created a value");
+                //send the id of object to state ducs.result, so ducs.result can use to id to get result from database
+                $state.go('ducs.result', {object_id: response.data._id});
               }, function(error) {
                 //otherwise display the error
                 $scope.error = 'Unable to save value!\n' + error;

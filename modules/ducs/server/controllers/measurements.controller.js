@@ -97,6 +97,12 @@ exports.delete = function(req, res) {
 
 };
 
+/* view a measurement */
+exports.view = function(req, res) {
+  res.json(req.measurement);
+
+};
+
   /* Retreive all the directory measurements, sorted alphabetically by listing code */
 exports.list = function(req, res) {
 
