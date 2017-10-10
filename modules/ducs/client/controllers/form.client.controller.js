@@ -55,8 +55,8 @@
       DucsService.create(data)
               .then(function(response) {
                 //if the object is successfully saved redirect back to the list page
-                //$state.go('listings.list', { successMessage: 'Listing succesfully created!' });
-                console.log("You created a value");
+                $state.go('ducs.result', {can_depth: $scope.can_depth});
+                //console.log("You created a value");
               }, function(error) {
                 //otherwise display the error
                 $scope.error = 'Unable to save value!\n' + error;

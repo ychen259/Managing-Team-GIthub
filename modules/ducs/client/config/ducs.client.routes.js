@@ -33,6 +33,17 @@
           pageTitle: 'Ducs Create'
         }
       })
+      .state('ducs.result', {
+        url: '/result',
+        templateUrl: '/modules/ducs/client/views/results-ducs.client.view.html',
+        controller: 'DucsResultController',
+        controllerAs: 'vm',
+        params: {can_depth: null},
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Ducs Result'
+        }
+      })
       .state('ducs.edit', {
         url: '/:ducId/edit',
         templateUrl: '/modules/ducs/client/views/form-duc.client.view.html',
