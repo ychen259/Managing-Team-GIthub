@@ -1,16 +1,28 @@
   <section>
     <div class="page-header">
       <form name = "InputData" ng-show="hide">
-        <label class="control-label" for="Zip">Zipcode </label>
-        <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control" placeholder="zipcode" required/>
-             
-        <label class="control-label" for="Location">Name of Location</label>
-        <input type="text" name="Location" ng-model="location" id="Location" class="form-control" placeholder="location" required>
+
      </form>
     </div>
     <div class="col-md-12">
       <form name="first_form" class="form-horizontal" ng-show="hide" ng-submit="continue(first_form.$valid) " novalidate>
         <fieldset>
+          
+          <div class="form-group" show-errors>
+            <label class="control-label" for="Zip">Zipcode </label>
+            <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control" placeholder="zipcode" required>
+               <div ng-messages="first_form.Zip.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
+               </div> 
+          </div>
+
+          <div class="form-group" show-errors>
+            <label class="control-label" for="Location">Name of Location</label>
+            <input type="text" name="Location" ng-model="location" id="Location" class="form-control" placeholder="location" required>
+               <div ng-messages="first_form.Location.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Location is required.</p>
+               </div>
+          </div>
 
           <!-- Units -->
           <div class="unit-switch"> 
@@ -32,16 +44,18 @@
           <div class="form-group" show-errors>
             <label class="control-label" for="NumCC">Number of Catch Cans</label>
             <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" required>
-            <div ng-messages="vm.form.ducForm.name.$error" role="alert">
-            </div>
+               <div ng-messages="first_form.Location.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Number of Canth Cans is required</p>
+               </div>
           </div>
 
           <!-- Time Run -->
           <div class="form-group" show-errors>
             <label class="control-label" for="timeRun">Time Run in Minutes</label>
             <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="minutes" required>
-            <div ng-messages="vm.form.ducForm.name.$error" role="alert">
-            </div>
+               <div ng-messages="first_form.Location.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Running Time is required.</p>
+               </div>
           </div>
 
 
@@ -57,7 +71,7 @@
       <!-- can depths form*  -->
       <div ng-hide="hide">
       <form name='second_form' class='form-horizontal' ng-submit='save(second_form.$valid)'>
-        <div id = "can_depths" ng-hide="hide">
+        <div id = "can_depths">
 
         </div>
         <div class='form-group'>

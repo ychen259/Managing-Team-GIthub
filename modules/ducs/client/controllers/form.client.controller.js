@@ -16,13 +16,19 @@
     $scope.can_depth = [];
     $scope.hide = true;
     $scope.continue = function (isValid){
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'first_form');
+        return false;
+      }
+
       $scope.hide = false;
       //document.getElementById("can_depths").innerHTML = "<form name='second_form' class='form-horizontal' ng-submit='save(second_form.$valid)'>";
       var i;
       for (i=0;i < $scope.num ;i++)
       {
         document.getElementById("can_depths").innerHTML += "<label>Amount of Water</label><input name = 'depth' id =" +
-        i + " type='number'><br>";
+        i + " type='number' required/><br>";
       }
        /*document.getElementById("can_depths").innerHTML += "<div class='form-group'>" + 
                                                           "<button type='submit' class='btn btn-default' > submit</button>" +
@@ -32,6 +38,11 @@
     }
 
      $scope.save = function(isValid) {
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'second_form');
+        return false;
+      }
+
       var i;
       for (i=0;i < $scope.num ;i++){
         $scope.can_depth[i] = document.getElementById(i).value;

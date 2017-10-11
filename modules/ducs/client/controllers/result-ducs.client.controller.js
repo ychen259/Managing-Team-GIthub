@@ -18,9 +18,9 @@
               .then(function(response) {
                 $scope.ducs = response.data;
 
-                if($scope.ducs.uniformity_distribution > 0.9)
+                if($scope.ducs.results.uniformity_distribution > 0.9)
                 	$scope.result = "Excellent";
-                else if($scope.ducs.uniformity_distribution >= 0.70 && $scope.ducs.uniformity_distribution <= 0.95)
+                else if($scope.ducs.results.uniformity_distribution >= 0.70 && $scope.ducs.results.uniformity_distribution <= 0.90)
                 	$scope.result = "Great";
                 else
                 	$scope.result = "Historical";
