@@ -9,10 +9,11 @@
 
       create: function(listing) {
         return $http.post('/api/measurements', listing);
+      },
 
+      list: function() {
+        return $http.get('/api/measurements');
       }
-
-
     };
 
     return methods; 
