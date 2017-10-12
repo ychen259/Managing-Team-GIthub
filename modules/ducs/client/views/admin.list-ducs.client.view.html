@@ -26,7 +26,11 @@
               <td>{{m.results.irrigation_rate}}</td>
               <td><!--{{m.can_depths}}--> ToDo</td>
               <td>{{m.user.email}}</td>
-              <td><span class="glyphicon glyphicon-trash"></span></td>
+              <td>
+                <a class="btn btn danger" ng-click="remove(m._id);">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
               <!--<span ng-bind="duc.created | date:'mediumDate'"></span>
               <span ng-if="duc.user" ng-bind="duc.user.displayName"></span>
               <span ng-if="!duc.user">Deleted User</span>-->

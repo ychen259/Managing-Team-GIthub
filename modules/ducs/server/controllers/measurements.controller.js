@@ -110,6 +110,16 @@ exports.list = function(req, res) {
 
 };
 
+/**
+ * Show the current Duc
+ */
+exports.read = function(req, res) {
+  // convert mongoose document to JSON
+  var duc = req.duc ? req.duc.toJSON() : {};
+
+  res.jsonp(duc);
+};
+
 exports.measurementByID = function(req, res, next, id) {
 
   Measurement.findById(id).exec(function(err, measurement) {
@@ -121,7 +131,6 @@ exports.measurementByID = function(req, res, next, id) {
       next();
     }
   });
-
 
 /*********************************calculation function*****************************************************/
 /*calculation the uniform destribution*/
