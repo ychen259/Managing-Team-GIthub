@@ -1,44 +1,25 @@
-<!-- Need to pull from other pages:
-     Units selected
-     Users e-mail
-    DU calculated
-    ID calculated-->
+<!-- Need to pull Units selected -->
 
-<section>
+<section ng-init=findOne()>
   <div class="page-header">
     <h1>Results</h1>
   </div>
   <div class="list-group list-group-item">
-
-   <!-- <a ng-repeat="duc in vm.ducs"
-       ui-sref="ducs.view({ ducId: duc._id })"
-       class="list-group-item">
-  -->
+   
       <!--Classifying the results-->
-      <span class="DistriUni"></span>
-      Your System is: 
+      <h3>
+      Your System is: {{result}}
       
-      <script>
-      var DistriUni = function() {
-        if ('DistriUni' >= 0.65 and <=0.85)
-        print "Achievable" < br />;
-      } else if ('DistriUni' >= 0.55 and <= 0.75) {
-          print "Target" < br />;
-      } else if ('DistriUni' >= 0.45 and <= 0.65) {
-          print "Historical" < br />;
-      } else {
-          print "Error, idk what that means" < br />;
-      }
-      DistriUni();
-      </script>
       <br>
-      Your Distribution Uniformity is:
-      <!-- Print DistriUni number here-->
+      Your Distribution Uniformity is: {{ducs.results.uniformity_distribution}}
       <br />
 
-      Your Average Irrigation Depth is:
-      <!-- Print AveIrrDepth number here-->
+      Your Average Irrigation Depth is: {{ducs.results.irrigation_rate}}
       <br />
+      </h3>
+  </div>
+  
+  <!--Add Button For Emailing Results -->
       
 
    <!-- </a>  -->

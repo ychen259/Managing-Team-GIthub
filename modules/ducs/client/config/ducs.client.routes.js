@@ -38,7 +38,7 @@
         templateUrl: '/modules/ducs/client/views/results-ducs.client.view.html',
         controller: 'DucsResultController',
         controllerAs: 'vm',
-        params: {can_depth: null},
+        params: {object_id: null},
         data: {
           roles: ['user', 'admin'],
           pageTitle: 'Ducs Result'

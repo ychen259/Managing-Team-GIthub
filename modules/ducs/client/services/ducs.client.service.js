@@ -10,6 +10,10 @@
       create: function(listing) {
         return $http.post('/api/measurements', listing);
 
+      },
+      
+      read: function(id) {
+        return $http.get('/api/measurements/' + id);
       }
 
 
