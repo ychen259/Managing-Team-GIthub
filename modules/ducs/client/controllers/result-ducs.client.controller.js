@@ -37,5 +37,19 @@
                 $scope.error = 'Unable to retrieve listing with id "' + id + '"\n' + error;
               });
     };  
+
+   $scope.sendEmail = function(){
+
+     console.log($scope.ducs);
+     console.log($scope.result);
+     var id = $scope.ducs._id;
+     DucsService.email(id)
+              .then(function(response){
+
+     }, function(err){
+
+     });
+   }
+
   }
 }());

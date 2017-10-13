@@ -14,6 +14,10 @@
       
       read: function(id) {
         return $http.get('/api/measurements/' + id);
+      },
+
+      email: function(id){
+        return $http.post('/api/email-result/' + id);
       }
 
 
