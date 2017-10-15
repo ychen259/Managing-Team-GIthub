@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
     config = require(path.resolve('./config/config')),
     User = mongoose.model('User'),
     nodemailer = require('nodemailer');
+    request = require('request');
+    
 
 /* Create a measurement */
 exports.create = function(req, res) {
@@ -12,6 +14,10 @@ exports.create = function(req, res) {
 
   /*store extral info*/
   measurement.user = req.user;
+
+  if(req.county) {
+    measurement.county = req.county;
+  }
 
   var canArray = measurement.can_depths; // req.body.can_depths should be array of depth of cans
   var time = measurement.time;
@@ -31,6 +37,30 @@ exports.create = function(req, res) {
   });
 
 };
+
+// Get county based on the zip code that's submitted
+exports.county = function(req, res,next) {
+  if(req.body.zipcode) {
+    var options = {
+      key: config.googleMaps.key, 
+      address: req.body.zipcode
+    }
+    request({
+      url: 'https://maps.googleapis.com/maps/api/geocode/json', 
+      qs: options
+      }, function(error, response, body) {
+        if(error) {
+          res.status(400).send(err);
+        } 
+
+        var data = JSON.parse(body);
+        req.county = data.results[0].address_components[2].long_name;
+        next();
+    });
+  } else {
+      next();
+  }
+}; 
 
 /* Delete a measurement */
 exports.delete = function(req, res) {
