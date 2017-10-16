@@ -71,11 +71,10 @@
       /* Create the listing object */
       var data = {
         "zipcode": $scope.zipcode,
-        "county": $scope.location,
         "time": $scope.time,
         "can_depths": $scope.can_depth
       };
-
+      
       /* Save the article using the Listings factory */
       DucsService.create(data)
               .then(function(response) {

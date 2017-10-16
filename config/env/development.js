@@ -9,6 +9,9 @@ module.exports = {
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
   },
+  googleMaps: {
+    key: 'AIzaSyDTHzZnGT8kr1aNHOUompHePgxwIrHUnVk'
+  },
   log: {
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
