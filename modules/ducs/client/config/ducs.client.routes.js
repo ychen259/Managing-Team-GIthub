@@ -33,6 +33,7 @@
           pageTitle: 'Ducs Create'
         }
       })
+
       .state('ducs.result', {
         url: '/result',
         templateUrl: '/modules/ducs/client/views/results-ducs.client.view.html',

@@ -13,10 +13,12 @@ module.exports = function(app) {
     // Ducs Routes
     app.route('/api/measurements')
       .get(measurements.list)
-      .post(measurements.create);
+      .post(measurements.county,measurements.create);
+    
+      
 
     app.route('/api/measurements/:measureId')
-      .get(measurements.read)
+      .get(measurements.view)
       .delete(measurements.delete);
 
     app.route('/api/email-result/:measureId')
