@@ -28,7 +28,7 @@
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
                 .then(function(response) {
-                    $state.go('ducs.admin-list');
+                  $state.go($state.current, {}, {reload: true});
                 }, function(error) {
                     //otherwise display the error
                     $scope.error = 'Unable to delete measurement!\n' + error;
