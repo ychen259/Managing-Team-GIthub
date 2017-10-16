@@ -228,7 +228,7 @@ function merge(left, right){
     return result;
 };
 
-/*return value in mm/min*/
+/*return value in cm/hour*/
 function avgIrrigation(can_depths, time){
   var length = can_depths.length;
   var sum = 0;
