@@ -14,6 +14,7 @@
             <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern=".{5}" required>
                <div ng-messages="first_form.Zip.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
+                  <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
                </div> 
           </div>
 
@@ -21,17 +22,19 @@
           <div class="form-group" show-errors>
             <label class="control-label" for="NumCC">Number of Catch Cans</label>
             <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" required>
-               <div ng-messages="first_form.Location.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Number of Catch Cans (greater than 0) is required</p>               
+               <div ng-messages="first_form.NumCC.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Number of Catch Cans is required</p>
+                  <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>                 
                </div>
           </div>
 
           <!-- Time Run -->
           <div class="form-group" show-errors>
             <label class="control-label" for="timeRun">Time Run in Hour</label>
-            <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="Hours" required>
-               <div ng-messages="first_form.Location.$error" role="alert">
+            <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="Hours" min= "0.0000001" required>
+               <div ng-messages="first_form.timeRun.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Running Time is required.</p>
+                  <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>
                </div>
           </div>
 
@@ -51,7 +54,7 @@
         <div class="form-group">
           <label class="switch switch-flat">
             <input class="switch-input" ng-model= "unit" name="enable" id="enable" type="checkbox" />
-            <span class="switch-label" data-on="Metric" data-off="English"></span> 
+            <span class="switch-label" data-on="Metric" data-off="Imperial"></span> 
             <span class="switch-handle"></span> 
           </label>
         </div>

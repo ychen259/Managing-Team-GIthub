@@ -30,7 +30,7 @@
       {
         //document.getElementById("can_depths").innerHTML += "<div class='form-group'>";
         document.getElementById("can_depths").innerHTML += "<label class='control-label'>Amount of Water</label><br>";
-        document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' class='form-control' required/><br>";
+        document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' class='form-control' min='0' required/><br>";
        // document.getElementById("can_depths").innerHTML += "</div>"
       }
        /*document.getElementById("can_depths").innerHTML += "<div class='form-group'>" + 
@@ -52,14 +52,14 @@
       }
 
       /*Unit Conversion*/
-      /*unit == false (English -- inch);  unit == true (Metric -- mm)*/
-      /*1 inch = 25.4 mm*/
+      /*unit == false (Imperial -- inch);  unit == true (Metric -- cm)*/
+      /*1 inch = 2.54 cm*/
       if($scope.unit == false){
-       console.log("English");
+       console.log("Imperial");
 
        /*transfer inch to mm*/
         for (i=0;i < $scope.num ;i++){
-          $scope.can_depth[i] = $scope.can_depth[i] * 25.4;
+          $scope.can_depth[i] = $scope.can_depth[i] * 2.54;
         }
        
       }
@@ -75,7 +75,7 @@
         "can_depths": $scope.can_depth
       };
       
-      /* Save the article using the Listings factory */
+      /* Save the measurement using the DucsService factory */
       DucsService.create(data)
               .then(function(response) {
                 //send the id of object to state ducs.result, so ducs.result can use to id to get result from database

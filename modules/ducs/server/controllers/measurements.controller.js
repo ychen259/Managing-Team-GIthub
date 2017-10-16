@@ -187,7 +187,12 @@ function uniformDistribution(can_depths){
 
   var totalAvg = sum / (sortArray.length); // total average of all number
 
-  var uniformDistribution = (quarterAvg / totalAvg).toFixed(2);
+  var uniformDistribution;
+
+  if(totalAvg == 0)
+    uniformDistribution = 0;
+  else
+    uniformDistribution = (quarterAvg / totalAvg).toFixed(2);
 
   return uniformDistribution;
 };
