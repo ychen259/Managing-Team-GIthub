@@ -73,9 +73,9 @@ exports.list = function(req, res) {
  */
 exports.read = function(req, res) {
   // convert mongoose document to JSON
-  var duc = req.duc ? req.duc.toJSON() : {};
+  var duc = req.measurement ? req.measurement.toJSON() : {};
 
-  res.jsonp(duc);
+  res.jsonp(req.measurement);
 }
 
 /*Email result to user*/
