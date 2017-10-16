@@ -23,8 +23,9 @@
         return $http.delete('/api/measurements/' + measurement);
       },
 
-      email: function(id){
-        return $http.post('/api/email-result/' + id);
+      email: function(id, data){
+        return $http.post('/api/email-result/' + id, data);
+
       }
     };
 
