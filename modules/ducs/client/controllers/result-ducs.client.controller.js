@@ -8,12 +8,11 @@
   DucsResultController.$inject = ['$scope', '$state', 'DucsService'];
 
   function DucsResultController($scope, $state, DucsService) {
+    var id = $state.params.object_id;
+    var metric = $state.params.metric; // true -- metric (cm); false -- imperial (inch)
 
     /*Get the data from database*/
     $scope.findOne = function() {
-
-      var id = $state.params.object_id;
-      var metric = $state.params.metric; // true -- metric (cm); false -- imperial (inch)
 
       DucsService.read(id)
               .then(function(response) {
@@ -30,7 +29,7 @@
                 }
                 else{
                   /*convert cm to inch*/
-                  $scope.irrigation_rate *= (1/2.54);
+                  $scope.irrigation_rate = ($scope.irrigation_rate/2.54).toFixed(2);
                   $scope.unit = "inch/hrs";
                 }
 
@@ -56,11 +55,14 @@
     };  
 
    $scope.sendEmail = function(){
-
-     console.log($scope.ducs);
-     console.log($scope.result);
      var id = $scope.ducs._id;
-     DucsService.email(id)
+
+     var data = {
+      "condition" : $scope.result,
+      "metric" : metric
+     }
+
+     DucsService.email(id, data)
               .then(function(response){
 
      }, function(err){

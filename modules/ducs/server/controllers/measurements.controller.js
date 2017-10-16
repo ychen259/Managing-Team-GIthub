@@ -102,6 +102,9 @@ exports.list = function(req, res) {
 exports.email = function (req, res){
   var email_address = req.user.email;
   var measurement = req.measurement;
+  var system_condition = req.body.condition;
+  var metric = req.body.metric;
+  var unit;
 
   var smtpTransport = nodemailer.createTransport(config.mailer.options);
 
@@ -109,28 +112,26 @@ exports.email = function (req, res){
   var uniform_distribution = measurement.results.uniformity_distribution;
   var irrigation_rate = measurement.results.irrigation_rate;
 
-  if(uniform_distribution > 0.84)
-    condition = "Exceptional";
-  else if(uniform_distribution >= 0.75 && uniform_distribution <= 0.84)
-    condition = "Excellent";
-  else if(uniform_distribution >= 0.70 && uniform_distribution <= 0.74)
-     condition = "Very Good";
-  else if(uniform_distribution >= 0.60 && uniform_distribution <= 0.69)
-     condition = "Good";
-  else if(uniform_distribution >= 0.5 && uniform_distribution <= 0.59)
-     condition = "Fair";
-  else if(uniform_distribution >= 0.4 && uniform_distribution <= 0.49)
-     condition = "Poor";
-  else
-     condition = "Fail";
+  /*persistent unit with user input*/
+  /*metric = true -- metric (cm) */
+  /*metric = false -- imperial (inch)*/
+  if(metric == true){
+    /*Do not need to convert, because unit in database is cm*/
+    unit = "cm/hrs";
+  }
+  else{
+    /*convert cm to inch*/
+    irrigation_rate = (irrigation_rate/2.54).toFixed(2);
+    unit = "inch/hrs";
+  }
+
 
   var email_context = "<p> Dear " + req.user.displayName + ", </p>" + 
                       "<br />" + 
-                      "<p> Your System: " + condition + "</p>" + 
-                      "<br />" +
-                      "<p> Your Distirbution Uniformity: " + uniform_distribution + "</p>" + 
-                      "<br />" + 
-                      "<p> Your irrigation rate: " + irrigation_rate + "</p>";
+                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
+                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
+                      "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>";
+
   var mailOptions = {
     from: config.mailer.from,
     to: email_address,
