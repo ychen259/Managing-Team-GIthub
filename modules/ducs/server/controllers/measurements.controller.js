@@ -68,16 +68,6 @@ exports.list = function(req, res) {
 
 };
 
-/**
- * Show the current Duc
- */
-exports.read = function(req, res) {
-  // convert mongoose document to JSON
-  var duc = req.duc ? req.duc.toJSON() : {};
-
-  res.jsonp(duc);
-}
-
 /*Email result to user*/
 exports.email = function (req, res){
   var email_address = req.user.email;
