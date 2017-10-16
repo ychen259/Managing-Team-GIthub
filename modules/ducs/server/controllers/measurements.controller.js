@@ -98,7 +98,6 @@ exports.list = function(req, res) {
 
 };
 
-
 /**
  * Show the current Duc
  */
