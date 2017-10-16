@@ -1,0 +1,38 @@
+<section>
+    <div class="page-header">
+      <h1>View DUCs</h1>
+    </div>
+    <div class="input-group" id="searchBar">
+        <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>
+        <input type="text" class="form-control" placeholder="Filter" ng-model="query">
+    </div>
+    </br>
+    <div class="col-md-12 list-group">
+      <table class="table table-striped">
+        <thead>
+          <td>Zip</td>
+          <td>County</td>
+          <td>Uniformity Distribution</td>
+          <td>Irrigation Rate</td>
+          <td>Can Depths</td>
+          <td>User</td>
+          <td>Delete</td>
+        </thead>
+        <tbody id="measurements">
+          <tr ng-repeat="m in vm.measurements | filter: query" id="{{m._id}}">
+              <td>{{m.zipcode}}</td>
+              <td>{{m.county}}</td>
+              <td>{{m.results.uniformity_distribution}}</td>
+              <td>{{m.results.irrigation_rate}}</td>
+              <td><!--{{m.can_depths}}--> ToDo</td>
+              <td>{{m.user.email}}</td>
+              <td>
+                <a class="btn btn danger" ng-click="remove(m._id);">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</section>

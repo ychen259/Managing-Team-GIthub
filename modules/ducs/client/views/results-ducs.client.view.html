@@ -1,0 +1,27 @@
+<!-- Need to pull Units selected -->
+
+<section ng-init=findOne()>
+  <div class="page-header">
+    <h1>Results</h1>
+  </div>
+  <div class="list-group list-group-item">
+   
+      <!--Classifying the results-->
+      <h3>
+      Your System is: <b> {{result}} </b>
+      
+      <br>
+      Your Distribution Uniformity is: <b> {{uniformity_distribution}} </b>
+      <br />
+
+      Your Average Irrigation Depth is: <b> {{irrigation_rate}}&nbsp{{unit}} </b>
+      <br />
+      </h3>
+  </div>
+  <br>
+  <!--Add Button For Emailing Results -->
+    <center><button class="btn btn-success" class="form-control" ng-click="sendEmail()">Email to myself</button></center>
+
+   <!-- </a>  -->
+  
+</section>
