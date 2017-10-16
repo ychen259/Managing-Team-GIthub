@@ -19,16 +19,11 @@
       });
 
     $scope.remove = function(measurement) {
-        /*if (!isValid) {
-            $scope.$broadcast('show-errors-check-validity', 'articleForm');
-
-            return false;
-        }*/
-
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
                 .then(function(response) {
-                  $state.go($state.current, {}, {reload: true});
+                  // remove the deleted measurement from the list view
+                  document.getElementById(measurement).remove();
                 }, function(error) {
                     //otherwise display the error
                     $scope.error = 'Unable to delete measurement!\n' + error;
