@@ -17,7 +17,6 @@
       DucsService.read(id)
               .then(function(response) {
                 $scope.ducs = response.data;
-
                 if($scope.ducs.results.uniformity_distribution > 0.84)
                 	$scope.result = "Exceptional";
                 else if($scope.ducs.results.uniformity_distribution >= 0.75 && $scope.ducs.results.uniformity_distribution <= 0.84)
