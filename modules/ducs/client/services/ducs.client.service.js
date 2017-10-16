@@ -11,13 +11,20 @@
         return $http.post('/api/measurements', listing);
       },
 
-      listMeasurements: function() {
+      list: function() {
         return $http.get('/api/measurements');
+      },
+      
+      read: function(id) {
+        return $http.get('/api/measurements/' + id);
       },
 
       deleteMeasurement: function(measurement) {
-        console.log('deleteMeasurement: ' + measurement);
         return $http.delete('/api/measurements/' + measurement);
+      },
+
+      email: function(id){
+        return $http.post('/api/email-result/' + id);
       }
     };
 

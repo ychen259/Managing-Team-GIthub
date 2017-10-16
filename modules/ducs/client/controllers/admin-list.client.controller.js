@@ -10,7 +10,7 @@
   function DucsListController($scope, $state, DucsService) {
     var vm = this;
 
-    DucsService.listMeasurements()
+    DucsService.list()
     .then(function(response) {
         vm.measurements = response.data;
       }, function(error) {
@@ -28,7 +28,7 @@
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
                 .then(function(response) {
-                    console.log('deleted measurement');
+                    $state.go('ducs.admin-list');
                 }, function(error) {
                     //otherwise display the error
                     $scope.error = 'Unable to delete measurement!\n' + error;
