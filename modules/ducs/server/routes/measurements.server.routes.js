@@ -16,7 +16,7 @@ module.exports = function(app) {
       .post(measurements.create);
 
     app.route('/api/measurements/:measureId')
-      .get(measurements.view)
+      .get(measurements.read)
       .delete(measurements.delete);
 
     app.route('/api/email-result/:measureId')
