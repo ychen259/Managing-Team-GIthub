@@ -18,8 +18,8 @@
           <td>User</td>
           <td>Delete</td>
         </thead>
-        <tbody>
-          <tr ng-repeat="m in vm.measurements | filter: query" >
+        <tbody id="measurements">
+          <tr ng-repeat="m in vm.measurements | filter: query" id="{{m._id}}">
               <td>{{m.zipcode}}</td>
               <td>{{m.county}}</td>
               <td>{{m.results.uniformity_distribution}}</td>
@@ -31,9 +31,6 @@
                   <span class="glyphicon glyphicon-trash"></span>
                 </a>
               </td>
-              <!--<span ng-bind="duc.created | date:'mediumDate'"></span>
-              <span ng-if="duc.user" ng-bind="duc.user.displayName"></span>
-              <span ng-if="!duc.user">Deleted User</span>-->
           </tr>
         </tbody>
       </table>
