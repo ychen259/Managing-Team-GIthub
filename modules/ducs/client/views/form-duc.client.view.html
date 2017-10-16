@@ -11,7 +11,7 @@
           <div class="form-group" show-errors>
               
             <label class="control-label" for="Zip">Zipcode </label>
-            <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control" placeholder="zipcode" required>
+            <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern=".{5}" required>
                <div ng-messages="first_form.Zip.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
                </div> 
