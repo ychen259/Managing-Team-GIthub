@@ -9,18 +9,23 @@
 
       create: function(listing) {
         return $http.post('/api/measurements', listing);
+      },
 
+      list: function() {
+        return $http.get('/api/measurements');
       },
       
       read: function(id) {
         return $http.get('/api/measurements/' + id);
       },
 
+      deleteMeasurement: function(measurement) {
+        return $http.delete('/api/measurements/' + measurement);
+      },
+
       email: function(id){
         return $http.post('/api/email-result/' + id);
       }
-
-
     };
 
     return methods; 
