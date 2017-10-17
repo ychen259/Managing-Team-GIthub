@@ -5,12 +5,12 @@
     .module('ducs')
     .controller('DucsResultController', DucsResultController);
 
-  DucsResultController.$inject = ['$scope', '$state', 'DucsService'];
+  DucsResultController.$inject = ['$scope', '$state', 'DucsService', 'Notification'];
 
-  function DucsResultController($scope, $state, DucsService) {
-    var id = $state.params.object_id;
+  function DucsResultController($scope, $state, DucsService, Notification) {
+    var id = $state.params.object_id;  // Object id
     var metric = $state.params.metric; // true -- metric (cm); false -- imperial (inch)
-
+    $scope.isClick = false; // false == email button enable; true == email button disable
     /*Get the data from database*/
     $scope.findOne = function() {
 
@@ -54,21 +54,22 @@
               });
     };  
 
-   $scope.sendEmail = function(){
-     var id = $scope.ducs._id;
+    $scope.sendEmail = function(){
+       $scope.isClick = true; // click the email button
+       var id = $scope.ducs._id;
 
-     var data = {
-      "condition" : $scope.result,
-      "metric" : metric
-     }
+       var data = {
+         "condition" : $scope.result,
+         "metric" : metric
+       }
 
-     DucsService.email(id, data)
+       DucsService.email(id, data)
               .then(function(response){
-
-     }, function(err){
-
-     });
-   }
+                  Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-ok"></i> Result email sent successfully!' });
+               }, function(err){
+                  Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Failed to send result email!', delay: 4000 });
+               });
+    }
 
   }
 }());
