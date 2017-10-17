@@ -6,10 +6,10 @@
     .module('ducs')
     .controller('DucsController', DucsController);
 
-  DucsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'DucsService'];
+  DucsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'DucsService', 'Notification'];
 
 
-  function DucsController ($scope, $state, $window, Authentication, DucsService) {
+  function DucsController ($scope, $state, $window, Authentication, DucsService, Notification) {
 
     $scope.authentication = Authentication;
 
@@ -84,7 +84,8 @@
                 $state.go('ducs.result', {object_id: response.data._id, metric: $scope.unit});
               }, function(error) {
                 //otherwise display the error
-                $scope.error = 'Unable to save value!\n' + error;
+                $state.go($state.current, {},{reload:true});
+                Notification.error({ message: "Your zipcode is invalid, please provide a valid zipcode", title: '<i class="glyphicon glyphicon-remove"></i> Invalid zipcode'});
               });
     };
 

@@ -10,8 +10,9 @@
 
           <div class="form-group" show-errors>
               
+            <!--Force user to input valid zipcode with 5 number-->
             <label class="control-label" for="Zip">Zipcode </label>
-            <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern=".{5}" required>
+            <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern="\d{5}" required>
                <div ng-messages="first_form.Zip.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
                   <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
@@ -51,6 +52,8 @@
       <!-- can depths form*  -->
       <div ng-hide="hide">
       <form name='second_form' class='form-horizontal' ng-submit='save(second_form.$valid)'>
+
+        <!-- Toggle button-->
         <div class="form-group">
           <label class="switch switch-flat">
             <input class="switch-input" ng-model= "unit" name="enable" id="enable" type="checkbox" />
