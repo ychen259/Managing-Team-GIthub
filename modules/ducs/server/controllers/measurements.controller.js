@@ -151,9 +151,9 @@ exports.email = function (req, res){
 
   smtpTransport.sendMail(mailOptions, function (err) {
         if (!err) {
-          console.log("Email has been sent");
+          res.send({message: 'An email has been sent to the provided email with further instructions.'});
         } else {
-          console.log("Failure sending email");
+          res.status(400).send({ message: 'Failure sending email'});
         }
 
         done(err);
