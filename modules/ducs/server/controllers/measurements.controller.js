@@ -54,24 +54,35 @@ exports.county = function(req, res,next) {
 
         var data = JSON.parse(body);
         var lengthOfComponents = data.results[0].address_components.length;
-        var valid = false; /*Flag to check*/
+        var valid = false; /*check if zipcode is valid or not*/
 
-        /*Using for loop to find the index of county*/
+        /*Using for loop to find the index of postal code*/
+        /*compare the the zipcode with response.zipcode*/
         for(var i = 0; i < lengthOfComponents; i++){
-          /*tyes[0] == "administrative_area_level_2" is for county*/
-          if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
-            req.county = data.results[0].address_components[i].long_name;
-            valid = true; /*Set flag to true to said I find the index for county*/
-            break;
+          if(data.results[0].address_components[i].types[0] == "postal_code"){
+            if(data.results[0].address_components[i].long_name == req.body.zipcode){
+              valid = true;
+              break;
+            }
           }
         }
-          
-        /*If I cannot find the value for county, ask user to input again*/
+
         if(valid == false){
-            res.status(400).send("error");
+          res.status(400).send("error");
         }
-        
-        next();
+        else{
+
+          /*Using for loop to find the index of county*/
+          for(var i = 0; i < lengthOfComponents; i++){
+            /*tyes[0] == "administrative_area_level_2" is for county*/
+            if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+            req.county = data.results[0].address_components[i].long_name;
+            break;
+            }
+          }
+      
+          next();
+        }
     });
   } else {
       next();

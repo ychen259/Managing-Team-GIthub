@@ -10,7 +10,8 @@
 
 
   function DucsController ($scope, $state, $window, Authentication, DucsService, Notification) {
-
+//$ip_address = $_SERVER["REMOTE_ADDR"]；
+//console.log("IP :" + $ip_address );
     $scope.authentication = Authentication;
 
     $scope.can_depth = [];
@@ -100,7 +101,7 @@
               }, function(error) {
                 //otherwise display the error
                 $state.go($state.current, {},{reload:true});
-                Notification.error({ message: "Your zipcode is invalid, please provide a valid zipcode", title: '<i class="glyphicon glyphicon-remove"></i> Invalid zipcode'});
+                Notification.error({ message: "Zip code is invalid, Please input correct zip code", title: '<i class="glyphicon glyphicon-remove"></i> Invalid zipcode'});
               });
     };
 

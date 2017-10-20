@@ -23,8 +23,7 @@ var measurementSchema = new Schema({
     required: true
   },
   county: {
-    type: String,
-    required: true
+    type: String
   },
   //time is measured in minutes
   time: {
