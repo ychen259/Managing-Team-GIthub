@@ -53,35 +53,39 @@ exports.county = function(req, res,next) {
         } 
 
         var data = JSON.parse(body);
-        var lengthOfComponents = data.results[0].address_components.length;
-        var valid = false; /*check if zipcode is valid or not*/
-
-        /*Using for loop to find the index of postal code*/
-        /*compare the the zipcode with response.zipcode*/
-        for(var i = 0; i < lengthOfComponents; i++){
-          if(data.results[0].address_components[i].types[0] == "postal_code"){
-            if(data.results[0].address_components[i].long_name == req.body.zipcode){
-              valid = true;
-              break;
-            }
-          }
-        }
-
-        if(valid == false){
+        if(data.status != "OK"){
           res.status(400).send("error");
         }
         else{
-
-          /*Using for loop to find the index of county*/
-          for(var i = 0; i < lengthOfComponents; i++){
-            /*tyes[0] == "administrative_area_level_2" is for county*/
-            if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
-            req.county = data.results[0].address_components[i].long_name;
-            break;
+            var lengthOfComponents = data.results[0].address_components.length;
+            var valid = false; /*check if zipcode is valid or not*/
+            /*Using for loop to find the index of postal code*/
+            /*compare the the zipcode with response.zipcode*/
+            for(var i = 0; i < lengthOfComponents; i++){
+              if(data.results[0].address_components[i].types[0] == "postal_code"){
+                if(data.results[0].address_components[i].long_name == req.body.zipcode){
+                  valid = true;
+                  break;
+                }
+              }
             }
-          }
+
+            if(valid == false){
+              res.status(400).send("error");
+            }
+            else{
+
+              /*Using for loop to find the index of county*/
+              for(var i = 0; i < lengthOfComponents; i++){
+                /*tyes[0] == "administrative_area_level_2" is for county*/
+                if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+                req.county = data.results[0].address_components[i].long_name;
+                break;
+                }
+              }
       
-          next();
+              next();
+            }
         }
     });
   } else {
