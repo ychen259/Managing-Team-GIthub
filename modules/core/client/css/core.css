@@ -23,8 +23,8 @@ a:hover .header-profile-image {
   opacity: 1;
 }
 .user-header-dropdown-toggle {
-  padding-bottom: 11px !important;
-  padding-top: 11px !important;
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
 }
 .user-primary-account {
   font-size: 30px;
