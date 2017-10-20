@@ -35,5 +35,22 @@
       var dbDate = new Date(date);
       return dbDate.toLocaleDateString();
     };
+
+    $scope.getResult = function(distribution) {
+      if(distribution > 0.84)
+        return "Exceptional";
+      else if(distribution >= 0.75 && distribution <= 0.84)
+        return "Excellent";
+      else if(distribution >= 0.70 && distribution <= 0.74)
+        return "Very Good";
+      else if(distribution >= 0.60 && distribution <= 0.69)
+        return "Good";
+      else if(distribution >= 0.5 &&  distribution <= 0.59)
+        return "Fair";
+      else if(distribution >= 0.4 &&  distribution <= 0.49)
+        return "Poor";
+      else
+        return "Fail";
+    };
   }
 }());

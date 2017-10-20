@@ -12,6 +12,7 @@
         <thead>
           <td>Zip</td>
           <td>County</td>
+          <td>Result</td>
           <td>Uniformity Distribution</td>
           <td>Irrigation Rate</td>
           <td>Can Depths</td>
@@ -23,6 +24,7 @@
           <tr ng-repeat="m in vm.measurements | filter: query" id="{{m._id}}">
               <td>{{m.zipcode}}</td>
               <td>{{m.county}}</td>
+              <td>{{getResult(m.results.uniformity_distribution)}}</td>
               <td>{{m.results.uniformity_distribution}}</td>
               <td>{{m.results.irrigation_rate}}</td>
               <td><!--{{m.can_depths}}--> ToDo</td>
