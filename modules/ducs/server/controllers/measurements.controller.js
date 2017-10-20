@@ -31,7 +31,6 @@ exports.create = function(req, res) {
       res.status(400).send(err);
     } else {
       console.log("Successfully created:\n" + measurement);
-
       res.json(measurement);
     }
   });
@@ -54,7 +53,24 @@ exports.county = function(req, res,next) {
         } 
 
         var data = JSON.parse(body);
-        req.county = data.results[0].address_components[2].long_name;
+        var lengthOfComponents = data.results[0].address_components.length;
+        var valid = false; /*Flag to check*/
+
+        /*Using for loop to find the index of county*/
+        for(var i = 0; i < lengthOfComponents; i++){
+          /*tyes[0] == "administrative_area_level_2" is for county*/
+          if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+            req.county = data.results[0].address_components[i].long_name;
+            valid = true; /*Set flag to true to said I find the index for county*/
+            break;
+          }
+        }
+          
+        /*If I cannot find the value for county, ask user to input again*/
+        if(valid == false){
+            res.status(400).send("error");
+        }
+        
         next();
     });
   } else {
@@ -151,9 +167,9 @@ exports.email = function (req, res){
 
   smtpTransport.sendMail(mailOptions, function (err) {
         if (!err) {
-          console.log("Email has been sent");
+          res.send({message: 'An email has been sent to the provided email with further instructions.'});
         } else {
-          console.log("Failure sending email");
+          res.status(400).send({ message: 'Failure sending email'});
         }
 
         done(err);

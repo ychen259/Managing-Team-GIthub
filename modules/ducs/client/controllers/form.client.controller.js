@@ -6,16 +6,20 @@
     .module('ducs')
     .controller('DucsController', DucsController);
 
-  DucsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'DucsService'];
+  DucsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'DucsService', 'Notification'];
 
 
-  function DucsController ($scope, $state, $window, Authentication, DucsService) {
+  function DucsController ($scope, $state, $window, Authentication, DucsService, Notification) {
 
     $scope.authentication = Authentication;
 
     $scope.can_depth = [];
+    $scope.volume_array = [];
+    $scope.area
     $scope.hide = true;
-    $scope.unit = false; //true for metric, false for English
+    $scope.unit = false; //true for metric (cm), false for imperical (inch)
+    $scope.volume = false; //true for volume, false for depth
+
     $scope.continue = function (isValid){
 
       if (!isValid) {
@@ -24,32 +28,43 @@
       }
 
       $scope.hide = false;
-      //document.getElementById("can_depths").innerHTML = "<form name='second_form' class='form-horizontal' ng-submit='save(second_form.$valid)'>";
+  
       var i;
+
       for (i=0;i < $scope.num ;i++)
       {
-        //document.getElementById("can_depths").innerHTML += "<div class='form-group'>";
-        document.getElementById("can_depths").innerHTML += "<label class='control-label'>Amount of Water</label><br>";
-        document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' class='form-control' min='0' required/><br>";
-       // document.getElementById("can_depths").innerHTML += "</div>"
+        /*volume == false ==> Ask user to input depth*/
+        
+          document.getElementById("can_depths").innerHTML += "<label class='control-label'>Amount of Water</label><br>";
+          document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' class='form-control' min='0' required/><br>";
+        
+        /*volume == true ==> Ask user to input surface area (cm^2) and volume*/   
+       
+          document.getElementById("Volume").innerHTML += "<label class='control-label'>Volume of water</label><br>";
+          document.getElementById("Volume").innerHTML += "<input name = 'volume' id =" + ($scope.num + i) + " type='number' class='form-control' placeholder='Volume in ml' min='0' required/><br>";
+        
       }
-       /*document.getElementById("can_depths").innerHTML += "<div class='form-group'>" + 
-                                                          "<button type='submit' class='btn btn-default' > submit</button>" +
-                                                          "</div>";    
-       document.getElementById("can_depths").innerHTML += "</form>";*/
-
     }
 
-     $scope.save = function(isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'second_form');
-        return false;
-      }
+     $scope.save = function() {
 
       var i;
-      for (i=0;i < $scope.num ;i++){
-        $scope.can_depth[i] = document.getElementById(i).value;
+      /*$scope.volume == store the value of volume into array*/
+      if($scope.volume){
+        /*volume(ml = cm^3), area (cm^2) ==> convert it to depth (cm)*/
+        for (i=0;i < $scope.num ;i++){
+           $scope.volume_array[i] = document.getElementById($scope.num + i).value;
+           $scope.can_depth[i] =  $scope.volume_array[i] / $scope.area;
+        }
+
+        $scope.unit = true; /*true for metric, because I want metric output*/
       }
+      /*else == store the value of depth into array*/
+      else{
+        for (i=0;i < $scope.num ;i++){
+          $scope.can_depth[i] = document.getElementById(i).value;
+        }
+      } 
 
       /*Unit Conversion*/
       /*unit == false (Imperial -- inch);  unit == true (Metric -- cm)*/
@@ -84,7 +99,8 @@
                 $state.go('ducs.result', {object_id: response.data._id, metric: $scope.unit});
               }, function(error) {
                 //otherwise display the error
-                $scope.error = 'Unable to save value!\n' + error;
+                $state.go($state.current, {},{reload:true});
+                Notification.error({ message: "Your zipcode is invalid, please provide a valid zipcode", title: '<i class="glyphicon glyphicon-remove"></i> Invalid zipcode'});
               });
     };
 

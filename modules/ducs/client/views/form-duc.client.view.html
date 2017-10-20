@@ -10,8 +10,9 @@
 
           <div class="form-group" show-errors>
               
+            <!--Force user to input valid zipcode with 5 number-->
             <label class="control-label" for="Zip">Zipcode </label>
-            <input type="number" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern=".{5}" required>
+            <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern="\d{5}" required>
                <div ng-messages="first_form.Zip.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
                   <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
@@ -50,18 +51,50 @@
 
       <!-- can depths form*  -->
       <div ng-hide="hide">
-      <form name='second_form' class='form-horizontal' ng-submit='save(second_form.$valid)'>
+      
+      <!-- Toggle button For volume/depth-->
+      <form class = "form-horizontal">
+        <div class="form-group">
+          <label class="switch switch-flat">
+            <input class="switch-input" ng-model= "volume" name="volume" id="volume" type="checkbox" />
+            <span class="switch-label-volume" data-on="Volume" data-off="Depth"></span> 
+            <span class="switch-handle"></span> 
+          </label>
+        </div>
+      </form>
+
+      <!-- form for depth -->
+      <form class='form-horizontal' ng-submit='save()' ng-hide="volume">
+        <!-- Toggle button For unit-->
         <div class="form-group">
           <label class="switch switch-flat">
             <input class="switch-input" ng-model= "unit" name="enable" id="enable" type="checkbox" />
-            <span class="switch-label" data-on="Metric" data-off="Imperial"></span> 
+            <span class="switch-label-unit" data-on="Metric" data-off="Imperial"></span> 
             <span class="switch-handle"></span> 
           </label>
         </div>
 
         <!-- for loop to print out number of input-->
         <div id = "can_depths" class="form-group">
+        </div>
+        <!--submit button-->
+        <div class='form-group'>
+          <button type='submit' class='btn btn-success' class="form-control">Calculation</button>
+        </div>
 
+      </form>
+
+
+        <!-- Form for volume--> 
+      <form class='form-horizontal' ng-submit='save()' ng-show="volume">
+        <!-- Print out surface area -->
+        <div class="form-group">
+          <label class='control-label'>Surface Area of container </label><br>
+          <input name = "area" ng-model="area" name ="area" type='number' class='form-control' placeholder="Area in square centimeter" min="0" required/><br>
+        </div>
+
+        <!-- for loop to print out number of input-->
+        <div id = "Volume" class="form-group">
         </div>
 
         <!--submit button-->
