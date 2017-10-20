@@ -30,5 +30,10 @@
                 });
                 
     };
+
+    $scope.formatDate = function(date) {
+      var dbDate = new Date(date);
+      return dbDate.toLocaleDateString();
+    };
   }
 }());
