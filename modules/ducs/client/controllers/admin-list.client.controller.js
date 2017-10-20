@@ -28,6 +28,7 @@
                     //otherwise display the error
                     $scope.error = 'Unable to delete measurement!\n' + error;
                 });
+                
     };
   }
 }());
