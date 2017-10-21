@@ -152,7 +152,7 @@ exports.email = function (req, res){
   }
 
 
-  var email_context = "<p> Dear " + req.user.displayName + ", </p>" + 
+  var email_context = "<p> Dear " + req.user.username + ", </p>" + 
                       "<br />" + 
                       "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
                       "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
