@@ -56,13 +56,11 @@ var UserSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your first name']
   },
   lastName: {
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your last name']
   },
   displayName: {
     type: String,
@@ -285,7 +283,7 @@ function seed(doc, options) {
             var user = new User(doc);
 
             user.provider = 'local';
-            user.displayName = user.firstName + ' ' + user.lastName;
+            user.displayName = user.username;
             user.password = passphrase;
 
             user.save(function (err) {
