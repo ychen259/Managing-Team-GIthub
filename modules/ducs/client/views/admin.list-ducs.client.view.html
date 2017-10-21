@@ -7,25 +7,30 @@
         <input type="text" class="form-control" placeholder="Filter" ng-model="query">
     </div>
     </br>
-    <div class="col-md-12 list-group">
+    <div class="col-lg-12 list-group">
       <table class="table table-striped">
         <thead>
           <td>Zip</td>
           <td>County</td>
+          <td>Result</td>
           <td>Uniformity Distribution</td>
           <td>Irrigation Rate</td>
           <td>Can Depths</td>
-          <td>User</td>
+          <td>Email</td>
+          <td>Date</td>
           <td>Delete</td>
         </thead>
         <tbody id="measurements">
           <tr ng-repeat="m in vm.measurements | filter: query" id="{{m._id}}">
               <td>{{m.zipcode}}</td>
               <td>{{m.county}}</td>
+              <td>{{getResult(m.results.uniformity_distribution)}}</td>
               <td>{{m.results.uniformity_distribution}}</td>
               <td>{{m.results.irrigation_rate}}</td>
-              <td><!--{{m.can_depths}}--> ToDo</td>
+              <td ng-if="m.can_depths.length < 6">{{m.can_depths}}</td>
+              <td style="overflow: scroll" ng-if="m.can_depths.length >= 5">Now that's what I call big data</td>
               <td>{{m.user.email}}</td>
+              <td>{{formatDate(m.created_at)}}</td>
               <td>
                 <a class="btn btn danger" ng-click="remove(m._id);">
                   <span class="glyphicon glyphicon-trash"></span>
