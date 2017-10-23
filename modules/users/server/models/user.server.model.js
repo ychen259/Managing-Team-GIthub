@@ -56,13 +56,11 @@ var UserSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your first name']
   },
   lastName: {
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your last name']
   },
   displayName: {
     type: String,
@@ -140,20 +138,6 @@ UserSchema.pre('save', function (next) {
   next();
 });
 
-/**
- * Hook a pre validate method to test the local password
- */
-UserSchema.pre('validate', function (next) {
-  if (this.provider === 'local' && this.password && this.isModified('password')) {
-    var result = owasp.test(this.password);
-    if (result.errors.length) {
-      var error = result.errors.join(' ');
-      this.invalidate('password', error);
-    }
-  }
-
-  next();
-});
 
 /**
  * Create instance method for hashing a password
@@ -299,7 +283,7 @@ function seed(doc, options) {
             var user = new User(doc);
 
             user.provider = 'local';
-            user.displayName = user.firstName + ' ' + user.lastName;
+            user.displayName = user.username;
             user.password = passphrase;
 
             user.save(function (err) {
