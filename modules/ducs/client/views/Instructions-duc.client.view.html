@@ -1,108 +1,64 @@
-<section>
-    <div class="page-header">
-      <form name = "InputData" ng-show="hide">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>How To Run an Irrigation Distribution Uniformity Test</title>
+</head>
 
-     </form>
-    </div>
-    <div class="col-md-7 col-md-offset-3">
-      <form name="first_form" class="form-horizontal" ng-show="hide" ng-submit="continue(first_form.$valid) " novalidate>
-        <fieldset>
+<body>
+<h1>How To Run an Irrigation Distribution Uniformity Test</h1>
+<!--Add a picture of the catch cans in a yard-->
 
-          <div class="form-group" show-errors>
-              
-            <!--Force user to input valid zipcode with 5 number-->
-            <label class="control-label" for="Zip">Zipcode </label>
-            <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern="\d{5}" required>
-               <div ng-messages="first_form.Zip.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
-                  <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
-               </div> 
-          </div>
+<h2>Getting Started</h2>
+<p>Knowing the amount of water your sprinkler system applies
+to your landscape is an important step in efficient water use.
+Most people irrigate their landscape for a given number
+of minutes without knowing how much water they are
+really applying. This may lead to over- or under-watering.</p>
 
-          <!-- Catch Cans -->
-          <div class="form-group" show-errors>
-            <label class="control-label" for="NumCC">Number of Catch Cans</label>
-            <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" required>
-               <div ng-messages="first_form.NumCC.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Number of Catch Cans is required</p>
-                  <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>                 
-               </div>
-          </div>
+<h2>How to use this App</h2>
+<p>This app contains the tools needed to calculate the Distribution Uniformity and Irrigation Rate of your property. </p>
+<p>This app provides a way to easily calculate how well you irrigation is distributing water accross your lawn. You simply follow the instructions outlined below, input the data collected
+  into the DUCS tab up top, and the app will determine the health of your system. The results will then be emailed to you if
+  you so choose. </p>
 
-          <!-- Time Run -->
-          <div class="form-group" show-errors>
-            <label class="control-label" for="timeRun">Time Run in Hour</label>
-            <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="Hours" min= "0.0000001" required>
-               <div ng-messages="first_form.timeRun.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Running Time is required.</p>
-                  <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>
-               </div>
-          </div>
+<h2>What is Distribution Uniformity?</h2>
+<h4>Distribution Uniformity (DU): </h4>
+<p>This describes the evenness of an irrigation application across a landscaped area that is typically made up of turf grass. Poor (low) DU in turf zones is common, resulting in significantly reduced overall system efficiency and causing large quantities of wasted water. DU can be expressed as a percentage or decimal value.</p>
 
+<h4>Good DU</h4>
+<p>This figure shows an irrigated area containing turf grass with good DU. The depth of irrigation is relatively even, and no plant is receiving significantly more or less than another. There is always some variation in an irrigation zone, and therefore it is impossible to have perfect uniformity.</p>
+<!--Add picture of good DU-->
 
-          <!-- Amount of Water Collected -->
-          <div class="form-group">
-            <button type="submit" class="btn btn-success">Continue</button>
-          </div>
+<h4>Poor DU</h4>
+<p>This figure shows an irrigated area containing turf grass with poor DU. During the irrigation cycle, the area on the right receives sufficient amounts of water, while the area on the left does not.</p>
+<!--Add picture of bad DU-->
 
+<h2>Instructions</h2>
+<p>This section will demonstrate how to collect the data needed to calculate DU. <br />
+  1.Obtain several (5 to 10) coffee cans, tuna fish cans, or
+  other straight-sided containers to catch the irrigation
+  water. Containers need to be the same size and should be
+  from 3 to 6 inches in diameter. <br />
+  2.If you have an in-ground irrigation system, place the
+  containers in one zone at a time. Scatter the cans at
+  random within the zone (Figure 1). Repeat the entire
+  procedure in every zone because there may be differences
+  in the irrigation rates. If you use a hose-end sprinkler to
+  water your landscape, place the containers in a straight
+  line from the sprinkler to the edge of the watering
+  pattern. Space the containers evenly. <br />
+  3.Turn the water on for 15 minutes. If you go over or under time, please input the exact time in the app.<br />
+  4.Use a ruler to measure the depth of water in each
+  container. Note: The more precise the measurement, the
+  better your calibration will be. For most cases, measurements
+  to the nearest 1/8 inch are adequate. <br />
+  </p>
 
-        </fieldset>
-      </form>
-
-      <!-- can depths form*  -->
-      <div ng-hide="hide">
-      
-      <!-- Toggle button For volume/depth-->
-      <form class = "form-horizontal">
-        <div class="form-group">
-          <label class="switch switch-flat">
-            <input class="switch-input" ng-model= "volume" name="volume" id="volume" type="checkbox" />
-            <span class="switch-label-volume" data-on="Volume" data-off="Depth"></span> 
-            <span class="switch-handle"></span> 
-          </label>
-        </div>
-      </form>
-
-      <!-- form for depth -->
-      <form class='form-horizontal' ng-submit='save()' ng-hide="volume">
-        <!-- Toggle button For unit-->
-        <div class="form-group">
-          <label class="switch switch-flat">
-            <input class="switch-input" ng-model= "unit" name="enable" id="enable" type="checkbox" />
-            <span class="switch-label-unit" data-on="Metric" data-off="Imperial"></span> 
-            <span class="switch-handle"></span> 
-          </label>
-        </div>
-
-        <!-- for loop to print out number of input-->
-        <div id = "can_depths" class="form-group">
-        </div>
-        <!--submit button-->
-        <div class='form-group'>
-          <button type='submit' class='btn btn-success' class="form-control">Calculation</button>
-        </div>
-
-      </form>
+</body>
 
 
-        <!-- Form for volume--> 
-      <form class='form-horizontal' ng-submit='save()' ng-show="volume">
-        <!-- Print out surface area -->
-        <div class="form-group">
-          <label class='control-label'>Surface Area of container </label><br>
-          <input name = "area" ng-model="area" name ="area" type='number' class='form-control' placeholder="Area in square centimeter" min="0" required/><br>
-        </div>
+</html>
 
-        <!-- for loop to print out number of input-->
-        <div id = "Volume" class="form-group">
-        </div>
 
-        <!--submit button-->
-        <div class='form-group'>
-          <button type='submit' class='btn btn-success' class="form-control">Calculation</button>
-        </div>
 
-      </form>
-      </div>
-    </div>
-  </section>
