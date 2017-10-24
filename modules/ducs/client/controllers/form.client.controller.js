@@ -87,7 +87,8 @@
       var data = {
         "zipcode": $scope.zipcode,
         "time": $scope.time,
-        "can_depths": $scope.can_depth
+        "can_depths": $scope.can_depth,
+        "notes":$scope.notes
       };
       
       /* Save the measurement using the DucsService factory */

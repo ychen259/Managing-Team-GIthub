@@ -22,6 +22,9 @@ var measurementSchema = new Schema({
     type: Number,
     required: true
   },
+  notes: {
+    type: String,
+  },
   county: {
     type: String,
     required: true
