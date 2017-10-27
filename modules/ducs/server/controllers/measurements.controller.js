@@ -216,6 +216,7 @@ exports.email = function (req, res){
   var condition;
   var uniform_distribution = measurement.results.uniformity_distribution;
   var irrigation_rate = measurement.results.irrigation_rate;
+  var email_context ="";
 
   /*persistent unit with user input*/
   /*metric = true -- metric (cm) */
@@ -230,12 +231,23 @@ exports.email = function (req, res){
     unit = "inch/hrs";
   }
 
+  if(measurement.notes){
+    email_context = "<p> Dear " + req.user.username + ", </p>" + 
+                      "<br />" + 
+                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
+                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
+                      "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>" + 
+                      "<p> Your Notes: " + "<strong>" + measurement.notes + "</strong>" +"</p>"; 
+  }
+  else{
 
-  var email_context = "<p> Dear " + req.user.username + ", </p>" + 
+    email_context = "<p> Dear " + req.user.username + ", </p>" + 
                       "<br />" + 
                       "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
                       "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
                       "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>";
+  }
+                      
 
   var mailOptions = {
     from: config.mailer.from,
