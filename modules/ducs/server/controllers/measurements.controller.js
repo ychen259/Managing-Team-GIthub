@@ -47,36 +47,115 @@ exports.county = function(req, res,next) {
     request({
       url: 'https://maps.googleapis.com/maps/api/geocode/json', 
       qs: options
-      }, function(error, response, body) {
+      }, 
+      function(error, response, body) {
         if(error) {
           res.status(400).send(err);
         } 
 
         var data = JSON.parse(body);
-        var lengthOfComponents = data.results[0].address_components.length;
-        var valid = false; /*Flag to check*/
 
-        /*Using for loop to find the index of county*/
-        for(var i = 0; i < lengthOfComponents; i++){
-          /*tyes[0] == "administrative_area_level_2" is for county*/
-          if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
-            req.county = data.results[0].address_components[i].long_name;
-            valid = true; /*Set flag to true to said I find the index for county*/
-            break;
-          }
+        /*Check for response status*/
+        if(data.status != "OK"){
+          res.status(400).send("error");
         }
-          
-        /*If I cannot find the value for county, ask user to input again*/
-        if(valid == false){
-            res.status(400).send("error");
+        else{
+            var lengthOfComponents = data.results[0].address_components.length;
+            var valid = false; /*check if zipcode is valid or not*/
+
+            /*Using for loop to find the index of postal code*/
+            /*compare the the zipcode with response.zipcode*/
+            for(var i = 0; i < lengthOfComponents; i++){
+              if(data.results[0].address_components[i].types[0] == "postal_code"){
+                if(data.results[0].address_components[i].long_name == req.body.zipcode){
+                  valid = true;
+                  break;
+                }
+              }
+            }
+
+            /*If I cannot find the zipcode, then thie zipcode is invalid*/
+            if(valid == false){
+              res.status(400).send("error");
+            }
+            else{
+                req.hasCounty = false;
+                /*Using for loop to find the index of county*/
+                for(var i = 0; i < lengthOfComponents; i++){
+                    /*tyes[0] == "administrative_area_level_2" is for county*/
+                    if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+                        req.hasCounty = true;
+                        req.county = data.results[0].address_components[i].long_name;
+                        break;
+                    }
+                }
+
+                /*If I cannot find the county, then I search for city to do another city request to find the county*/
+                if(req.hasCounty == false){
+                	for(var i = 0; i < lengthOfComponents; i++){
+                        /*tyes[0] == "locality" is for city*/
+                        if(data.results[0].address_components[i].types[0] == "locality"){
+                            req.city = data.results[0].address_components[i].long_name;
+                            break;
+                        }
+                    }
+        		}
+        		next();
+            }
         }
-        
-        next();
-    });
+
+      });
   } else {
       next();
   }
-}; 
+};  
+
+/*If I cannot find the county from function county, I search for city to get county*/
+/*If I cannot find the county from city request, I store city as county into database*/
+exports.city = function(req, res, next){
+    if(req.hasCounty == false){
+
+        var options = {
+            key: config.googleMaps.key, 
+            address: req.city
+        }
+
+        request({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json', 
+            qs: options
+        }, 
+        function(error, response, body) {
+            if(error) {
+                res.status(400).send(err);
+            }
+   
+            var hasCounty = false;
+            var data = JSON.parse(body);
+            var lengthOfComponents = data.results[0].address_components.length;
+
+            /*Using for loop to find the index of county*/
+            for(var i = 0; i < lengthOfComponents; i++){
+                /*tyes[0] == "administrative_area_level_2" is for county*/
+                if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+                    req.county = data.results[0].address_components[i].long_name;
+                    hasCounty = true;
+                    break;
+                }
+            } 
+ 
+            /*If I still cannot find the county from city request, then I store city as county into database*/
+            if(hasCounty == false){
+                req.county = req.city;
+            }
+
+            next();
+        });
+    }
+    else{
+    	next();
+    }
+
+};
 
 /* Delete a measurement */
 exports.delete = function(req, res) {
