@@ -52,5 +52,21 @@
       else
         return "Fail";
     };
+
+    $scope.showDepths = function(depths) {
+      //console.log("show depths");
+      var modal = document.getElementById("depthsModal");
+      var modalBody = document.getElementById("modalBody");
+      modalBody.innerHTML = "<p>" + depths + "</p>";
+      modal.style.display = "block"; //make modal visible
+      //$("depthsModal").modal('show');
+    }
+
+    $scope.closeModal = function() {
+      //console.log("close modal");
+      var modal = document.getElementById("depthsModal");
+      modal.style.display = "none";
+      //$("depthsModal").modal('hide');
+    }
   }
 }());
