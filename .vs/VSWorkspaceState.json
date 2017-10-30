@@ -1,0 +1,20 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\modules",
+    "\\modules\\core",
+    "\\modules\\core\\server",
+    "\\modules\\core\\server\\controllers",
+    "\\modules\\core\\tests",
+    "\\modules\\core\\tests\\server",
+    "\\modules\\ducs",
+    "\\modules\\ducs\\client",
+    "\\modules\\ducs\\client\\config",
+    "\\modules\\ducs\\client\\css",
+    "\\modules\\ducs\\client\\services",
+    "\\modules\\ducs\\client\\views",
+    "\\scripts"
+  ],
+  "SelectedNode": "\\modules\\ducs\\client\\config\\ducs.client.config.js",
+  "PreviewInSolutionExplorer": false
+}
