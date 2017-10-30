@@ -36,12 +36,12 @@
         /*volume == false ==> Ask user to input depth*/
         
           document.getElementById("can_depths").innerHTML += "<label class='control-label'>Amount of Water</label><br>";
-          document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' class='form-control' min='0' required/><br>";
+          document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' step='any' class='form-control' min='0' required/><br>";
         
         /*volume == true ==> Ask user to input surface area (cm^2) and volume*/   
        
           document.getElementById("Volume").innerHTML += "<label class='control-label'>Volume of water</label><br>";
-          document.getElementById("Volume").innerHTML += "<input name = 'volume' id =" + ($scope.num + i) + " type='number' class='form-control' placeholder='Volume in ml' min='0' required/><br>";
+          document.getElementById("Volume").innerHTML += "<input name = 'volume' id =" + ($scope.num + i) + " type='number' step='any' class='form-control' placeholder='Volume in ml' min='0' required/><br>";
         
       }
     }
