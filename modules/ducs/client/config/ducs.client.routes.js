@@ -94,7 +94,7 @@
               }
           })
           .state('ducs.Instructions', {
-              url: '/admin/list',
+              url: '/Instructions',
               templateUrl: '/modules/ducs/client/views/Instructions-duc.client.view.html',
               controller: 'InstructionsController',
               controllerAs: 'vm',

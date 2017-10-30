@@ -9,13 +9,13 @@
 
   function menuConfig(menuService) {
     // Set top bar menu items
-    menuService.addMenuItem('topbar', {
-      title: 'Ducs',
-      state: 'ducs.create',
-      //type: 'dropdown',
+      menuService.addMenuItem('topbar', {
+          title: 'Ducs',
+          state: 'ducs.create',
+          //type: 'dropdown',
 
-      roles: ['user', 'admin']
-    });
+          roles: ['user', 'admin']
+      });
 
     menuService.addMenuItem('topbar', {
         title: 'How-to',
