@@ -17,6 +17,12 @@
       roles: ['user', 'admin']
     });
 
+    menuService.addMenuItem('topbar', {
+        title: 'How-to',
+        state: 'ducs.Instructions',
+        //type: 'dropdown',
+    });
+
     // Add DUC Admin entries to the existing Admin dropbown
     menuService.addSubMenuItem('topbar', 'admin', {
       title: 'View all Ducs',
