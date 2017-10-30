@@ -22,7 +22,7 @@
           <!-- Catch Cans -->
           <div class="form-group" show-errors>
             <label class="control-label" for="NumCC">Number of Catch Cans</label>
-            <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" required>
+            <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" step="1" pattern="\d+"  required>
                <div ng-messages="first_form.NumCC.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Number of Catch Cans is required</p>
                   <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>                 
