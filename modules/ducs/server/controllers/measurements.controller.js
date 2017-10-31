@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     nodemailer = require('nodemailer');
     request = require('request');
-    
+
 
 /* Create a measurement */
 exports.create = function(req, res) {
@@ -41,17 +41,17 @@ exports.create = function(req, res) {
 exports.county = function(req, res,next) {
   if(req.body.zipcode) {
     var options = {
-      key: config.googleMaps.key, 
+      key: config.googleMaps.key,
       address: req.body.zipcode
     }
     request({
-      url: 'https://maps.googleapis.com/maps/api/geocode/json', 
+      url: 'https://maps.googleapis.com/maps/api/geocode/json',
       qs: options
-      }, 
+      },
       function(error, response, body) {
         if(error) {
           res.status(400).send(err);
-        } 
+        }
 
         var data = JSON.parse(body);
 
@@ -108,7 +108,7 @@ exports.county = function(req, res,next) {
   } else {
       next();
   }
-};  
+};
 
 /*If I cannot find the county from function county, I search for city to get county*/
 /*If I cannot find the county from city request, I store city as county into database*/
@@ -116,19 +116,19 @@ exports.city = function(req, res, next){
     if(req.hasCounty == false){
 
         var options = {
-            key: config.googleMaps.key, 
+            key: config.googleMaps.key,
             address: req.city
         }
 
         request({
-            url: 'https://maps.googleapis.com/maps/api/geocode/json', 
+            url: 'https://maps.googleapis.com/maps/api/geocode/json',
             qs: options
-        }, 
+        },
         function(error, response, body) {
             if(error) {
                 res.status(400).send(err);
             }
-   
+
             var hasCounty = false;
             var data = JSON.parse(body);
             var lengthOfComponents = data.results[0].address_components.length;
@@ -141,8 +141,8 @@ exports.city = function(req, res, next){
                     hasCounty = true;
                     break;
                 }
-            } 
- 
+            }
+
             /*If I still cannot find the county from city request, then I store city as county into database*/
             if(hasCounty == false){
                 req.county = req.city;
@@ -193,6 +193,29 @@ exports.list = function(req, res) {
 
 };
 
+exports.export = function(req, res) {
+  console.log("hello");
+  Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
+    if(err) {
+      res.status(400).send(err);
+
+    } else {
+      var measurementString = "County,Email,Zipcode,Time,Irrigation Rate,Uniformity Distribution \n";
+      measurements.forEach(function(measurement) {
+        measurementString += measurement.county +
+        "," + measurement.user.email +
+        "," + measurement.zipcode +
+        "," + measurement.time +
+        "," + measurement.results.irrigation_rate +
+        "," + measurement.results.uniformity_distribution + '\n';
+      });
+      res.send(measurementString);
+      //res.json(measurements);
+      console.log("success");
+      }
+  });
+}
+
 exports.getCountyCounts = function(req, res) {
   Measurement.aggregate([{"$group": {_id:"$county", count:{$sum:1}}}]).sort({'count': -1}).exec(function(err, countyCount) {
     if (err) {
@@ -242,22 +265,22 @@ exports.email = function (req, res){
   }
 
   if(measurement.notes){
-    email_context = "<p> Dear " + req.user.username + ", </p>" + 
-                      "<br />" + 
-                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
-                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
-                      "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>" + 
-                      "<p> Your Notes: " + "<strong>" + measurement.notes + "</strong>" +"</p>"; 
+    email_context = "<p> Dear " + req.user.username + ", </p>" +
+                      "<br />" +
+                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" +
+                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" +
+                      "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>" +
+                      "<p> Your Notes: " + "<strong>" + measurement.notes + "</strong>" +"</p>";
   }
   else{
 
-    email_context = "<p> Dear " + req.user.username + ", </p>" + 
-                      "<br />" + 
-                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
-                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
+    email_context = "<p> Dear " + req.user.username + ", </p>" +
+                      "<br />" +
+                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" +
+                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" +
                       "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>";
   }
-                      
+
 
   var mailOptions = {
     from: config.mailer.from,
@@ -328,17 +351,17 @@ function uniformDistribution(can_depths){
 function mergeSort(arr){
    if (arr.length < 2)
         return arr;
- 
+
     var middle = parseInt(arr.length / 2);
     var left   = arr.slice(0, middle);
     var right  = arr.slice(middle, arr.length);
- 
+
     return merge(mergeSort(left), mergeSort(right));
 };
- 
+
 function merge(left, right){
     var result = [];
- 
+
     while (left.length && right.length) {
         if (left[0] <= right[0]) {
             result.push(left.shift());
@@ -346,13 +369,13 @@ function merge(left, right){
             result.push(right.shift());
         }
     }
- 
+
     while (left.length)
         result.push(left.shift());
- 
+
     while (right.length)
         result.push(right.shift());
- 
+
     return result;
 };
 
