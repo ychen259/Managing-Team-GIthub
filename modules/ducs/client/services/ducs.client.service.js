@@ -27,9 +27,12 @@
         return $http.delete('/api/measurements/' + measurement);
       },
 
-      email: function(id, data){
+      email: function(id, data) {
         return $http.post('/api/email-result/' + id, data);
+      },
 
+      getCountyCounts: function() {
+        return $http.get('/api/measurements/count');
       }
     };
 

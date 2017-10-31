@@ -9,7 +9,7 @@
         <fieldset>
 
           <div class="form-group" show-errors>
-              
+
             <!--Force user to input valid zipcode with 5 number-->
             <label class="control-label" for="Zip">Zipcode </label>
             <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern="\d{5}" required>
@@ -22,7 +22,7 @@
           <!-- Catch Cans -->
           <div class="form-group" show-errors>
             <label class="control-label" for="NumCC">Number of Catch Cans</label>
-            <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" required>
+            <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" step="1" pattern="\d+"  required>
                <div ng-messages="first_form.NumCC.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Number of Catch Cans is required</p>
                   <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>                 
@@ -32,7 +32,10 @@
           <!-- Time Run -->
           <div class="form-group" show-errors>
             <label class="control-label" for="timeRun">Time Run in Hour</label>
-            <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="Hours" min= "0.0000001" required>
+            <div class = "input-group">
+              <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="Hours" min= "0.0000001" required>
+              <span class="input-group-addon">Hours</span>
+            </div>
                <div ng-messages="first_form.timeRun.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Running Time is required.</p>
                   <p class="help-block error-text" ng-message="min">Please provide a number which is greater than zero</p>
@@ -80,9 +83,17 @@
           </label>
         </div>
 
-        <!-- for loop to print out number of input-->
-        <div id = "can_depths" class="form-group">
+        <!-- display dynamic input -->
+        <div ng-repeat="value in idArrayForDepth">
+          <div class="form-group">
+              <label class='control-label'>Amount of Water</label><br>
+                <div class = "input-group">
+                   <input name = 'depth' id ={{value.id}} type='number' step='any' class='form-control' min='0.000001' required/><br>
+                   <span class="input-group-addon">{{unit? 'cm': 'inch'}}</span>
+                </div>
+           </div>
         </div>
+
         <!--submit button-->
         <div class='form-group'>
           <button type='submit' class='btn btn-success' class="form-control">Calculation</button>
@@ -95,12 +106,22 @@
       <form class='form-horizontal' ng-submit='save()' ng-show="volume">
         <!-- Print out surface area -->
         <div class="form-group">
-          <label class='control-label'>Surface Area of container </label><br>
-          <input name = "area" ng-model="area" name ="area" type='number' class='form-control' placeholder="Area in square centimeter" min="0" required/><br>
+            <label class='control-label'>Surface Area of container </label><br>
+            <div class = "input-group">
+              <input name = "area" ng-model="area" name ="area" type='number' step="any" class='form-control' placeholder="Area in square centimeter" min="0.000001" required/>
+              <span class="input-group-addon">cm2</span>
+            </div>
         </div>
 
-        <!-- for loop to print out number of input-->
-        <div id = "Volume" class="form-group">
+        <!-- display dynamic input -->
+        <div ng-repeat="value in idArrayForVolume">
+          <div class="form-group">
+              <label class='control-label'>Volume of water</label><br>
+                <div class = "input-group">
+                   <input name = 'volume' id ={{value.id}} type='number' step='any' class='form-control' placeholder='Volume in ml' min='0' required/><br>
+                   <span class="input-group-addon">ml</span>
+                </div>
+           </div>
         </div>
 
         <!--submit button-->

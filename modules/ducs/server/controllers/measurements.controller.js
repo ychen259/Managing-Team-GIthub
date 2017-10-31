@@ -214,7 +214,16 @@ exports.export = function(req, res) {
       console.log("success");
       }
   });
+}
 
+exports.getCountyCounts = function(req, res) {
+  Measurement.aggregate([{"$group": {_id:"$county", count:{$sum:1}}}]).sort({'count': -1}).exec(function(err, countyCount) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.json(countyCount);
+    }
+  });
 };
 
 /**

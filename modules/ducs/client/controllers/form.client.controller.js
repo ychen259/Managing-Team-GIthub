@@ -20,6 +20,9 @@
     $scope.unit = false; //true for metric (cm), false for imperical (inch)
     $scope.volume = false; //true for volume, false for depth
 
+    $scope.idArrayForDepth = [];
+    $scope.idArrayForVolume = [];
+
     $scope.continue = function (isValid){
 
       if (!isValid) {
@@ -33,16 +36,8 @@
 
       for (i=0;i < $scope.num ;i++)
       {
-        /*volume == false ==> Ask user to input depth*/
-        
-          document.getElementById("can_depths").innerHTML += "<label class='control-label'>Amount of Water</label><br>";
-          document.getElementById("can_depths").innerHTML += "<input name = 'depth' id =" + i + " type='number' class='form-control' min='0' required/><br>";
-        
-        /*volume == true ==> Ask user to input surface area (cm^2) and volume*/   
-       
-          document.getElementById("Volume").innerHTML += "<label class='control-label'>Volume of water</label><br>";
-          document.getElementById("Volume").innerHTML += "<input name = 'volume' id =" + ($scope.num + i) + " type='number' class='form-control' placeholder='Volume in ml' min='0' required/><br>";
-        
+          $scope.idArrayForDepth.push({'id': i}); /*id for heigh array*/
+          $scope.idArrayForVolume.push({'id': i+$scope.num}); /*id for volume array*/
       }
     }
 

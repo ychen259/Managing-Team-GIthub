@@ -18,6 +18,10 @@ module.exports = function(app) {
     app.route('/api/measurements/export')
         .get(measurements.export);
 
+    app.route('/api/measurements/count')
+      .get(measurements.getCountyCounts);
+
+
     app.route('/api/measurements/:measureId')
       .get(measurements.read)
       .delete(measurements.delete);
