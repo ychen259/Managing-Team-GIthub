@@ -14,7 +14,11 @@
       list: function() {
         return $http.get('/api/measurements');
       },
-      
+
+      listCSV: function() {
+        return $http.get('/api/measurements/export')
+      },
+
       read: function(id) {
         return $http.get('/api/measurements/' + id);
       },
@@ -29,7 +33,7 @@
       }
     };
 
-    return methods; 
+    return methods;
   }]);
 }()
 

@@ -55,36 +55,30 @@
 
 
     $scope.exportCSV = function(){
-    console.log("hello friend");
-    var filename = 'filename';
-    var myCars = [
-  {
-    "car": "Audi",
-    "price": 40000,
-    "color": "blue"
-  }, {
-    "car": "BMW",
-    "price": 35000,
-    "color": "black"
-  }, {
-    "car": "Porsche",
-    "price": 60000,
-    "color": "green"
-  }
-];
-    var blob = new Blob([angular.toJson(myCars, true)], {type: 'text/csv'});
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else{
-        var e = document.createEvent('MouseEvents'),
-        a = document.createElement('a');
-        a.download = filename;
-        a.href = window.URL.createObjectURL(blob);
-        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-        e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(e);
-        // window.URL.revokeObjectURL(url); // clean the url.createObjectURL resource
-    }
+      DucsService.listCSV()
+        .then(function(response) {
+            var list = response.data;
+            var blob = new Blob([list], {type: 'text/csv'});
+            var filename = "DUC-List";
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+            } else{
+                var e = document.createEvent('MouseEvents'),
+                a = document.createElement('a');
+                a.download = filename;
+                a.href = window.URL.createObjectURL(blob);
+                a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+                e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(e);
+                // window.URL.revokeObjectURL(url); // clean the url.createObjectURL resource
+            }
+
+    }, function(error) {
+        $scope.error = 'Unable to export measurements!\n' + error;
+
+    });
+    //var blob = new Blob([angular.toJson(myCars, true)], {type: 'text/csv'});
+
 }
   /*  $scope.exportCSV = function() {
         DucsService.list()
