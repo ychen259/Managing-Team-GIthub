@@ -59,7 +59,7 @@
         .then(function(response) {
             var list = response.data;
             var blob = new Blob([list], {type: 'text/csv'});
-            var filename = "DUC-List";
+            var filename = "DUC-List.csv";
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(blob, filename);
             } else{
