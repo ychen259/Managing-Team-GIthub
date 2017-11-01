@@ -13,7 +13,7 @@ module.exports = {
   // Binding to 127.0.0.1 is safer in production.
   host: process.env.HOST || '0.0.0.0',
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://student:classcen3031@ds045465.mlab.com:45465/class',
+    uri: process.env.MONGOHQ_URL||process.env.MONGOLAB_URI || 'mongodb://alwaystrue:Cen3031@ds155414.mlab.com:55414/duc',
     options: {
       /**
       * Uncomment to enable ssl certificate based authentication to mongodb
