@@ -20,7 +20,10 @@
   </div>
   <br>
   <!--Add Button For Emailing Results -->
-    <center><button class="btn btn-success" class="form-control" ng-click="sendEmail()">Email to myself</button></center>
+    <!--Replace the real email button with fake email button after you click the real email button-->
+    <center><button type="button" class="btn btn-success" ng-hide ="isClick" ng-click="sendEmail()">Email to myself</button></center>
+    <center><button type="button" class="btn btn-success disabled" ng-show="isClick" >Email to myself</button></center>
+
 
    <!-- </a>  -->
   
