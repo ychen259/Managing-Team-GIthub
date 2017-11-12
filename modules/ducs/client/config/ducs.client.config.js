@@ -21,6 +21,7 @@
         title: 'How-to',
         state: 'ducs.Instructions',
         //type: 'dropdown',
+
     });
 
     // Add DUC Admin entries to the existing Admin dropbown
