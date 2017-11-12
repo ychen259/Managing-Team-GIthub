@@ -291,6 +291,7 @@ gulp.task('mocha', function (done) {
       .on('error', function (err) {
         // If an error occurs, save it
         error = err;
+        console.log(error);
       })
       .on('end', function () {
         mongooseService.disconnect(function (err) {
