@@ -70,7 +70,7 @@
       vm.authentication.user = response;
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Signup successful!' });
       // And redirect to the previous or home page
-      $state.go($state.previous.state.name || 'home', $state.previous.params);
+      $state.go('ducs.create', $state.previous.params);
     }
 
     function onUserSignupError(response) {
@@ -82,7 +82,20 @@
       vm.authentication.user = response;
       Notification.info({ message: 'Welcome ' + response.firstName });
       // And redirect to the previous or home page
-      $state.go($state.previous.state.name || 'home', $state.previous.params);
+      console.log(vm.authentication.user);
+      var length = vm.authentication.user.roles.length;
+      var roles = 'user';
+      for(var i = 0; i < length; i++){
+        if(vm.authentication.user.roles[i] == "admin"){
+          roles = 'admin';
+          break;
+        }
+      }
+
+      if(roles == 'admin') $state.go('ducs.admin-list', $state.previous.params);
+      else{
+        $state.go('ducs.create', $state.previous.params);
+      } 
     }
 
     function onUserSigninError(response) {
