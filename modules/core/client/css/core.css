@@ -42,3 +42,16 @@ a:hover .header-profile-image {
   display: inline;
 }
  
+ .parallax { 
+    /* The image used */
+    background-image: url("img_2877.jpg");
+
+    /* Set a specific height */
+    height: 300px; /*controls how much you want the scrolling effect to be*/
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

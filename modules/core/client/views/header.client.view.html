@@ -6,7 +6,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="http://localhost:3000" id="ifas" style="display: inline-block;" > Home</a> <!--home button to go to main page -->
+    <a class="navbar-brand" href="http://localhost:3000" id="ifas" style="display: inline-block;color:white" > Home</a> <!--home button to go to main page -->
   </div>
   <nav class="navbar-collapse" uib-collapse="!vm.isCollapsed" role="navigation">
     <ul class="nav navbar-nav" ng-if="vm.menu.shouldRender(vm.authentication.user);">
@@ -21,13 +21,14 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-hide="vm.authentication.user" >
-    	 <li class="divider-vertical"></li>
-      <li ui-sref-active="active" style="border-left-style: solid; border-width: .1px;border-color: black"> <!--box sign up button -->
-        <a ui-sref="authentication.signup" >Sign Up</a>
-      </li>
       <li class="divider-vertical"></li>
+       <li class="divider-vertical"></li> 
+      <li ui-sref-active="active" > <!--box sign up button -->
+        <a ui-sref="authentication.signup" style="font-size:18px;color:white" >Sign Up</a>
+      </li>
+    
       <li ui-sref-active="active">
-        <a ui-sref="authentication.signin" style="border-style:solid; border-width: .1px; border-color:black">Sign In</a> <!--box sign in button -->
+        <a ui-sref="authentication.signin" style="font-size:18px;color: white">Sign In</a> 
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-show="vm.authentication.user" >
@@ -49,3 +50,4 @@
     </ul>
   </nav>
 </div>
+ 
