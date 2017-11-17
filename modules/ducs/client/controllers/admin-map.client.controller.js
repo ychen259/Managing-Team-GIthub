@@ -9,8 +9,10 @@
 
   function AdminMapController($scope, DucsService) {
     var vm = this;
-    DucsService.getCountyCounts()
-    .then(function(response) {
+
+    $scope.count = function(){
+      DucsService.getCountyCounts()
+      .then(function(response) {
         vm.countyCounts = response.data;
 
         $scope.total = 0;
@@ -19,7 +21,8 @@
         }
       }, function(error) {
         //otherwise display the error
-        $scope.error = 'Couldn\'t load measurement data!\n err:' + error;
+        $scope.error = 'Couldn\'t load measurement data!';
       });
+    }
   }
 }());

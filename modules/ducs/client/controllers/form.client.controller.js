@@ -95,7 +95,7 @@
                 $state.go('ducs.result', {object_id: response.data._id, metric: $scope.unit});
               }, function(error) {
                 //otherwise display the error
-                $state.go($state.current, {},{reload:true});
+                $state.go('ducs.create', {},{reload:true});
                 Notification.error({ message: "Your zipcode is invalid, please provide a valid zipcode", title: '<i class="glyphicon glyphicon-remove"></i> Invalid zipcode'});
               });
     };
