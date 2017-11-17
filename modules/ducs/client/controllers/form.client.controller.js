@@ -89,13 +89,12 @@
       /* Save the measurement using the DucsService factory */
       DucsService.create(data)
               .then(function(response) {
-
                 //send the id of object to state ducs.result, so ducs.result can use to id to get result from database
                 //$scope.unit == false (Imperial) ; $scope.unit == true (Metric)
                 $state.go('ducs.result', {object_id: response.data._id, metric: $scope.unit});
               }, function(error) {
                 //otherwise display the error
-                $state.go($state.current, {},{reload:true});
+                $state.go('ducs.create', {},{reload:true});
                 Notification.error({ message: "Your zipcode is invalid, please provide a valid zipcode", title: '<i class="glyphicon glyphicon-remove"></i> Invalid zipcode'});
               });
     };

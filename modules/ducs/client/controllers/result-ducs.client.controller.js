@@ -50,7 +50,7 @@
                 	$scope.result = "Fail";
 
               }, function(error) {  
-                $scope.error = 'Unable to retrieve listing with id "' + id + '"\n' + error;
+                $scope.error = 'Unable to retrieve listing with id: ' + id;
               });
     };  
 
@@ -67,7 +67,7 @@
               .then(function(response){
                   Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-ok"></i> Result email sent successfully!' });
                }, function(err){
-                  Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Failed to send result email!', delay: 4000 });
+                  Notification.error({ message: 'Try again later!', title: '<i class="glyphicon glyphicon-remove"></i> Failed to send result email!'});
                });
     }
 

@@ -10,23 +10,29 @@
   function DucsListController($scope, $state, DucsService) {
     var vm = this;
 
-    DucsService.list()
-    .then(function(response) {
-        vm.measurements = response.data;
-      }, function(error) {
-        //otherwise display the error
-        $scope.error = 'Couldn\'t load measurement data!\n err:' + error;
-      });
+    $scope.list = function(){
+        DucsService.list()
+        .then(function(response) {
+            vm.measurements = response.data;
+         }, function(error) {
+            //otherwise display the error
+            $scope.error = 'Couldn\'t load measurement data!';
+        });
+    }
+      
+    $scope.rm = function(measurement){
+      document.getElementById(measurement).remove();
+    }
 
     $scope.remove = function(measurement) {
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
                 .then(function(response) {
                   // remove the deleted measurement from the list view
-                  document.getElementById(measurement).remove();
+                   $scope.rm(measurement);
                 }, function(error) {
                     //otherwise display the error
-                    $scope.error = 'Unable to delete measurement!\n' + error;
+                    $scope.error = 'Unable to delete measurement!';
                 });
 
     };
@@ -57,15 +63,15 @@
     $scope.exportCSV = function(){
       DucsService.listCSV()
         .then(function(response) {
-            var list = response.data;
-            var blob = new Blob([list], {type: 'text/csv'});
-            var filename = "DUC-List.csv";
+            $scope.list = response.data;
+            var blob = new Blob([$scope.list], {type: 'text/csv'});
+            $scope.filename = "DUC-List.csv";
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(blob, filename);
+                window.navigator.msSaveOrOpenBlob(blob, $scope.filename);
             } else{
                 var e = document.createEvent('MouseEvents'),
                 a = document.createElement('a');
-                a.download = filename;
+                a.download = $scope.filename;
                 a.href = window.URL.createObjectURL(blob);
                 a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
                 e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -74,7 +80,7 @@
             }
 
     }, function(error) {
-        $scope.error = 'Unable to export measurements!\n' + error;
+        $scope.error = 'Unable to export measurements!';
 
     });
     //var blob = new Blob([angular.toJson(myCars, true)], {type: 'text/csv'});
