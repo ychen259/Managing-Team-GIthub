@@ -19,6 +19,11 @@
                </div> 
           </div>
 
+          <div class="form-group" show-errors>
+            <input type="text" ng-model="selected_county" uib-typeahead="county for county in counties | filter:$viewValue | limitTo:8" class="form-control">
+            
+          </div>
+
           <!-- Catch Cans -->
           <div class="form-group" show-errors>
             <label class="control-label" for="NumCC">Number of Catch Cans</label>
