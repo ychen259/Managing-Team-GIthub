@@ -19,15 +19,31 @@
     $scope.hide = true;
     $scope.unit = false; //true for metric (cm), false for imperical (inch)
     $scope.volume = false; //true for volume, false for depth
-
+    
     //Store counties available
     $scope.counties = ["Alachua","Baker","Bay","Bradford","Brevard","Broward","Calhoun","Charlotte","Citrus","Clay","Collier","Columbia","DeSoto","Dixie","Duval","Escambia","Flagler","Franklin","Gadsden","Gilchrist","Glades","Gulf","Hamilton","Hardee","Hendry","Hernando","Highlands","Hillsborough","Holmes","Indian River","Jackson","Jefferson","Lafayette","Lake","Lee","Leon","Levy","Liberty","Madison","Manatee","Marion","Martin","Miami-Dade","Monroe","Nassau","Okaloosa","Okeechobee","Orange","Osceola","Palm Beach","Pasco","Pinellas","Polk","Putnam","St. Johns","St. Lucie","Santa Rosa","Sarasota","Seminole","Sumter","Suwannee","Taylor","Union","Volusia","Wakulla","Walton","Washington"];
 
     $scope.idArrayForDepth = [];
     $scope.idArrayForVolume = [];
 
-    $scope.continue = function (isValid){
+    
+    $scope.validateField = function(first_form){
+      
+          if(!($scope.counties.includes($scope.selected_county))){
+            first_form.county.$setValidity('myCustomValidationName', false); 
+          } 
+          else {
+            first_form.county.$setValidity('myCustomValidationName', true);
+          }
+    
+      
+      }
 
+    
+    $scope.continue = function (isValid){
+    
+
+      
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'first_form');
         return false;

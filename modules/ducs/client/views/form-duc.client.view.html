@@ -19,10 +19,25 @@
                </div> 
           </div>
 
-          <div class="form-group" show-errors>
-            <input type="text" ng-model="selected_county" uib-typeahead="county for county in counties | filter:$viewValue | limitTo:8" class="form-control">
+
+          <!-- <pre>Custom County</pre>
+            <div custom-select="county for county in counties | filter: $searchTerm" ng-model="selected_county">
+            </div>           -->
             
-          </div>
+              <div class="form-group" show-errors>
+                  <input class="form-control" name="county" type="text" ng-model="selected_county" uib-typeahead="county for county in counties | filter:$viewValue | limitTo:8"  ng-change="validateField(first_form)" required>
+                  
+                  <div ng-show="first_form.county.$touched || first_form.$submitted">
+                      <div ng-messages="first_form.county.$error" role="alert">
+                          <p class="help-block error-text" ng-message="myCustomValidationName">Provide a valid county within Florida</p>
+                        <!-- <p class="help-block error-text" ng-message="validationError">this is the error</p> -->
+                        
+                      </div>
+                
+                  </div>
+                  
+                
+                </div>
 
           <!-- Catch Cans -->
           <div class="form-group" show-errors>
