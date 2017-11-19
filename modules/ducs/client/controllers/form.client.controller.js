@@ -30,10 +30,10 @@
     $scope.validateField = function(first_form){
       
           if(!($scope.counties.includes($scope.selected_county))){
-            first_form.county.$setValidity('myCustomValidationName', false); 
+            first_form.county.$setValidity('InvalidCounty', false); 
           } 
           else {
-            first_form.county.$setValidity('myCustomValidationName', true);
+            first_form.county.$setValidity('InvalidCounty', true);
           }
     
       
