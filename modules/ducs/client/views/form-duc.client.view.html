@@ -7,17 +7,17 @@
     <div class="col-md-7 col-md-offset-3">
       <form name="first_form" class="form-horizontal" ng-show="hide" ng-submit="continue(first_form.$valid) " novalidate>
         <fieldset>
-
+<!-- 
           <div class="form-group" show-errors>
 
-            <!--Force user to input valid zipcode with 5 number-->
+            Force user to input valid zipcode with 5 number
             <label class="control-label" for="Zip">Zipcode </label>
             <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern="\d{5}" required>
                <div ng-messages="first_form.Zip.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
                   <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
                </div> 
-          </div>
+          </div> -->
 
 
           <!-- <pre>Custom County</pre>
@@ -25,11 +25,13 @@
             </div>           -->
             
               <div class="form-group" show-errors>
+                  <label class="control-label">County </label>
+                  
                   <input class="form-control" name="county" type="text" ng-model="selected_county" 
-                  uib-typeahead="county for county in counties | filter:$viewValue | limitTo:8"  ng-change="validateField(first_form)" required>
+                  uib-typeahead="county for county in counties | filter:$viewValue | limitTo:8" ng-blur="validateField(first_form)" required>
                   
                   <!-- Validate when the input is submitted or changed -->
-                  <div ng-show="first_form.county.$touched || first_form.$submitted">
+                  <div ng-show="first_form.$submitted">
                       <div ng-messages="first_form.county.$error" role="alert">
                           <p class="help-block error-text" ng-message="InvalidCounty">Provide a valid county within Florida</p>
                         <!-- <p class="help-block error-text" ng-message="validationError">this is the error</p> -->

@@ -25,15 +25,14 @@
 
     $scope.idArrayForDepth = [];
     $scope.idArrayForVolume = [];
-
     
     $scope.validateField = function(first_form){
       
-          if(!($scope.counties.includes($scope.selected_county))){
-            first_form.county.$setValidity('InvalidCounty', false); 
+          if($scope.counties.includes($scope.selected_county)){
+            first_form.county.$setValidity('InvalidCounty', true); 
           } 
           else {
-            first_form.county.$setValidity('InvalidCounty', true);
+            first_form.county.$setValidity('InvalidCounty', false);
           }
     
       
@@ -42,6 +41,13 @@
     
     $scope.continue = function (isValid){
     
+      // if($scope.counties.includes($scope.selected_county)){
+      //   $scope.first_form.county.$setValidity('InvalidCounty', true); 
+      // } 
+      // else {
+      //   $scope.first_form.county.$setValidity('InvalidCounty', false);
+      //   return false;
+      // }
 
       
       if (!isValid) {

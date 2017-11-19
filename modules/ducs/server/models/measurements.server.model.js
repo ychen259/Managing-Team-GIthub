@@ -16,7 +16,7 @@ var measurementSchema = new Schema({
   },
   zipcode: {
     type: Number,
-    required: true
+    required: false
   },
   notes: {
     type: String,
