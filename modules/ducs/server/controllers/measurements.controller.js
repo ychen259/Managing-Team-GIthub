@@ -202,7 +202,8 @@ exports.export = function(req, res) {
     } else {
       var measurementString = "Date,County,Email,Zipcode,Time,Irrigation Rate,Uniformity Distribution \n";
       measurements.forEach(function(measurement) {
-        measurementString += measurement. measurement.county +
+        measurementString += measurement.created_at +
+        "," + measurement.county +
         "," + measurement.user.email +
         "," + measurement.zipcode +
         "," + measurement.time +
