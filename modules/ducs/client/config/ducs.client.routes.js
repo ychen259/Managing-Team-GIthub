@@ -14,15 +14,6 @@
               url: '/ducs',
               template: '<ui-view/>'
           })
-          .state('ducs.list', {
-              url: '',
-              templateUrl: '/modules/ducs/client/views/list-ducs.client.view.html',
-              controller: 'DucsListController',
-              controllerAs: 'vm',
-              data: {
-                  pageTitle: 'Ducs List'
-              }
-          })
           .state('ducs.create', {
               url: '/create',
               templateUrl: '/modules/ducs/client/views/form-duc.client.view.html',
@@ -48,38 +39,13 @@
                   pageTitle: 'Ducs Result'
               }
           })
-          .state('ducs.edit', {
-              url: '/:ducId/edit',
-              templateUrl: '/modules/ducs/client/views/form-duc.client.view.html',
-              controller: 'DucsController',
-              controllerAs: 'vm',
-              resolve: {
-                  ducResolve: getDuc
-              },
-              data: {
-                  roles: ['user', 'admin'],
-                  pageTitle: 'Edit Duc {{ ducResolve.name }}'
-              }
-          })
-          .state('ducs.view', {
-              url: '/:ducId',
-              templateUrl: '/modules/ducs/client/views/view-duc.client.view.html',
-              controller: 'DucsController',
-              controllerAs: 'vm',
-              resolve: {
-                  ducResolve: getDuc
-              },
-              data: {
-                  pageTitle: 'Duc {{ ducResolve.name }}'
-              }
-          })
           .state('ducs.admin-map', {
               url: '/admin/map',
               templateUrl: '/modules/ducs/client/views/admin.map.client.view.html',
               controller: 'AdminMapController',
               controllerAs: 'vm',
               data: {
-                  roles: ['user', 'admin'],
+                  roles: ['admin'],
                   pageTitle: 'Duc County Map'
               }
           })
@@ -89,7 +55,7 @@
               controller: 'DucsListController',
               controllerAs: 'vm',
               data: {
-                  roles: ['user', 'admin'],
+                  roles: ['admin'],
                   pageTitle: 'View all Ducs'
               }
           })
@@ -99,23 +65,10 @@
               controller: 'InstructionsController',
               controllerAs: 'vm',
               data: {
-                  //roles: ['user', 'admin'],
+                  //roles: '*',
                   pageTitle: 'How-to Run a DUC'
               }
           });
   }
 
-  getDuc.$inject = ['$stateParams', 'DucsService'];
-
-  function getDuc($stateParams, DucsService) {
-    return DucsService.get({
-      ducId: $stateParams.ducId
-    }).$promise;
-  }
-
-  newDuc.$inject = ['DucsService'];
-
-  function newDuc(DucsService) {
-    return new DucsService();
-  }
 }());
