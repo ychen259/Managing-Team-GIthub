@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-    Measurement = require('../models/measurements.server.model.js'),
+    //Measurement = require('../models/measurements.server.model.js'),
+    Measurement = mongoose.model('Measurement'),
     path = require('path'),
     config = require(path.resolve('./config/config')),
     User = mongoose.model('User'),
