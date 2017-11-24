@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-    Measurement = require('../models/measurements.server.model.js'),
+    //Measurement = require('../models/measurements.server.model.js'),
+    Measurement = mongoose.model('Measurement'),
     path = require('path'),
     config = require(path.resolve('./config/config')),
     User = mongoose.model('User'),
@@ -30,7 +31,7 @@ exports.create = function(req, res) {
       console.log(err);
       res.status(400).send(err);
     } else {
-      //console.log("Successfully created:\n" + measurement);
+      console.log("Successfully created:\n" + measurement);
       res.json(measurement);
     }
   });
@@ -166,7 +167,7 @@ exports.delete = function(req, res) {
       res.status(400).send(err);
     }
     else {
-      //console.log("Successfully deleted:\n" + measurement);
+      console.log("Successfully deleted:\n" + measurement);
       //res.json(measurement)
       res.end();
     }
@@ -194,15 +195,16 @@ exports.list = function(req, res) {
 };
 
 exports.export = function(req, res) {
- // console.log("hello");
+  console.log("hello");
   Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
     if(err) {
       res.status(400).send(err);
 
     } else {
-      var measurementString = "County,Email,Zipcode,Time,Irrigation Rate,Uniformity Distribution \n";
+      var measurementString = "Date,County,Email,Zipcode,Time,Irrigation Rate,Uniformity Distribution \n";
       measurements.forEach(function(measurement) {
-        measurementString += measurement.county +
+        measurementString += measurement.created_at +
+        "," + measurement.county +
         "," + measurement.user.email +
         "," + measurement.zipcode +
         "," + measurement.time +
@@ -211,7 +213,7 @@ exports.export = function(req, res) {
       });
       res.send(measurementString);
       //res.json(measurements);
- //     console.log("success");
+      console.log("success");
       }
   });
 }
@@ -293,10 +295,10 @@ exports.email = function (req, res){
         if (!err) {
           res.send({message: 'An email has been sent to the provided email with further instructions.'});
         } else {
-          res.status(400).send({ message: 'Failure sending email_context'});
+          res.status(400).send({ message: 'Failure sending email'});
         }
 
-       // done(err);
+        done(err);
   });
 };
 
@@ -306,7 +308,7 @@ exports.measurementByID = function(req, res, next, id) {
     if(err) {
       res.status(400).send(err);
     } else {
-      //console.log("Successfully read:\n" + measurement);
+      console.log("Successfully read:\n" + measurement);
       req.measurement = measurement;
       next();
     }

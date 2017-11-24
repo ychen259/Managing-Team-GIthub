@@ -17,7 +17,7 @@ describe('Duc E2E Tests:', function () {
     element(by.model('vm.credentials.password')).sendKeys(user1.password);
     // Click Submit button
     element(by.css('button[type=submit]')).click();
-    expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/');
+    expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/ducs/create');
   }
 
   var signout = function () {

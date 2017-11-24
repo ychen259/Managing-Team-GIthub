@@ -187,7 +187,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Signup successful with username having .
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/');
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/ducs/create');
 
       signout();
     });
@@ -330,12 +330,14 @@ describe('Users E2E Tests:', function () {
       element(by.model('vm.credentials.password')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type="submit"]')).click();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/');
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/ducs/create');
     });
 
     it('Should report Email already exists', function () {
       // Make sure user is signed out first
       signout();
+
+      browser.sleep(1000)
       // Signup
       browser.get('http://localhost:3001/authentication/signup');
       // Enter First Name
@@ -355,6 +357,7 @@ describe('Users E2E Tests:', function () {
     });
 
     it('Should report Username already exists', function () {
+    	browser.sleep(1000)
       // Signup
       browser.get('http://localhost:3001/authentication/signup');
       // Enter First Name
@@ -401,7 +404,7 @@ describe('Users E2E Tests:', function () {
       element(by.model('vm.credentials.password')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type="submit"]')).click();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/');
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/ducs/create');
     });
 
   });
