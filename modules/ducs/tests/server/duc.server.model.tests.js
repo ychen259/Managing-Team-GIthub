@@ -6,9 +6,9 @@
 var should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Duc = mongoose.model('Duc'),
-  //Measurements = mongoose.model('Measurements');
-  Measurements = require("../../server/models/measurements.server.model.js");
+  //Duc = mongoose.model('Duc'),
+ // Measurements = require("../../server/models/measurements.server.model.js");
+  Measurements = mongoose.model('Measurement');
 /**
  * Globals
  */
