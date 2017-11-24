@@ -1,3 +1,9 @@
+.instruction {
+
+      font-weight: bold;
+
+    }
+
 .switch {
       position: relative;
       display: block;
