@@ -13,7 +13,7 @@ module.exports = function(app) {
     // Ducs Routes
     app.route('/api/measurements').all(measurementsPolicy.isAllowed)
       .get(measurements.list)
-      .post(measurements.county, measurements.city, measurements.create);
+      .post(measurements.county, measurements.city,measurements.create);
 
     app.route('/api/measurements/export').all(measurementsPolicy.isAllowed)
         .get(measurements.export);

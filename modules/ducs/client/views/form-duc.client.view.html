@@ -8,19 +8,68 @@
       <form name="first_form" class="form-horizontal" ng-show="hide" ng-submit="continue(first_form.$valid) " novalidate>
         <fieldset>
 
-          <div class="form-group" show-errors>
-
-            <!--Force user to input valid zipcode with 5 number-->
-            <label class="control-label" for="Zip">Zipcode </label>
-            <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="zipcode" pattern="\d{5}" required>
-               <div ng-messages="first_form.Zip.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Zipcode is required.</p>
-                  <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
-               </div> 
+          <div class="row">
+            <p class="font-italic text-center instruction"> 
+            Please add Zip Code or County of location being meassured, both are not required.            
+            </p>
           </div>
+          <!-- <div class="form-group" show-errors> -->
+
+            <!-- Force user to input valid zipcode with 5 number -->
+            <div class="row d-inline">
+
+                <div class="col-xs-5 form-group"  show-errors>
+                    
+                  <input type="text" name="Zip" ng-model="zipcode" id="Zip" class="form-control"  placeholder="Zipcode" pattern="\d{5}" ng-required='!selected_county'>
+                  <div ng-messages="first_form.Zip.$error" role="alert">
+                     <p class="help-block error-text" ng-message="required">County or Zipcode is required</p>
+                     <p class="help-block error-text" ng-message = "pattern">Please provide valid zipcode</p>
+                  </div> 
+                </div>
+    
+                <div class="col-xs-2 col-xs-offset-1">
+                    <label>Or</label>
+                    
+                </div>
+                
+                
+                <div class="col-xs-5 form-group" show-errors>
+                  
+                  <!-- Create a list of counties that autofills as user completes it -->
+                  <!-- ng-blur will check the value once the complete input has be entered -->
+                  <input class="form-control" name="County" type="text" ng-model="selected_county" 
+                  uib-typeahead="county for county in counties | filter:$viewValue | limitTo:8" ng-blur="validateField(first_form)" placeholder="County" ng-required='!zipcode'>
+                  
+                  <!-- Validate when the input is submitted or changed -->
+    
+                      <div ng-messages="first_form.County.$error" role="alert">
+                          <p class="help-block error-text" ng-message="required">County or Zipcode is required</p>
+                          <p class="help-block error-text" ng-message="InvalidCounty">Please choose a county from the list</p>
+                          
+                        <!-- <p class="help-block error-text" ng-message="validationError">this is the error</p> -->
+                        
+                      </div>
+                     
+                </div>
+                
+
+            </div>
+            
+          <!-- </div> -->
+
+
+          <!-- <pre>Custom County</pre>
+            <div custom-select="county for county in counties | filter: $searchTerm" ng-model="selected_county">
+            </div>           -->
+            
+              <!-- <div class="form-group" show-errors>
+                 
+                  
+                
+                </div> -->
 
           <!-- Catch Cans -->
-          <div class="form-group" show-errors>
+          <div class="form-group row" show-errors>
             <label class="control-label" for="NumCC">Number of Catch Cans</label>
             <input name= "NumCC" type="number" ng-model="num" id="NumCC" class="form-control" placeholder="#" min="1" step="1" pattern="\d+"  required>
                <div ng-messages="first_form.NumCC.$error" role="alert">
@@ -30,7 +79,7 @@
           </div>
 
           <!-- Time Run -->
-          <div class="form-group" show-errors>
+          <div class="form-group row" show-errors>
             <label class="control-label" for="timeRun">Time Run in Hour</label>
             <div class = "input-group">
               <input name="timeRun" type="number" ng-model="time" id="timeRun" class="form-control" placeholder="Hours" min= "0.0000001" required>
@@ -43,7 +92,7 @@
           </div>
 
                     <!-- Time Run -->
-          <div class="form-group">
+          <div class="form-group row">
             <label class="control-label">Optional Notes</label>
             <textarea class="form-control" style="resize:none" ng-model="notes" id="textArea"></textarea>
           </div>
