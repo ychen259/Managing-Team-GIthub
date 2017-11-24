@@ -28,11 +28,13 @@
     
     $scope.validateField = function(first_form){
       
-          if($scope.counties.includes($scope.selected_county)){
-            first_form.county.$setValidity('InvalidCounty', true); 
+          if($scope.counties.includes($scope.selected_county) || $scope.zipcode != undefined){
+            first_form.County.$setValidity('InvalidCounty', true); 
           } 
           else {
-            first_form.county.$setValidity('InvalidCounty', false);
+            first_form.County.$setValidity('InvalidCounty', false);
+            // first_form.County.$error.validationError = true;
+            
           }
     
       
@@ -61,7 +63,7 @@
 
       for (i=0;i < $scope.num ;i++)
       {
-          $scope.idArrayForDepth.push({'id': i}); /*id for heigh array*/
+          $scope.idArrayForDepth.push({'id': i}); /*id for height array*/
           $scope.idArrayForVolume.push({'id': i+$scope.num}); /*id for volume array*/
       }
     }
