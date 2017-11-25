@@ -671,7 +671,7 @@ describe('Duc CRUD tests', function () {
       });
   });
 
-  it('should be able to exmail result if logged in as admin', function (done) {
+  it('should be able to email result if logged in as admin', function (done) {
     user.roles = ['admin'];
 
     //save user to database
@@ -712,13 +712,13 @@ describe('Duc CRUD tests', function () {
           .send(data)
           .expect(400)
           .end(function (err, res) {
-            res.body.message.should.be.equal('Failure sending email_context');
+            res.body.message.should.be.equal('Failure sending email');
             done();
           });
       });
   });
 
-  it('should be able to exmail result if logged in as user', function (done) {
+  it('should be able to email result if logged in as user', function (done) {
 
     //save user to database
     user.save(function (){
@@ -758,7 +758,7 @@ describe('Duc CRUD tests', function () {
           .send(data)
           .expect(400)
           .end(function (err, res) {
-            res.body.message.should.be.equal('Failure sending email_context');
+            res.body.message.should.be.equal('Failure sending email');
             done();
           });
       });
