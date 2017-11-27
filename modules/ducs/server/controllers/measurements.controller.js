@@ -1,11 +1,12 @@
 var mongoose = require('mongoose'),
-    Measurement = require('../models/measurements.server.model.js'),
+    //Measurement = require('../models/measurements.server.model.js'),
+    Measurement = mongoose.model('Measurement'),
     path = require('path'),
     config = require(path.resolve('./config/config')),
     User = mongoose.model('User'),
     nodemailer = require('nodemailer');
     request = require('request');
-    
+
 
 /* Create a measurement */
 exports.create = function(req, res) {
@@ -41,42 +42,121 @@ exports.create = function(req, res) {
 exports.county = function(req, res,next) {
   if(req.body.zipcode) {
     var options = {
-      key: config.googleMaps.key, 
+      key: config.googleMaps.key,
       address: req.body.zipcode
     }
     request({
-      url: 'https://maps.googleapis.com/maps/api/geocode/json', 
+      url: 'https://maps.googleapis.com/maps/api/geocode/json',
       qs: options
-      }, function(error, response, body) {
+      },
+      function(error, response, body) {
         if(error) {
           res.status(400).send(err);
-        } 
+        }
 
         var data = JSON.parse(body);
-        var lengthOfComponents = data.results[0].address_components.length;
-        var valid = false; /*Flag to check*/
 
-        /*Using for loop to find the index of county*/
-        for(var i = 0; i < lengthOfComponents; i++){
-          /*tyes[0] == "administrative_area_level_2" is for county*/
-          if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
-            req.county = data.results[0].address_components[i].long_name;
-            valid = true; /*Set flag to true to said I find the index for county*/
-            break;
-          }
+        /*Check for response status*/
+        if(data.status != "OK"){
+          res.status(400).send("error");
         }
-          
-        /*If I cannot find the value for county, ask user to input again*/
-        if(valid == false){
-            res.status(400).send("error");
+        else{
+            var lengthOfComponents = data.results[0].address_components.length;
+            var valid = false; /*check if zipcode is valid or not*/
+
+            /*Using for loop to find the index of postal code*/
+            /*compare the the zipcode with response.zipcode*/
+            for(var i = 0; i < lengthOfComponents; i++){
+              if(data.results[0].address_components[i].types[0] == "postal_code"){
+                if(data.results[0].address_components[i].long_name == req.body.zipcode){
+                  valid = true;
+                  break;
+                }
+              }
+            }
+
+            /*If I cannot find the zipcode, then thie zipcode is invalid*/
+            if(valid == false){
+              res.status(400).send("error");
+            }
+            else{
+                req.hasCounty = false;
+                /*Using for loop to find the index of county*/
+                for(var i = 0; i < lengthOfComponents; i++){
+                    /*tyes[0] == "administrative_area_level_2" is for county*/
+                    if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+                        req.hasCounty = true;
+                        req.county = data.results[0].address_components[i].long_name;
+                        break;
+                    }
+                }
+
+                /*If I cannot find the county, then I search for city to do another city request to find the county*/
+                if(req.hasCounty == false){
+                	for(var i = 0; i < lengthOfComponents; i++){
+                        /*tyes[0] == "locality" is for city*/
+                        if(data.results[0].address_components[i].types[0] == "locality"){
+                            req.city = data.results[0].address_components[i].long_name;
+                            break;
+                        }
+                    }
+        		}
+        		next();
+            }
         }
-        
-        next();
-    });
+
+      });
   } else {
       next();
   }
-}; 
+};
+
+/*If I cannot find the county from function county, I search for city to get county*/
+/*If I cannot find the county from city request, I store city as county into database*/
+exports.city = function(req, res, next){
+    if(req.hasCounty == false){
+
+        var options = {
+            key: config.googleMaps.key,
+            address: req.city
+        }
+
+        request({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json',
+            qs: options
+        },
+        function(error, response, body) {
+            if(error) {
+                res.status(400).send(err);
+            }
+
+            var hasCounty = false;
+            var data = JSON.parse(body);
+            var lengthOfComponents = data.results[0].address_components.length;
+
+            /*Using for loop to find the index of county*/
+            for(var i = 0; i < lengthOfComponents; i++){
+                /*tyes[0] == "administrative_area_level_2" is for county*/
+                if(data.results[0].address_components[i].types[0] == "administrative_area_level_2"){
+                    req.county = data.results[0].address_components[i].long_name;
+                    hasCounty = true;
+                    break;
+                }
+            }
+
+            /*If I still cannot find the county from city request, then I store city as county into database*/
+            if(hasCounty == false){
+                req.county = req.city;
+            }
+
+            next();
+        });
+    }
+    else{
+    	next();
+    }
+
+};
 
 /* Delete a measurement */
 exports.delete = function(req, res) {
@@ -114,6 +194,40 @@ exports.list = function(req, res) {
 
 };
 
+exports.export = function(req, res) {
+  console.log("hello");
+  Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
+    if(err) {
+      res.status(400).send(err);
+
+    } else {
+      var measurementString = "Date,County,Email,Zipcode,Time,Irrigation Rate,Uniformity Distribution \n";
+      measurements.forEach(function(measurement) {
+        measurementString += measurement.created_at +
+        "," + measurement.county +
+        "," + measurement.user.email +
+        "," + measurement.zipcode +
+        "," + measurement.time +
+        "," + measurement.results.irrigation_rate +
+        "," + measurement.results.uniformity_distribution + '\n';
+      });
+      res.send(measurementString);
+      //res.json(measurements);
+      console.log("success");
+      }
+  });
+}
+
+exports.getCountyCounts = function(req, res) {
+  Measurement.aggregate([{"$group": {_id:"$county", count:{$sum:1}}}]).sort({'count': -1}).exec(function(err, countyCount) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.json(countyCount);
+    }
+  });
+};
+
 /**
  * Show the current Duc
  */
@@ -137,6 +251,7 @@ exports.email = function (req, res){
   var condition;
   var uniform_distribution = measurement.results.uniformity_distribution;
   var irrigation_rate = measurement.results.irrigation_rate;
+  var email_context ="";
 
   /*persistent unit with user input*/
   /*metric = true -- metric (cm) */
@@ -151,12 +266,23 @@ exports.email = function (req, res){
     unit = "inch/hrs";
   }
 
+  if(measurement.notes){
+    email_context = "<p> Dear " + req.user.username + ", </p>" +
+                      "<br />" +
+                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" +
+                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" +
+                      "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>" +
+                      "<p> Your Notes: " + "<strong>" + measurement.notes + "</strong>" +"</p>";
+  }
+  else{
 
-  var email_context = "<p> Dear " + req.user.displayName + ", </p>" + 
-                      "<br />" + 
-                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" + 
-                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" + 
+    email_context = "<p> Dear " + req.user.username + ", </p>" +
+                      "<br />" +
+                      "<p> Your System: " + "<strong>" + system_condition + "</strong>" + "</p>" +
+                      "<p> Your Distirbution Uniformity: " + "<strong>" + uniform_distribution + "</strong>" + "</p>" +
                       "<p> Your irrigation rate: " + "<strong>" + irrigation_rate + " " + unit + "</strong>" +"</p>";
+  }
+
 
   var mailOptions = {
     from: config.mailer.from,
@@ -227,17 +353,17 @@ function uniformDistribution(can_depths){
 function mergeSort(arr){
    if (arr.length < 2)
         return arr;
- 
+
     var middle = parseInt(arr.length / 2);
     var left   = arr.slice(0, middle);
     var right  = arr.slice(middle, arr.length);
- 
+
     return merge(mergeSort(left), mergeSort(right));
 };
- 
+
 function merge(left, right){
     var result = [];
- 
+
     while (left.length && right.length) {
         if (left[0] <= right[0]) {
             result.push(left.shift());
@@ -245,13 +371,13 @@ function merge(left, right){
             result.push(right.shift());
         }
     }
- 
+
     while (left.length)
         result.push(left.shift());
- 
+
     while (right.length)
         result.push(right.shift());
- 
+
     return result;
 };
 

@@ -15,29 +15,56 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/ducs',
+      resources: '/api/measurements',
       permissions: '*'
     }, {
-      resources: '/api/ducs/:ducId',
+      resources: '/api/measurements/export',
+      permissions: '*'
+    }, {
+      resources: '/api/measurements/count',
+      permissions: '*'
+    }, {
+      resources: '/api/measurements/:measureId',
+      permissions: '*'
+    }, {
+      resources: '/api/email-result/:measureId',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/ducs',
-      permissions: ['get', 'post']
+      resources: '/api/measurements',
+      permissions: ['post']
     }, {
-      resources: '/api/ducs/:ducId',
+      resources: '/api/measurements/export',
+      permissions: []
+    }, {
+      resources: '/api/measurements/count',
+      permissions: []
+    }, {
+      resources: '/api/measurements/:measureId',
       permissions: ['get']
+    }, {
+      resources: '/api/email-result/:measureId',
+      permissions: '*'
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: '/api/ducs',
-      permissions: ['get']
+      resources: '/api/measurements',
+      permissions: []
     }, {
-      resources: '/api/ducs/:ducId',
-      permissions: ['get']
+      resources: '/api/measurements/export',
+      permissions: []
+    }, {
+      resources: '/api/measurements/count',
+      permissions: []
+    }, {
+      resources: '/api/measurements/:measureId',
+      permissions: []
+    }, {
+      resources: '/api/email-result/:measureId',
+      permissions: []
     }]
   }]);
 };
@@ -49,9 +76,9 @@ exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If an Duc is being processed and the current user created it then allow any manipulation
-  if (req.duc && req.user && req.duc.user && req.duc.user.id === req.user.id) {
+  /*if (req.measurements && req.user && req.measurements.user && req.measurements.user.id === req.user.id) {
     return next();
-  }
+  }*/
 
   // Check for user roles
   acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
@@ -61,7 +88,7 @@ exports.isAllowed = function (req, res, next) {
     } else {
       if (isAllowed) {
         // Access granted! Invoke next middleware
-        return next();
+         next();
       } else {
         return res.status(403).json({
           message: 'User is not authorized'
