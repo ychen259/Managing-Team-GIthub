@@ -1,4 +1,4 @@
-.content {
+  .content {
   margin-top: 50px;
 }
 .undecorated-link:hover {
@@ -50,7 +50,7 @@ a:hover .header-profile-image {
 
 .row{
    position: absolute; 
-   top: 200px; 
+   top: 300px; 
    left: 0; 
    width: 100%; 
 }
