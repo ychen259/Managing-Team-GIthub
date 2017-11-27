@@ -34,6 +34,7 @@
     }
 
     $scope.rm = function(measurement){
+      console.log("removing " + measurement);
       document.getElementById(measurement).remove();
     }
 
@@ -43,7 +44,8 @@
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
           .then(function(response) {
-
+              // remove the deleted measurement from the list view
+              $scope.rm(measurement);
           }, function(error) {
               //otherwise display the error
               $scope.error = 'Unable to delete measurements!';
@@ -55,9 +57,7 @@
         if (confirm("Are you really sure?")) {
           DucsService.deleteAllMeasurements()
           .then(function(response) {
-            // remove the deleted measurement from the list view
-            $scope.rm(measurement);
-
+              console.log("Deleted all measurements");
           }, function(error) {
               //otherwise display the error
               $scope.error = 'Unable to delete measurement!';
