@@ -43,5 +43,14 @@ a:hover .header-profile-image {
 }
  
  
+.image{
+  position: relative;
+  width:100%;
+}
 
-
+.row{
+   position: absolute; 
+   top: 200px; 
+   left: 0; 
+   width: 100%; 
+}
