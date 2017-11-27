@@ -25,6 +25,8 @@
     }
 
     $scope.remove = function(measurement) {
+        if (!confirm("Are you sure you want to delete this measurement?"))
+          return;
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
                 .then(function(response) {
