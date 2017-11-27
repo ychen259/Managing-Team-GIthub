@@ -61,13 +61,13 @@
 
       }));
 
-      describe('count() success', function () {
+      describe('count() success for All years', function () {
         beforeEach(function () {
 
           data = [{_id: 1, count: 1},{_id: 2, count: 2}];
 
           $httpBackend.expectGET('/api/measurements/count').respond(200, data);
-          scope.count();
+          scope.count("All");
           $httpBackend.flush();
         });
 
@@ -79,11 +79,11 @@
         });
       });
 
-      describe('count() error', function () {
+      describe('count() error for All years', function () {
         beforeEach(function () {
 
           $httpBackend.expectGET('/api/measurements/count').respond(404, 'error message');
-          scope.count();
+          scope.count("All");
           $httpBackend.flush();
         });
 

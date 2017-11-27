@@ -130,7 +130,7 @@
         });
 
         it('error message', function () {
-          expect(scope.error).toBe('Unable to delete measurement!');
+          expect(scope.error).toBe('Unable to delete measurements!');
         });
       });
 

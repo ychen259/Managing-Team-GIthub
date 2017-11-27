@@ -424,6 +424,131 @@ describe('Duc CRUD tests', function () {
     
   });
 
+
+  it('should be able to get all active Years if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.get('/api/measurements/activeYears')
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
+          });
+      });
+  });
+
+  it('should show an error to get all active Years if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements/activeYears')
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to get all active Years if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements/activeYears')
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
+  it('should be able to get county record by years if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.get('/api/measurements/count/' + 1991)
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
+          });
+      });
+  });
+
+  it('should show an error to get county record by years if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements/count/' + 1991)
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to get county record by years if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements/count/' + 1991)
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
   it('should be able to get a single measurement if logged in as admin', function (done) {
     user.roles = ['admin'];
 
