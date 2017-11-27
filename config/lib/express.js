@@ -160,7 +160,9 @@ module.exports.initHelmetHeaders = function (app) {
  */
 module.exports.initModulesClientRoutes = function (app) {
   // Setting the app router and static folder
-  app.use('/', express.static(path.resolve('./public'), { maxAge: 86400000 }));
+    app.use('/', express.static(path.resolve('./public'), { maxAge: 86400000 }));
+    app.use('/public', express.static(path.resolve('./public')));                 //<--new line added
+    app.use('/images', express.static(path.resolve('./public/images')));          //path for images
 
   // Globbing static routing
   config.folders.client.forEach(function (staticPath) {
