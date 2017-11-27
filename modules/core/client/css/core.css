@@ -50,8 +50,8 @@ a:hover .header-profile-image {
     height: 300px; /*controls how much you want the scrolling effect to be*/
 
     /* Create the parallax scrolling effect */
-    background-attachment: fixed;
+    background-attachment: none;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: none;
 }
