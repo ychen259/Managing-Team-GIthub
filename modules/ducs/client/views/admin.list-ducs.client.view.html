@@ -33,7 +33,7 @@
               <td>{{m.zipcode}}</td>
               <td>{{m.county}}</td>
               <td>{{getResult(m.results.uniformity_distribution)}}</td>
-              <td>{{m.results.uniformity_distribution}}</td>
+              <td>{{m.results.uniformity_distribution}}</td> 
               <td>{{m.results.irrigation_rate}}</td>
               <td ng-if="m.can_depths.length < 10">{{m.can_depths}}</td>
               <td ng-if="m.can_depths.length >= 10">{{m.can_depths.slice(0, 4)}}<button class="btn btn-link" ng-click="showDepths(m.can_depths);">View More</button></td>

@@ -22,6 +22,11 @@ module.exports = function(app) {
     app.route('/api/measurements/count').all(measurementsPolicy.isAllowed)
       .get(measurements.getCountyCounts);
 
+    app.route('/api/measurements/count/:year').all(measurementsPolicy.isAllowed)
+      .get(measurements.getCountyCountsByYear);
+
+    app.route('/api/measurements/activeYears').all(measurementsPolicy.isAllowed)
+      .get(measurements.getActiveYears);
 
     app.route('/api/measurements/:measureId').all(measurementsPolicy.isAllowed)
       .get(measurements.read)

@@ -33,6 +33,14 @@
 
       getCountyCounts: function() {
         return $http.get('/api/measurements/count');
+      },
+
+      getCountyCountsByYear: function(year) {
+        return $http.get('/api/measurements/count/' + year);
+      },
+
+      getActiveYears: function() {
+        return $http.get('/api/measurements/activeYears');
       }
     };
 
