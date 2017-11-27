@@ -31,7 +31,7 @@
       roles: ['user', 'admin']
     });
     menuService.addSubMenuItem('topbar', 'admin', {
-      title: 'County Map',
+      title: 'Duc Stats',
       state: 'ducs.admin-map',
       roles: ['user', 'admin']
     });

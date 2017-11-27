@@ -168,11 +168,14 @@ exports.delete = function(req, res) {
     }
     else {
       console.log("Successfully deleted:\n" + measurement);
-      //res.json(measurement)
       res.end();
     }
   })
+};
 
+// delete all measurements
+exports.deleteAll = function(req, res) {
+  measurement.deleteMany({});
 };
 
 /* view a measurement */
@@ -183,7 +186,6 @@ exports.view = function(req, res) {
 
   /* Retreive all the directory measurements, sorted alphabetically by listing code */
 exports.list = function(req, res) {
-
   Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
     if(err) {
       res.status(400).send(err);
@@ -224,6 +226,36 @@ exports.getCountyCounts = function(req, res) {
       res.status(400).send(err);
     } else {
       res.json(countyCount);
+    }
+  });
+};
+
+exports.getCountyCountsByYear = function(req, res) {
+  var start = new Date(req.params.year, 1, 1);
+  var end = new Date(req.params.year, 12, 31);
+
+  Measurement.aggregate([
+    {"$match": {created_at: {$gte: start, $lt: end}}},
+    {"$group": {_id:"$county", count:{$sum:1}}}
+  ]).sort({'count': -1}).exec(function(err, countyCount) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.json(countyCount);
+    }
+  });
+};
+
+exports.getActiveYears = function(req, res) {
+  Measurement.aggregate([
+    { "$group":
+      {_id: { "$year": "$created_at"}}
+    }
+  ]).exec(function(err, years) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.json(years);
     }
   });
 };

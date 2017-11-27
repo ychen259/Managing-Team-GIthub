@@ -9,11 +9,24 @@
 
   function DucsListController($scope, $state, DucsService) {
     var vm = this;
+
+    // the column to sort by
+    $scope.sortColumn = 'created_at';
+    // true if the data should be sorted in reverse order
+    $scope.reverseSort = true;
     
     $scope.list = function(){
       DucsService.list()
       .then(function(response) {
         vm.measurements = response.data;
+
+        // round catch can depths to 3 decimal places
+        // might be kind of slow with large datasets
+        for (var i = 0; i < vm.measurements.length; i++) {
+          vm.measurements[i].can_depths = vm.measurements[i].can_depths.map(function(num) {
+            return Number(num.toFixed(3));
+          });
+        }
       }, function(error) {
         //otherwise display the error
         $scope.error = 'Couldn\'t load measurement data!';
@@ -21,21 +34,36 @@
     }
 
     $scope.rm = function(measurement){
+      console.log("removing " + measurement);
       document.getElementById(measurement).remove();
     }
 
     $scope.remove = function(measurement) {
+        if (!confirm("Are you sure you want to delete this measurement?"))
+          return;
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
-                .then(function(response) {
-                  // remove the deleted measurement from the list view
-                  $scope.rm(measurement);
+          .then(function(response) {
+              // remove the deleted measurement from the list view
+              $scope.rm(measurement);
+          }, function(error) {
+              //otherwise display the error
+              $scope.error = 'Unable to delete measurements!';
+          });
+    };
 
-                }, function(error) {
-                    //otherwise display the error
-                    $scope.error = 'Unable to delete measurement!';
-                });
-
+    $scope.deleteAll = function() {
+      if (confirm("Are you sure you want to delete ALL MEASUREMENTS IN THE DATABASE?")) {
+        if (confirm("Are you really sure?")) {
+          DucsService.deleteAllMeasurements()
+          .then(function(response) {
+              console.log("Deleted all measurements");
+          }, function(error) {
+              //otherwise display the error
+              $scope.error = 'Unable to delete measurement!';
+          });
+        }
+      }
     };
 
     $scope.formatDate = function(date) {
@@ -60,6 +88,11 @@
         return "Fail";
     };
 
+    $scope.sortBy = function(colName) {
+      // toggle sorting method if we're already using the same column, otherwise default to descending sort
+      $scope.reverseSort = ($scope.sortColumn === colName) ? !$scope.reverseSort : true;
+      $scope.sortColumn = colName;
+    };
 
     $scope.exportCSV = function(){
       DucsService.listCSV()
