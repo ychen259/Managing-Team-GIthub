@@ -36,7 +36,7 @@
               <td>{{m.results.uniformity_distribution}}</td>
               <td>{{m.results.irrigation_rate}}</td>
               <td ng-if="m.can_depths.length < 10">{{m.can_depths}}</td>
-              <td ng-if="m.can_depths.length >= 10"><button class="btn btn-default" ng-click="showDepths(m.can_depths);">View</button></td>
+              <td ng-if="m.can_depths.length >= 10">{{m.can_depths.slice(0, 4)}}<button class="btn btn-link" ng-click="showDepths(m.can_depths);">View More</button></td>
               <td>{{m.user.email}}</td>
               <td>{{formatDate(m.created_at)}}</td>
               <td>

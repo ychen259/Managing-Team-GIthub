@@ -14,6 +14,13 @@
       DucsService.list()
       .then(function(response) {
         vm.measurements = response.data;
+
+        // round catch can depths to 3 decimal places
+        for (var i = 0; i < vm.measurements.length; i++) {
+          vm.measurements[i].can_depths = vm.measurements[i].can_depths.map(function(num) {
+            return Number(num.toFixed(3));
+          });
+        }
       }, function(error) {
         //otherwise display the error
         $scope.error = 'Couldn\'t load measurement data!';
