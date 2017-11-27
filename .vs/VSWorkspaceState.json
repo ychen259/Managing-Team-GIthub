@@ -9,12 +9,7 @@
     "\\modules\\ducs\\client\\img",
     "\\modules\\users",
     "\\modules\\users\\client",
-    "\\modules\\users\\client\\css",
-    "\\modules\\users\\client\\img",
-    "\\modules\\users\\client\\img\\buttons",
-    "\\modules\\users\\client\\views",
-    "\\modules\\users\\client\\views\\authentication",
-    "\\public"
+    "\\modules\\users\\client\\css"
   ],
   "SelectedNode": "\\config\\lib\\express.js",
   "PreviewInSolutionExplorer": false
