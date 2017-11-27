@@ -42,15 +42,28 @@
           return;
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
-                .then(function(response) {
-                  // remove the deleted measurement from the list view
-                  $scope.rm(measurement);
+          .then(function(response) {
 
-                }, function(error) {
-                    //otherwise display the error
-                    $scope.error = 'Unable to delete measurement!';
-                });
+          }, function(error) {
+              //otherwise display the error
+              $scope.error = 'Unable to delete measurements!';
+          });
+    };
 
+    $scope.deleteAll = function() {
+      if (confirm("Are you sure you want to delete ALL MEASUREMENTS IN THE DATABASE?")) {
+        if (confirm("Are you really sure?")) {
+          DucsService.deleteAllMeasurements()
+          .then(function(response) {
+            // remove the deleted measurement from the list view
+            $scope.rm(measurement);
+
+          }, function(error) {
+              //otherwise display the error
+              $scope.error = 'Unable to delete measurement!';
+          });
+        }
+      }
     };
 
     $scope.formatDate = function(date) {

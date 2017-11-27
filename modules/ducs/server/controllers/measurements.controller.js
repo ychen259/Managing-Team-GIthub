@@ -168,11 +168,14 @@ exports.delete = function(req, res) {
     }
     else {
       console.log("Successfully deleted:\n" + measurement);
-      //res.json(measurement)
       res.end();
     }
   })
+};
 
+// delete all measurements
+exports.deleteAll = function(req, res) {
+  measurement.deleteMany({});
 };
 
 /* view a measurement */
@@ -183,8 +186,7 @@ exports.view = function(req, res) {
 
   /* Retreive all the directory measurements, sorted alphabetically by listing code */
 exports.list = function(req, res) {
-
-  Measurement.find().populate("user", "email").exec(function(err, measurements) {
+  Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
     if(err) {
       res.status(400).send(err);
     } else {
