@@ -18,18 +18,18 @@
     <div class="col-lg-12 list-group">
       <table class="table table-striped">
         <thead>
-          <td>Zip</td>
-          <td>County</td>
-          <td>Result</td>
-          <td>Uniformity Distribution</td>
-          <td>Irrigation Rate</td>
-          <td>Can Depths</td>
-          <td>Email</td>
-          <td>Date</td>
+          <td ng-click="sortBy('zipcode')">Zip</td>
+          <td ng-click="sortBy('county')">County</td>
+          <td ng-click="sortBy('results.uniformity_distribution')">Result</td>
+          <td ng-click="sortBy('results.uniformity_distribution')">Uniformity Distribution</td>
+          <td ng-click="sortBy('results.irrigation_rate')">Irrigation Rate</td>
+          <td ng-click="sortBy('can_depths.length')">Can Depths</td>
+          <td ng-click="sortBy('user.email')">Email</td>
+          <td ng-click="sortBy('created_at')">Date</td>
           <td>Delete</td>
         </thead>
         <tbody id="measurements">
-          <tr ng-repeat="m in vm.measurements | filter: query" id="{{m._id}}">
+          <tr ng-repeat="m in vm.measurements | filter: query | orderBy: sortColumn:reverseSort" id="{{m._id}}">
               <td>{{m.zipcode}}</td>
               <td>{{m.county}}</td>
               <td>{{getResult(m.results.uniformity_distribution)}}</td>

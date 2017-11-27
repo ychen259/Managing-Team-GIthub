@@ -9,6 +9,11 @@
 
   function DucsListController($scope, $state, DucsService) {
     var vm = this;
+
+    // the column to sort by
+    $scope.sortColumn = 'created_at';
+    // true if the data should be sorted in reverse order
+    $scope.reverseSort = true;
     
     $scope.list = function(){
       DucsService.list()
@@ -16,6 +21,7 @@
         vm.measurements = response.data;
 
         // round catch can depths to 3 decimal places
+        // might be kind of slow with large datasets
         for (var i = 0; i < vm.measurements.length; i++) {
           vm.measurements[i].can_depths = vm.measurements[i].can_depths.map(function(num) {
             return Number(num.toFixed(3));
@@ -69,6 +75,11 @@
         return "Fail";
     };
 
+    $scope.sortBy = function(colName) {
+      // toggle sorting method if we're already using the same column, otherwise default to descending sort
+      $scope.reverseSort = ($scope.sortColumn === colName) ? !$scope.reverseSort : true;
+      $scope.sortColumn = colName;
+    };
 
     $scope.exportCSV = function(){
       DucsService.listCSV()

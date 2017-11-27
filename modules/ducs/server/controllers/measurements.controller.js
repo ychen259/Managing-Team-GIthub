@@ -184,7 +184,7 @@ exports.view = function(req, res) {
   /* Retreive all the directory measurements, sorted alphabetically by listing code */
 exports.list = function(req, res) {
 
-  Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
+  Measurement.find().populate("user", "email").exec(function(err, measurements) {
     if(err) {
       res.status(400).send(err);
     } else {
