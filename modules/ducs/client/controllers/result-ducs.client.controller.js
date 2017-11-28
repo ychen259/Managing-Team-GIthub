@@ -47,7 +47,7 @@
                 else if($scope.uniformity_distribution >= 0.4 &&  $scope.uniformity_distribution <= 0.49)
                 	$scope.result = "Poor";
                 else
-                	$scope.result = "Fail";
+                	$scope.result = "Failing";
 
               }, function(error) {
                 $scope.error = 'Unable to retrieve listing with id: ' + id;
