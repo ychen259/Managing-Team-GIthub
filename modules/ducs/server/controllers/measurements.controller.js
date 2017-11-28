@@ -205,7 +205,7 @@ exports.export = function(req, res) {
     } else {
       var measurementString = "Date,County,Email,Zipcode,Time,Irrigation Rate,Uniformity Distribution \n";
       measurements.forEach(function(measurement) {
-        measurementString += measurement.created_at +
+        measurementString += formatDate(measurement.created_at) +
         "," + measurement.county +
         "," + measurement.user.email +
         "," + measurement.zipcode +
@@ -218,6 +218,10 @@ exports.export = function(req, res) {
       console.log("success");
       }
   });
+}
+function formatDate(date) {
+  var dbDate = new Date(date);
+  return dbDate.toLocaleDateString();
 }
 
 exports.getCountyCounts = function(req, res) {
