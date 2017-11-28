@@ -57,10 +57,10 @@
         if (confirm("Are you really sure?")) {
           DucsService.deleteAllMeasurements()
           .then(function(response) {
-              console.log("Deleted all measurements");
+              $state.go('ducs.admin-list', {}, {reload: true});
           }, function(error) {
               //otherwise display the error
-              $scope.error = 'Unable to delete measurement!';
+              $scope.error = 'Unable to delete measurements!';
           });
         }
       }

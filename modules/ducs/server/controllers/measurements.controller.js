@@ -175,7 +175,14 @@ exports.delete = function(req, res) {
 
 // delete all measurements
 exports.deleteAll = function(req, res) {
-  measurement.deleteMany({});
+  Measurement.deleteMany({}, function(err){
+     if(err) {
+      res.status(400).send(err);
+    }
+    else {
+      res.end();
+    }   
+  });
 };
 
 /* view a measurement */
