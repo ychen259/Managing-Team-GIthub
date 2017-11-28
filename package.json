@@ -12,7 +12,7 @@
   },
   "engines": {
     "node": "8.2.0",
-    "npm": "3.10.8"
+    "npm": "5.5.1"
   },
   "scripts": {
     "update": "npm update && npm prune && npm run bower",
