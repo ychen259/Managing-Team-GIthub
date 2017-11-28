@@ -294,12 +294,12 @@ exports.email = function (req, res){
   /*metric = false -- imperial (inch)*/
   if(metric == true){
     /*Do not need to convert, because unit in database is cm*/
-    unit = "cm/hrs";
+    unit = "cm/hr";
   }
   else{
     /*convert cm to inch*/
     irrigation_rate = (irrigation_rate/2.54).toFixed(2);
-    unit = "inch/hrs";
+    unit = "in/hr";
   }
 
   if(measurement.notes){
