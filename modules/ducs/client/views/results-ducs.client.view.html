@@ -7,6 +7,10 @@
   <div class="list-group list-group-item">
 
       <!--Classifying the results-->
+        <table class="image">
+          <tr><td><img id="rec" src="/modules/ducs/client/img/Result-Table.png" height="150"/></td></tr>
+          <tr><td class="caption"><h6>Time required to apply water for a given irrigation rate</h6></td></tr>
+        </table>
       <h3>
       Your System is: <b> {{result}} </b>
 
@@ -14,11 +18,25 @@
       Your Distribution Uniformity is: <b> {{uniformity_distribution}} </b>
       <br />
 
-      Your Average Irrigation Depth is: <b> {{irrigation_rate}}&nbsp{{unit}} </b>
+      Your Average Irrigation Rate is: <b> {{irrigation_rate}}{{unit}} </b>
+
       <br />
+
+      <br>
       </h3>
+      <h5><a href="http://manatee.ifas.ufl.edu/lawn_and_garden/master-gardener/gardening-manatee-style/c/calibrating-your-sprinkler-system.pdf">How to Calibrate Your Sprinkler System</a></h5>
+
+      <!-- <br/>
+
+      <br> -->
+
+      <a href="https://floridawaterstar.com/technicalmanual/irrigation/uniformity.html">Irrigation System Criteria</a>
+
+      <br />
+
   </div>
   <br>
+
   <!--Add Button For Emailing Results -->
     <!--Replace the real email button with fake email button after you click the real email button-->
     <center><button type="button" class="btn btn-success" ng-hide ="isClick" ng-click="sendEmail()">Email to myself</button></center>
