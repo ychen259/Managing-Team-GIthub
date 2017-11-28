@@ -25,12 +25,12 @@
                 /*metric = false -- imperial (inch)*/
                 if(metric == true){
                   /*Do not need to convert, because unit in database is cm*/
-                  $scope.unit = "cm/hrs";
+                  $scope.unit = "cm/hr";
                 }
                 else{
                   /*convert cm to inch*/
                   $scope.irrigation_rate = ($scope.irrigation_rate/2.54).toFixed(2);
-                  $scope.unit = "inch/hrs";
+                  $scope.unit = "in/hr";
                 }
 
                 /*Using uniformity distribution to evaluate the condition of system*/
@@ -49,10 +49,10 @@
                 else
                 	$scope.result = "Fail";
 
-              }, function(error) {  
+              }, function(error) {
                 $scope.error = 'Unable to retrieve listing with id: ' + id;
               });
-    };  
+    };
 
     $scope.sendEmail = function(){
        $scope.isClick = true; // click the email button
