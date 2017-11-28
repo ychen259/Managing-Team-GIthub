@@ -91,11 +91,12 @@ describe('Duc Model Unit Tests:', function() {
       });
     });
 
-    it('should be able to show an error when without zipcode', function(done) {
+    it('should be able to save without zipcode', function(done) {
       measurements.zipcode= '';
 
        measurements.save(function(err) {
-        should.exist(err);
+        should.not.exist(err);
+        id = measurements._id;
         done();
       });
     });

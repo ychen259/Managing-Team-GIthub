@@ -28,10 +28,10 @@ exports.create = function(req, res) {
 
   measurement.save(function(err) {
     if(err) {
-      console.log(err);
+     // console.log(err);
       res.status(400).send(err);
     } else {
-      console.log("Successfully created:\n" + measurement);
+      //console.log("Successfully created:\n" + measurement);
       res.json(measurement);
     }
   });
@@ -167,7 +167,7 @@ exports.delete = function(req, res) {
       res.status(400).send(err);
     }
     else {
-      console.log("Successfully deleted:\n" + measurement);
+      //console.log("Successfully deleted:\n" + measurement);
       res.end();
     }
   })
@@ -175,7 +175,14 @@ exports.delete = function(req, res) {
 
 // delete all measurements
 exports.deleteAll = function(req, res) {
-  measurement.deleteMany({});
+  Measurement.deleteMany({}, function(err){
+     if(err) {
+      res.status(400).send(err);
+    }
+    else {
+      res.end();
+    }   
+  });
 };
 
 /* view a measurement */
@@ -197,7 +204,7 @@ exports.list = function(req, res) {
 };
 
 exports.export = function(req, res) {
-  console.log("hello");
+  //console.log("hello");
   Measurement.find().populate("user", "email").sort({'created_at': -1}).exec(function(err, measurements) {
     if(err) {
       res.status(400).send(err);
@@ -215,7 +222,7 @@ exports.export = function(req, res) {
       });
       res.send(measurementString);
       //res.json(measurements);
-      console.log("success");
+      //console.log("success");
       }
   });
 }
@@ -334,7 +341,7 @@ exports.email = function (req, res){
           res.status(400).send({ message: 'Failure sending email'});
         }
 
-        done(err);
+       // done(err);
   });
 };
 
@@ -344,7 +351,7 @@ exports.measurementByID = function(req, res, next, id) {
     if(err) {
       res.status(400).send(err);
     } else {
-      console.log("Successfully read:\n" + measurement);
+      //console.log("Successfully read:\n" + measurement);
       req.measurement = measurement;
       next();
     }

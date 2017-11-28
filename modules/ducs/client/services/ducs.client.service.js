@@ -27,6 +27,10 @@
         return $http.delete('/api/measurements/' + measurement);
       },
 
+      deleteAllMeasurements: function() {
+         return $http.delete('/api/measurements');
+       },
+
       email: function(id, data) {
         return $http.post('/api/email-result/' + id, data);
       },

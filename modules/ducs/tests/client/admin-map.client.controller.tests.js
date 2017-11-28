@@ -61,13 +61,13 @@
 
       }));
 
-      describe('count() success', function () {
+      describe('count() success for All years', function () {
         beforeEach(function () {
 
           data = [{_id: 1, count: 1},{_id: 2, count: 2}];
 
           $httpBackend.expectGET('/api/measurements/count').respond(200, data);
-          scope.count();
+          scope.count("All");
           $httpBackend.flush();
         });
 
@@ -79,11 +79,11 @@
         });
       });
 
-      describe('count() error', function () {
+      describe('count() error for All years', function () {
         beforeEach(function () {
 
           $httpBackend.expectGET('/api/measurements/count').respond(404, 'error message');
-          scope.count();
+          scope.count("All");
           $httpBackend.flush();
         });
 
@@ -91,6 +91,70 @@
           expect(scope.error).toEqual('Couldn\'t load measurement data!');
         });
       });     
+
+      describe('count() success for a specfic year', function () {
+        beforeEach(function () {
+
+          data = [{_id: 1, count: 1},{_id: 2, count: 2}];
+
+          $httpBackend.expectGET('/api/measurements/count/2007').respond(200, data);
+          scope.count(2007);
+          $httpBackend.flush();
+        });
+
+        it('expect vm.countyCounts equals to data', function () {
+          expect(scope.vm.countyCounts).toEqual(data);
+        });
+        it('expect $scope.total particular value', function () {
+          expect(scope.total).toBe(3);
+        });
+      });
+
+      describe('count() error for a specfic year', function () {
+        beforeEach(function () {
+
+          $httpBackend.expectGET('/api/measurements/count/2007').respond(404, 'error message');
+          scope.count(2007);
+          $httpBackend.flush();
+        });
+
+        it('expect $scope.error is defined', function () {
+          expect(scope.error).toEqual('Couldn\'t load measurement data!');
+        });
+      });     
+
+      describe('init() function success', function () {
+        beforeEach(function () {
+          data = [{_id: 2006}, {_id: 2007}];
+
+          spyOn(scope, 'count');
+          $httpBackend.expectGET('/api/measurements/activeYears').respond(200, data);
+          scope.init();
+          $httpBackend.flush();
+        });
+
+        it('expect $scope.vm.years is [2006, 2007, "All"]', function () {
+          expect(scope.vm.years).toEqual([2006, 2007, 'All']);
+        });
+        it('expect $scope.year is ALL', function () {
+          expect(scope.year).toEqual('All');
+        });
+        it('expect $scope.count is called', function () {
+          expect(scope.count).toHaveBeenCalled();
+        });
+      });   
+
+      describe('init() function error', function () {
+        beforeEach(function () {
+          $httpBackend.expectGET('/api/measurements/activeYears').respond(404, 'error message');
+          scope.init();
+          $httpBackend.flush();
+        });
+
+        it('expect $scope.error is defined', function () {
+          expect(scope.error).toEqual('Couldn\'t load measurement year data!');
+        });
+      });  
 
     });
   });
