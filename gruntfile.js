@@ -36,41 +36,59 @@ module.exports = function (grunt) {
         files: _.union(defaultAssets.server.gruntConfig, defaultAssets.server.allJS),
         tasks: ['jshint'],
         options: {
-          livereload: true
+          livereload:{        
+            key: grunt.file.read('/livereload.key'),
+            cert: grunt.file.read('/livereload.crt')
+          }
         }
       },
       clientViews: {
         files: defaultAssets.client.views,
         options: {
-          livereload: true
+                    livereload:{        
+            key: grunt.file.read('/livereload.key'),
+            cert: grunt.file.read('/livereload.crt')
+          }
         }
       },
       clientJS: {
         files: defaultAssets.client.js,
         tasks: ['jshint'],
         options: {
-          livereload: true
+                    livereload:{        
+            key: grunt.file.read('/livereload.key'),
+            cert: grunt.file.read('/livereload.crt')
+          }
         }
       },
       clientCSS: {
         files: defaultAssets.client.css,
         tasks: ['csslint'],
         options: {
-          livereload: true
+                    livereload:{        
+            key: grunt.file.read('/livereload.key'),
+            cert: grunt.file.read('/livereload.crt')
+          }
         }
       },
       clientSCSS: {
         files: defaultAssets.client.sass,
         tasks: ['sass', 'csslint'],
         options: {
-          livereload: true
+                    livereload:{        
+            key: grunt.file.read('/livereload.key'),
+            cert: grunt.file.read('/livereload.crt')
+          }
         }
       },
       clientLESS: {
         files: defaultAssets.client.less,
         tasks: ['less', 'csslint'],
         options: {
-          livereload: true
+                   livereload:{        
+            key: grunt.file.read('/livereload.key'),
+            cert: grunt.file.read('/livereload.crt')
+          }
         }
       }
     },
