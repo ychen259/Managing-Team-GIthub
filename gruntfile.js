@@ -37,8 +37,9 @@ module.exports = function (grunt) {
         tasks: ['jshint'],
         options: {
           livereload:{        
-            key: grunt.file.read('/livereload.key'),
-            cert: grunt.file.read('/livereload.crt')
+                    port: 9000,
+            key: grunt.file.read('./livereload.key'),
+            cert: grunt.file.read('./livereload.crt')
           }
         }
       },
@@ -46,8 +47,9 @@ module.exports = function (grunt) {
         files: defaultAssets.client.views,
         options: {
                     livereload:{        
-            key: grunt.file.read('/livereload.key'),
-            cert: grunt.file.read('/livereload.crt')
+                              port: 9000,
+            key: grunt.file.read('./livereload.key'),
+            cert: grunt.file.read('./livereload.crt')
           }
         }
       },
@@ -56,8 +58,9 @@ module.exports = function (grunt) {
         tasks: ['jshint'],
         options: {
                     livereload:{        
-            key: grunt.file.read('/livereload.key'),
-            cert: grunt.file.read('/livereload.crt')
+                              port: 9000,
+            key: grunt.file.read('./livereload.key'),
+            cert: grunt.file.read('./livereload.crt')
           }
         }
       },
@@ -65,9 +68,10 @@ module.exports = function (grunt) {
         files: defaultAssets.client.css,
         tasks: ['csslint'],
         options: {
-                    livereload:{        
-            key: grunt.file.read('/livereload.key'),
-            cert: grunt.file.read('/livereload.crt')
+                    livereload:{    
+                            port: 9000,    
+            key: grunt.file.read('./livereload.key'),
+            cert: grunt.file.read('./livereload.crt')
           }
         }
       },
@@ -75,9 +79,10 @@ module.exports = function (grunt) {
         files: defaultAssets.client.sass,
         tasks: ['sass', 'csslint'],
         options: {
-                    livereload:{        
-            key: grunt.file.read('/livereload.key'),
-            cert: grunt.file.read('/livereload.crt')
+                    livereload:{      
+                            port: 9000,  
+            key: grunt.file.read('./livereload.key'),
+            cert: grunt.file.read('./livereload.crt')
           }
         }
       },
@@ -85,9 +90,10 @@ module.exports = function (grunt) {
         files: defaultAssets.client.less,
         tasks: ['less', 'csslint'],
         options: {
-                   livereload:{        
-            key: grunt.file.read('/livereload.key'),
-            cert: grunt.file.read('/livereload.crt')
+                   livereload:{       
+                           port: 9000, 
+            key: grunt.file.read('./livereload.key'),
+            cert: grunt.file.read('./livereload.crt')
           }
         }
       }
