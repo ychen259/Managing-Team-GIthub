@@ -72,7 +72,7 @@ module.exports = {
       from: process.env.MAILER_FROM || 'MAILER_FROM' || 'ducalwaystrue@gmail.com',
     options: {
       service: 'Gmail',
-      secure: false,
+      secure: true,
       port:25,
       auth: {
         user: 'ducalwaystrue@gmail.com',
