@@ -36,7 +36,7 @@ describe('Duc E2E Tests:', function () {
       signout();
     });
 
-    it('Should report missing zipcode', function () {
+    it('Should report missing zipcode and county', function () {
       browser.get('http://localhost:3001/ducs/create');
 
       //element(by.model('zipcode')).sendKeys('94523');
@@ -47,7 +47,8 @@ describe('Duc E2E Tests:', function () {
       // Click continue button
       element(by.buttonText("Continue")).click();
 
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Zipcode is required.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('County or Zipcode is required');
+      expect(element.all(by.css('.error-text')).get(1).getText()).toBe('County or Zipcode is required');
     });
 
     it('Should report invalide zipcode', function () {
@@ -62,6 +63,7 @@ describe('Duc E2E Tests:', function () {
       element(by.buttonText("Continue")).click();
 
       expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Please provide valid zipcode');
+      expect(element.all(by.css('.error-text')).get(1).getText()).toBe('County or Zipcode is required');
     });
 
     it('Should report missing number of Cans', function () {
