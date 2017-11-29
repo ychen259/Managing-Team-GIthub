@@ -246,7 +246,7 @@ describe('User CRUD tests', function () {
   });
 
   it('should be able to update a single user details if admin', function (done) {
-    user.roles = ['user', 'admin'];
+    user.roles = ['admin'];
 
     user.save(function (err) {
       should.not.exist(err);

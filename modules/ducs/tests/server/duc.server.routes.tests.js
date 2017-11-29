@@ -5,7 +5,8 @@ var should = require('should'),
   path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Duc = mongoose.model('Duc'),
+  //Duc = mongoose.model('Duc'),
+  Measurements = require("../../server/models/measurements.server.model.js"),
   express = require(path.resolve('./config/lib/express'));
 
 /**
@@ -15,7 +16,8 @@ var app,
   agent,
   credentials,
   user,
-  duc;
+  measurements,
+  can_depth_array;
 
 /**
  * Duc routes tests
@@ -24,7 +26,7 @@ describe('Duc CRUD tests', function () {
 
   before(function (done) {
     // Get application
-    app = express.init(mongoose);
+    app = express.init(mongoose.connection.db);
     agent = request.agent(app);
 
     done();
@@ -33,7 +35,7 @@ describe('Duc CRUD tests', function () {
   beforeEach(function (done) {
     // Create user credentials
     credentials = {
-      username: 'username',
+      usernameOrEmail: 'username',
       password: 'M3@n.jsI$Aw3$0m3'
     };
 
@@ -43,22 +45,26 @@ describe('Duc CRUD tests', function () {
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: credentials.username,
+      username: credentials.usernameOrEmail,
       password: credentials.password,
       provider: 'local'
     });
 
-    // Save a user to the test db and create new Duc
+    done();
+  });
+
+  it('should be able to save a Duc if logged in as user', function (done) {
+        // Save a user to the test db and create new Duc
     user.save(function () {
-      duc = {
-        name: 'Duc name'
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = {
+        "can_depths": can_depth_array,
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes'
       };
-
-      done();
     });
-  });
 
-  it('should be able to save a Duc if logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -72,50 +78,108 @@ describe('Duc CRUD tests', function () {
         var userId = user.id;
 
         // Save a new Duc
-        agent.post('/api/ducs')
-          .send(duc)
+        agent.post('/api/measurements')
+          .send(measurements)
           .expect(200)
-          .end(function (ducSaveErr, ducSaveRes) {
-            // Handle Duc save error
-            if (ducSaveErr) {
-              return done(ducSaveErr);
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res.body._id);
+
+            res.body.user._id.should.equal(userId);
+
+            for(var i = 0; i < can_depth_array.length; i++){
+                res.body.can_depths[i].should.equal(can_depth_array[i]);
             }
 
-            // Get a list of Ducs
-            agent.get('/api/ducs')
-              .end(function (ducsGetErr, ducsGetRes) {
-                // Handle Ducs save error
-                if (ducsGetErr) {
-                  return done(ducsGetErr);
-                }
-
-                // Get Ducs list
-                var ducs = ducsGetRes.body;
-
-                // Set assertions
-                (ducs[0].user._id).should.equal(userId);
-                (ducs[0].name).should.match('Duc name');
-
-                // Call the assertion callback
-                done();
-              });
+            res.body.results.uniformity_distribution.should.equal(0.33);
+            res.body.results.irrigation_rate.should.equal(1.5);
+            res.body.zipcode.should.equal(94523);
+            res.body.time.should.equal(2);
+            res.body.notes.should.equal('some notes');
+            res.body.county.should.equal('Contra Costa County');
+            done();
           });
       });
   });
 
-  it('should not be able to save an Duc if not logged in', function (done) {
-    agent.post('/api/ducs')
-      .send(duc)
+  it('should be able to save a Duc if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function () {
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = {
+        "can_depths": can_depth_array,
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes'
+      };
+    });
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.post('/api/measurements')
+          .send(measurements)
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res.body._id);
+
+            res.body.user._id.should.equal(userId);
+
+            for(var i = 0; i < can_depth_array.length; i++){
+                res.body.can_depths[i].should.equal(can_depth_array[i]);
+            }
+
+            res.body.results.uniformity_distribution.should.equal(0.33);
+            res.body.results.irrigation_rate.should.equal(1.5);
+            res.body.zipcode.should.equal(94523);
+            res.body.time.should.equal(2);
+            res.body.notes.should.equal('some notes');
+            res.body.county.should.equal('Contra Costa County');
+            done();
+          });
+      });
+  });
+
+  it('should show error to save a Duc if not logged in', function (done) {
+    user.save(function () {
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = {
+        "can_depths": can_depth_array,
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes'
+      };
+    });
+
+    // Save a new Duc
+    agent.post('/api/measurements')
+      .send(measurements)
       .expect(403)
-      .end(function (ducSaveErr, ducSaveRes) {
-        // Call the assertion callback
-        done(ducSaveErr);
+      .end(function (err, res) {
+          done(err);
       });
+
   });
 
-  it('should not be able to save an Duc if no name is provided', function (done) {
-    // Invalidate name field
-    duc.name = '';
+
+  it('should be able to get list of measurements if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){});
 
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -130,20 +194,65 @@ describe('Duc CRUD tests', function () {
         var userId = user.id;
 
         // Save a new Duc
-        agent.post('/api/ducs')
-          .send(duc)
-          .expect(400)
-          .end(function (ducSaveErr, ducSaveRes) {
-            // Set message assertion
-            (ducSaveRes.body.message).should.match('Please fill Duc name');
+        agent.get('/api/measurements')
+          .expect(200)
+          .end(function (err, res) {
 
-            // Handle Duc save error
-            done(ducSaveErr);
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
           });
       });
   });
 
-  it('should be able to update an Duc if signed in', function (done) {
+
+  it('should show an error to get list of measurements if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements')
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to get list of measurements if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements')
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
+  it('should be able to export data to Excel if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = {
+        "can_depths": can_depth_array,
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes'
+      };
+    });
+
+    
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -157,100 +266,186 @@ describe('Duc CRUD tests', function () {
         var userId = user.id;
 
         // Save a new Duc
-        agent.post('/api/ducs')
-          .send(duc)
+        agent.get('/api/measurements/export')
           .expect(200)
-          .end(function (ducSaveErr, ducSaveRes) {
-            // Handle Duc save error
-            if (ducSaveErr) {
-              return done(ducSaveErr);
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
+          });
+      });
+  });
+
+  it('should show an error to export data to Excel if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements/export')
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to export data to Excel if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements/export')
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
+  it('should be able to get number of County if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.get('/api/measurements/count')
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
+          });
+      });
+  });
+
+  it('should show an error to get number of County if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements/count')
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to get number of County if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements/count')
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
+  it('should be able to get a single measurement if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    //save user to database
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
+    });
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var measurementID = measurements.id;
+
+        // Save a new Duc
+        agent.get('/api/measurements/' + measurementID)
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res.body._id);
+
+            for(var i = 0; i < can_depth_array.length; i++){
+                res.body.can_depths[i].should.equal(can_depth_array[i]);
             }
 
-            // Update Duc name
-            duc.name = 'WHY YOU GOTTA BE SO MEAN?';
-
-            // Update an existing Duc
-            agent.put('/api/ducs/' + ducSaveRes.body._id)
-              .send(duc)
-              .expect(200)
-              .end(function (ducUpdateErr, ducUpdateRes) {
-                // Handle Duc update error
-                if (ducUpdateErr) {
-                  return done(ducUpdateErr);
-                }
-
-                // Set assertions
-                (ducUpdateRes.body._id).should.equal(ducSaveRes.body._id);
-                (ducUpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
-
-                // Call the assertion callback
-                done();
-              });
+            res.body.results.uniformity_distribution.should.equal(0.33);
+            res.body.results.irrigation_rate.should.equal(1.5);
+            res.body.zipcode.should.equal(94523);
+            res.body.time.should.equal(2);
+            res.body.notes.should.equal('some notes');
+            res.body.county.should.equal('Contra Costa County');
+            done();
           });
       });
   });
 
-  it('should be able to get a list of Ducs if not signed in', function (done) {
-    // Create new Duc model instance
-    var ducObj = new Duc(duc);
+  it('should be able to get a single measurement if logged in as user', function (done) {
 
-    // Save the duc
-    ducObj.save(function () {
-      // Request Ducs
-      request(app).get('/api/ducs')
-        .end(function (req, res) {
-          // Set assertion
-          res.body.should.be.instanceof(Array).and.have.lengthOf(1);
-
-          // Call the assertion callback
-          done();
-        });
-
-    });
-  });
-
-  it('should be able to get a single Duc if not signed in', function (done) {
-    // Create new Duc model instance
-    var ducObj = new Duc(duc);
-
-    // Save the Duc
-    ducObj.save(function () {
-      request(app).get('/api/ducs/' + ducObj._id)
-        .end(function (req, res) {
-          // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('name', duc.name);
-
-          // Call the assertion callback
-          done();
-        });
-    });
-  });
-
-  it('should return proper error for single Duc with an invalid Id, if not signed in', function (done) {
-    // test is not a valid mongoose Id
-    request(app).get('/api/ducs/test')
-      .end(function (req, res) {
-        // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'Duc is invalid');
-
-        // Call the assertion callback
-        done();
+    //save user to database
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
       });
-  });
 
-  it('should return proper error for single Duc which doesnt exist, if not signed in', function (done) {
-    // This is a valid mongoose Id but a non-existent Duc
-    request(app).get('/api/ducs/559e9cd815f80b4c256a8f41')
-      .end(function (req, res) {
-        // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'No Duc with that identifier has been found');
+      //save measurement to database
+      measurements.save(function(){});
+    });
 
-        // Call the assertion callback
-        done();
-      });
-  });
-
-  it('should be able to delete an Duc if signed in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -261,151 +456,300 @@ describe('Duc CRUD tests', function () {
         }
 
         // Get the userId
-        var userId = user.id;
+        var measurementID = measurements.id;
 
         // Save a new Duc
-        agent.post('/api/ducs')
-          .send(duc)
+        agent.get('/api/measurements/' + measurementID)
           .expect(200)
-          .end(function (ducSaveErr, ducSaveRes) {
-            // Handle Duc save error
-            if (ducSaveErr) {
-              return done(ducSaveErr);
+          .end(function (err, res) {
+            should.not.exist(err);
+            should.exist(res.body._id);
+
+            for(var i = 0; i < can_depth_array.length; i++){
+                res.body.can_depths[i].should.equal(can_depth_array[i]);
             }
 
-            // Delete an existing Duc
-            agent.delete('/api/ducs/' + ducSaveRes.body._id)
-              .send(duc)
-              .expect(200)
-              .end(function (ducDeleteErr, ducDeleteRes) {
-                // Handle duc error error
-                if (ducDeleteErr) {
-                  return done(ducDeleteErr);
-                }
+            res.body.results.uniformity_distribution.should.equal(0.33);
+            res.body.results.irrigation_rate.should.equal(1.5);
+            res.body.zipcode.should.equal(94523);
+            res.body.time.should.equal(2);
+            res.body.notes.should.equal('some notes');
+            res.body.county.should.equal('Contra Costa County');
 
-                // Set assertions
-                (ducDeleteRes.body._id).should.equal(ducSaveRes.body._id);
-
-                // Call the assertion callback
-                done();
-              });
+            done();
           });
       });
   });
 
-  it('should not be able to delete an Duc if not signed in', function (done) {
-    // Set Duc user
-    duc.user = user;
+  it('should show error to get a single measurement if not logged', function (done) {
 
-    // Create new Duc model instance
-    var ducObj = new Duc(duc);
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
 
-    // Save the Duc
-    ducObj.save(function () {
-      // Try deleting Duc
-      request(app).delete('/api/ducs/' + ducObj._id)
+      //save measurement to database
+      measurements.save(function(){});
+
+      // Get the userId
+      var measurementID = measurements.id;
+
+      // Save a new Duc
+      agent.get('/api/measurements/' + measurementID)
         .expect(403)
-        .end(function (ducDeleteErr, ducDeleteRes) {
-          // Set message assertion
-          (ducDeleteRes.body.message).should.match('User is not authorized');
+        .end(function (err, res) {
 
-          // Handle Duc error error
-          done(ducDeleteErr);
-        });
-
-    });
+          done(err);
+      });
   });
 
-  it('should be able to get a single Duc that has an orphaned user reference', function (done) {
-    // Create orphan user creds
-    var _creds = {
-      username: 'orphan',
-      password: 'M3@n.jsI$Aw3$0m3'
-    };
+  it('should be able to delete a measurement if logged in as admin', function (done) {
+    user.roles = ['admin'];
 
-    // Create orphan user
-    var _orphan = new User({
-      firstName: 'Full',
-      lastName: 'Name',
-      displayName: 'Full Name',
-      email: 'orphan@test.com',
-      username: _creds.username,
-      password: _creds.password,
-      provider: 'local'
+    //save user to database
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
     });
 
-    _orphan.save(function (err, orphan) {
-      // Handle save error
-      if (err) {
-        return done(err);
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var measurementID = measurements.id;
+
+        // Save a new Duc
+        agent.delete('/api/measurements/' + measurementID)
+          .expect(200)
+          .end(function (err, res) {
+            should.not.exist(err);
+            done();
+          });
+      });
+  });
+
+  it('should show an error to delete a measurement if logged in as user', function (done) {
+
+    //save user to database
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
+    });
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var measurementID = measurements.id;
+
+        // Save a new Duc
+        agent.delete('/api/measurements/' + measurementID)
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show error to get a single measurement if not logged', function (done) {
+
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
+
+      // Get the userId
+      var measurementID = measurements.id;
+
+      // Save a new Duc
+      agent.delete('/api/measurements/' + measurementID)
+        .expect(403)
+        .end(function (err, res) {
+
+          done(err);
+      });
+  });
+
+  it('should be able to exmail result if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    //save user to database
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
+    });
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var measurementID = measurements.id;
+
+        var data = {
+          condition : 'Good',
+          metric : true
+        }
+        // Save a new Duc
+        agent.post('/api/email-result/' + measurementID)
+          .send(data)
+          .expect(400)
+          .end(function (err, res) {
+            res.body.message.should.be.equal('Failure sending email_context');
+            done();
+          });
+      });
+  });
+
+  it('should be able to exmail result if logged in as user', function (done) {
+
+    //save user to database
+    user.save(function (){
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
+    });
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var measurementID = measurements.id;
+
+        var data = {
+          condition : 'Good',
+          metric : true
+        }
+        // Save a new Duc
+        agent.post('/api/email-result/' + measurementID)
+          .send(data)
+          .expect(400)
+          .end(function (err, res) {
+            res.body.message.should.be.equal('Failure sending email_context');
+            done();
+          });
+      });
+  });
+
+  it('should be able to exmail result if not logged in', function (done) {
+
+      can_depth_array = [1, 2, 3, 4, 5];
+      measurements = new Measurements({
+        "user": user,
+        "can_depths": can_depth_array,
+        "results": {uniformity_distribution: 0.33, irrigation_rate: 1.5},
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes',
+        "county": 'Contra Costa County'
+      });
+
+      //save measurement to database
+      measurements.save(function(){});
+
+   
+
+      // Get the userId
+      var measurementID = measurements.id;
+
+      var data = {
+        condition : 'Good',
+        metric : true
       }
-
-      agent.post('/api/auth/signin')
-        .send(_creds)
-        .expect(200)
-        .end(function (signinErr, signinRes) {
-          // Handle signin error
-          if (signinErr) {
-            return done(signinErr);
-          }
-
-          // Get the userId
-          var orphanId = orphan._id;
-
-          // Save a new Duc
-          agent.post('/api/ducs')
-            .send(duc)
-            .expect(200)
-            .end(function (ducSaveErr, ducSaveRes) {
-              // Handle Duc save error
-              if (ducSaveErr) {
-                return done(ducSaveErr);
-              }
-
-              // Set assertions on new Duc
-              (ducSaveRes.body.name).should.equal(duc.name);
-              should.exist(ducSaveRes.body.user);
-              should.equal(ducSaveRes.body.user._id, orphanId);
-
-              // force the Duc to have an orphaned user reference
-              orphan.remove(function () {
-                // now signin with valid user
-                agent.post('/api/auth/signin')
-                  .send(credentials)
-                  .expect(200)
-                  .end(function (err, res) {
-                    // Handle signin error
-                    if (err) {
-                      return done(err);
-                    }
-
-                    // Get the Duc
-                    agent.get('/api/ducs/' + ducSaveRes.body._id)
-                      .expect(200)
-                      .end(function (ducInfoErr, ducInfoRes) {
-                        // Handle Duc error
-                        if (ducInfoErr) {
-                          return done(ducInfoErr);
-                        }
-
-                        // Set assertions
-                        (ducInfoRes.body._id).should.equal(ducSaveRes.body._id);
-                        (ducInfoRes.body.name).should.equal(duc.name);
-                        should.equal(ducInfoRes.body.user, undefined);
-
-                        // Call the assertion callback
-                        done();
-                      });
-                  });
-              });
-            });
+      // Save a new Duc
+      agent.post('/api/email-result/' + measurementID)
+        .send(data)
+        .expect(403)
+        .end(function (err, res) {
+          done(err);
         });
-    });
   });
+
 
   afterEach(function (done) {
     User.remove().exec(function () {
-      Duc.remove().exec(done);
+      Measurements.remove().exec(done);
     });
   });
 });

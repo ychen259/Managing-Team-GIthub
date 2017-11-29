@@ -5,10 +5,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var measurementSchema = new Schema({
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User',
-  },
   //depth of cans in mm
   can_depths: {
     type: [Number],
@@ -22,6 +18,9 @@ var measurementSchema = new Schema({
     type: Number,
     required: true
   },
+  notes: {
+    type: String,
+  },
   county: {
     type: String,
     required: true
@@ -32,8 +31,11 @@ var measurementSchema = new Schema({
     required: true
   },  
   created_at: Date,
-  updated_at: Date
-
+  updated_at: Date,
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User',
+  }
 });
 
 
@@ -48,6 +50,4 @@ measurementSchema.pre('save', function(next) {
 });
 
 
-var Measurement = mongoose.model('Measurement', measurementSchema);
-
-module.exports = Measurement;
+module.exports = mongoose.model('Measurement', measurementSchema);
