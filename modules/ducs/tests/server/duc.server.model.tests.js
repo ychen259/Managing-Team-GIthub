@@ -6,9 +6,9 @@
 var should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Duc = mongoose.model('Duc'),
-  //Measurements = mongoose.model('Measurements');
-  Measurements = require("../../server/models/measurements.server.model.js");
+  //Duc = mongoose.model('Duc'),
+ // Measurements = require("../../server/models/measurements.server.model.js");
+  Measurements = mongoose.model('Measurement');
 /**
  * Globals
  */
@@ -91,11 +91,12 @@ describe('Duc Model Unit Tests:', function() {
       });
     });
 
-    it('should be able to show an error when without zipcode', function(done) {
+    it('should be able to save without zipcode', function(done) {
       measurements.zipcode= '';
 
        measurements.save(function(err) {
-        should.exist(err);
+        should.not.exist(err);
+        id = measurements._id;
         done();
       });
     });

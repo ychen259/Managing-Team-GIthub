@@ -23,6 +23,12 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/measurements/count',
       permissions: '*'
+    },{
+      resources: '/api/measurements/count/:year',
+      permissions: '*'
+    }, {
+      resources: '/api/measurements/activeYears',
+      permissions: '*'
     }, {
       resources: '/api/measurements/:measureId',
       permissions: '*'

@@ -1,13 +1,15 @@
 <section>
-    <div class="page-header">
+    <div class="page-header" ng-init="init()">
       <h1>DUC Stats</h1>
     </div>
+    <select ng-model="year" ng-change="count(year)" ng-options="year for year in vm.years"></select>
+
     <table class="table table-striped">
         <thead>
             <td>County</td>
             <td>Number of Measurements</td>
         </thead>
-        <tbody>
+        <tbody id="countData">
             <tr ng-repeat="m in vm.countyCounts">
               <td>{{m._id}}</td>
               <td>{{m.count}}</td>

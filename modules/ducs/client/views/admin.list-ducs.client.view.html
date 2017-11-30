@@ -3,7 +3,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
 
-    <div class="page-header">
+    <div class="page-header" ng-init="list()">
       <h1>View DUCs</h1>
     </div>
     <div class="input-group" id="searchBar">
@@ -11,32 +11,32 @@
         <input type="text" class="form-control" placeholder="Filter" ng-model="query">
     </div>
     <div>
-      <button type="button" ng-click="exportCSV()">Export</button>
+      <button type="button" class="btn btn-primary" ng-click="exportCSV()">Export</button>
     </div>
     
     </br>
     <div class="col-lg-12 list-group">
       <table class="table table-striped">
         <thead>
-          <td>Zip</td>
-          <td>County</td>
-          <td>Result</td>
-          <td>Uniformity Distribution</td>
-          <td>Irrigation Rate</td>
-          <td>Can Depths</td>
-          <td>Email</td>
-          <td>Date</td>
+          <td ng-click="sortBy('zipcode')">Zip</td>
+          <td ng-click="sortBy('county')">County</td>
+          <td ng-click="sortBy('results.uniformity_distribution')">Result</td>
+          <td ng-click="sortBy('results.uniformity_distribution')">Uniformity Distribution</td>
+          <td ng-click="sortBy('results.irrigation_rate')">Irrigation Rate</td>
+          <td ng-click="sortBy('can_depths.length')">Can Depths</td>
+          <td ng-click="sortBy('user.email')">Email</td>
+          <td ng-click="sortBy('created_at')">Date</td>
           <td>Delete</td>
         </thead>
         <tbody id="measurements">
-          <tr ng-repeat="m in vm.measurements | filter: query" id="{{m._id}}">
+          <tr ng-repeat="m in vm.measurements | filter: query | orderBy: sortColumn:reverseSort" id="{{m._id}}">
               <td>{{m.zipcode}}</td>
               <td>{{m.county}}</td>
               <td>{{getResult(m.results.uniformity_distribution)}}</td>
-              <td>{{m.results.uniformity_distribution}}</td>
+              <td>{{m.results.uniformity_distribution}}</td> 
               <td>{{m.results.irrigation_rate}}</td>
               <td ng-if="m.can_depths.length < 10">{{m.can_depths}}</td>
-              <td ng-if="m.can_depths.length >= 10"><button class="btn btn-default" ng-click="showDepths(m.can_depths);">View</button></td>
+              <td ng-if="m.can_depths.length >= 10">{{m.can_depths.slice(0, 4)}}<button class="btn btn-link" ng-click="showDepths(m.can_depths);">View More</button></td>
               <td>{{m.user.email}}</td>
               <td>{{formatDate(m.created_at)}}</td>
               <td>
@@ -47,6 +47,7 @@
           </tr>
         </tbody>
       </table>
+      <button class="btn btn-danger" ng-click="deleteAll()">Delete All Measurements</button>
     </div>
 
     <div id="depthsModal" class="modal fade in" style="display: none; float: left; top: 50%;">

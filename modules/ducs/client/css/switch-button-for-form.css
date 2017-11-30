@@ -1,3 +1,9 @@
+.instruction {
+
+      font-weight: bold;
+
+    }
+
 .switch {
       position: relative;
       display: block;
@@ -147,4 +153,7 @@
       -webkit-transition: All 0.3s ease;
       -moz-transition: All 0.3s ease;
       -o-transition: All 0.3s ease;
+    }
+    .image {
+    float: right;
     }

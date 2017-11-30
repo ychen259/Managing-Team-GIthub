@@ -41,16 +41,12 @@ a:hover .header-profile-image {
 .has-error .help-inline.error-text {
   display: inline;
 }
- 
- 
-.image{
-  position: relative;
-  width:100%;
-}
 
-.row{
+
+.lead{
    position: absolute; 
-   top: 300px; 
-   left: 0; 
+   top: 50%; 
+   padding-left:0%;
+   padding-right: 30%; 
    width: 100%; 
 }

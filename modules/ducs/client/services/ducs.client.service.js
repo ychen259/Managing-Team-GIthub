@@ -27,12 +27,24 @@
         return $http.delete('/api/measurements/' + measurement);
       },
 
+      deleteAllMeasurements: function() {
+         return $http.delete('/api/measurements');
+       },
+
       email: function(id, data) {
         return $http.post('/api/email-result/' + id, data);
       },
 
       getCountyCounts: function() {
         return $http.get('/api/measurements/count');
+      },
+
+      getCountyCountsByYear: function(year) {
+        return $http.get('/api/measurements/count/' + year);
+      },
+
+      getActiveYears: function() {
+        return $http.get('/api/measurements/activeYears');
       }
     };
 

@@ -25,12 +25,12 @@
                 /*metric = false -- imperial (inch)*/
                 if(metric == true){
                   /*Do not need to convert, because unit in database is cm*/
-                  $scope.unit = "cm/hrs";
+                  $scope.unit = "cm/hr";
                 }
                 else{
                   /*convert cm to inch*/
                   $scope.irrigation_rate = ($scope.irrigation_rate/2.54).toFixed(2);
-                  $scope.unit = "inch/hrs";
+                  $scope.unit = "in/hr";
                 }
 
                 /*Using uniformity distribution to evaluate the condition of system*/
@@ -47,12 +47,12 @@
                 else if($scope.uniformity_distribution >= 0.4 &&  $scope.uniformity_distribution <= 0.49)
                 	$scope.result = "Poor";
                 else
-                	$scope.result = "Fail";
+                	$scope.result = "Failing";
 
-              }, function(error) {  
-                $scope.error = 'Unable to retrieve listing with id "' + id + '"\n' + error;
+              }, function(error) {
+                $scope.error = 'Unable to retrieve listing with id: ' + id;
               });
-    };  
+    };
 
     $scope.sendEmail = function(){
        $scope.isClick = true; // click the email button
@@ -67,7 +67,7 @@
               .then(function(response){
                   Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-ok"></i> Result email sent successfully!' });
                }, function(err){
-                  Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Failed to send result email!', delay: 4000 });
+                  Notification.error({ message: 'Try again later!', title: '<i class="glyphicon glyphicon-remove"></i> Failed to send result email!', delay: 4000 });
                });
     }
 

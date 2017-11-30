@@ -10,25 +10,60 @@
   function DucsListController($scope, $state, DucsService) {
     var vm = this;
 
-    DucsService.list()
-    .then(function(response) {
+    // the column to sort by
+    $scope.sortColumn = 'created_at';
+    // true if the data should be sorted in reverse order
+    $scope.reverseSort = true;
+    
+    $scope.list = function(){
+      DucsService.list()
+      .then(function(response) {
         vm.measurements = response.data;
+
+        // round catch can depths to 3 decimal places
+        // might be kind of slow with large datasets
+        for (var i = 0; i < vm.measurements.length; i++) {
+          vm.measurements[i].can_depths = vm.measurements[i].can_depths.map(function(num) {
+            return Number(num.toFixed(3));
+          });
+        }
       }, function(error) {
         //otherwise display the error
-        $scope.error = 'Couldn\'t load measurement data!\n err:' + error;
+        $scope.error = 'Couldn\'t load measurement data!';
       });
+    }
+
+    $scope.rm = function(measurement){
+      console.log("removing " + measurement);
+      document.getElementById(measurement).remove();
+    }
 
     $scope.remove = function(measurement) {
+        if (!confirm("Are you sure you want to delete this measurement?"))
+          return;
         /* Delete the measurement using the DucsService */
         DucsService.deleteMeasurement(measurement)
-                .then(function(response) {
-                  // remove the deleted measurement from the list view
-                  document.getElementById(measurement).remove();
-                }, function(error) {
-                    //otherwise display the error
-                    $scope.error = 'Unable to delete measurement!\n' + error;
-                });
+          .then(function(response) {
+              // remove the deleted measurement from the list view
+              $scope.rm(measurement);
+          }, function(error) {
+              //otherwise display the error
+              $scope.error = 'Unable to delete measurements!';
+          });
+    };
 
+    $scope.deleteAll = function() {
+      if (confirm("Are you sure you want to delete ALL MEASUREMENTS IN THE DATABASE?")) {
+        if (confirm("Are you really sure?")) {
+          DucsService.deleteAllMeasurements()
+          .then(function(response) {
+              $state.go('ducs.admin-list', {}, {reload: true});
+          }, function(error) {
+              //otherwise display the error
+              $scope.error = 'Unable to delete measurements!';
+          });
+        }
+      }
     };
 
     $scope.formatDate = function(date) {
@@ -53,19 +88,24 @@
         return "Fail";
     };
 
+    $scope.sortBy = function(colName) {
+      // toggle sorting method if we're already using the same column, otherwise default to descending sort
+      $scope.reverseSort = ($scope.sortColumn === colName) ? !$scope.reverseSort : true;
+      $scope.sortColumn = colName;
+    };
 
     $scope.exportCSV = function(){
       DucsService.listCSV()
         .then(function(response) {
-            var list = response.data;
-            var blob = new Blob([list], {type: 'text/csv'});
-            var filename = "DUC-List.csv";
+            $scope.list = response.data;
+            var blob = new Blob([$scope.list], {type: 'text/csv'});
+            $scope.filename = "DUC-List.csv";
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(blob, filename);
+                window.navigator.msSaveOrOpenBlob(blob, $scope.filename);
             } else{
                 var e = document.createEvent('MouseEvents'),
                 a = document.createElement('a');
-                a.download = filename;
+                a.download = $scope.filename;
                 a.href = window.URL.createObjectURL(blob);
                 a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
                 e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -74,7 +114,7 @@
             }
 
     }, function(error) {
-        $scope.error = 'Unable to export measurements!\n' + error;
+        $scope.error = 'Unable to export measurements!';
 
     });
     //var blob = new Blob([angular.toJson(myCars, true)], {type: 'text/csv'});

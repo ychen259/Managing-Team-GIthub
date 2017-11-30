@@ -33,7 +33,7 @@
       // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
       // This allows us to inject a service but then attach it to a variable
       // with the same name as the service.
-      beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Notification_) {
+      beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Notification_, _$state_) {
         // Set a new global scope
         scope = $rootScope.$new();
 
@@ -42,10 +42,12 @@
         $httpBackend = _$httpBackend_;
         $location = _$location_;
         Notification = _Notification_;
+        $state = _$state_;
 
         // Spy on Notification
         spyOn(Notification, 'error');
         spyOn(Notification, 'success');
+        spyOn($state, 'go');
 
         // Ignore parent template get on state transitions
         $httpBackend.whenGET('/modules/core/client/views/home.client.view.html').respond(200);
@@ -62,7 +64,7 @@
           $templateCache.put('/modules/core/client/views/home.client.view.html', '');
 
           // Test expected GET request
-          $httpBackend.when('POST', '/api/auth/signin').respond(200, { username: 'Fred' });
+          $httpBackend.when('POST', '/api/auth/signin').respond(200, { username: 'Fred', roles: ['user'] });
 
           scope.vm.signin(true);
           $httpBackend.flush();
@@ -70,12 +72,13 @@
           // Test scope value
           expect(scope.vm.authentication.user.username).toEqual('Fred');
           expect($location.url()).toEqual('/');
+          expect($state.go).toHaveBeenCalledWith('ducs.create', $state.previous.params);
         }));
 
         it('should login with a correct email and password', inject(function ($templateCache) {
           $templateCache.put('/modules/core/client/views/home.client.view.html', '');
           // Test expected GET request
-          $httpBackend.when('POST', '/api/auth/signin').respond(200, { email: 'Fred@email.com' });
+          $httpBackend.when('POST', '/api/auth/signin').respond(200, { email: 'Fred@email.com', roles: ['user']  });
 
           scope.vm.signin(true);
           $httpBackend.flush();
@@ -83,6 +86,7 @@
           // Test scope value
           expect(scope.vm.authentication.user.email).toEqual('Fred@email.com');
           expect($location.url()).toEqual('/');
+          expect($state.go).toHaveBeenCalledWith('ducs.create', $state.previous.params);
         }));
 
         it('should be redirected to previous state after successful login',
@@ -97,18 +101,16 @@
             };
 
             spyOn($state, 'transitionTo');
-            spyOn($state, 'go');
 
             // Test expected GET request
-            $httpBackend.when('POST', '/api/auth/signin').respond(200, 'Fred');
+            $httpBackend.when('POST', '/api/auth/signin').respond(200, { username: 'Fred', roles: ['user'] });
 
             scope.vm.signin(true);
             $httpBackend.flush();
 
             // Test scope value
             expect($state.go).toHaveBeenCalled();
-            expect($state.go).toHaveBeenCalledWith($state.previous.state.name, $state.previous.params);
-
+          expect($state.go).toHaveBeenCalledWith('ducs.create', $state.previous.params);
           }));
 
         it('should fail to log in with nothing', function () {

@@ -6,7 +6,8 @@ var should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   //Duc = mongoose.model('Duc'),
-  Measurements = require("../../server/models/measurements.server.model.js"),
+  //Measurements = require("../../server/models/measurements.server.model.js"),
+  Measurements = mongoose.model('Measurement'),
   express = require(path.resolve('./config/lib/express'));
 
 /**
@@ -103,7 +104,7 @@ describe('Duc CRUD tests', function () {
       });
   });
 
-  it('should be able to save a Duc if logged in as admin', function (done) {
+  it('should be able to save a Duc if logged in as admin 1', function (done) {
     user.roles = ['admin'];
 
     user.save(function () {
@@ -145,6 +146,57 @@ describe('Duc CRUD tests', function () {
 
             res.body.results.uniformity_distribution.should.equal(0.33);
             res.body.results.irrigation_rate.should.equal(1.5);
+            res.body.zipcode.should.equal(94523);
+            res.body.time.should.equal(2);
+            res.body.notes.should.equal('some notes');
+            res.body.county.should.equal('Contra Costa County');
+            done();
+          });
+      });
+  });
+
+  it('should be able to save a Duc if logged in as admin 2', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function () {
+      can_depth_array = [0, 0, 0, 0, 0];
+      measurements = {
+        "can_depths": can_depth_array,
+        "zipcode": 94523,
+        "time": 2,
+        "notes": 'some notes'
+      };
+    });
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.post('/api/measurements')
+          .send(measurements)
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res.body._id);
+
+            res.body.user._id.should.equal(userId);
+
+            for(var i = 0; i < can_depth_array.length; i++){
+                res.body.can_depths[i].should.equal(can_depth_array[i]);
+            }
+
+            res.body.results.uniformity_distribution.should.equal(0);
+            res.body.results.irrigation_rate.should.equal(0);
             res.body.zipcode.should.equal(94523);
             res.body.time.should.equal(2);
             res.body.notes.should.equal('some notes');
@@ -365,6 +417,131 @@ describe('Duc CRUD tests', function () {
   it('should show an error to get number of County if not logged in', function (done) {
     // Save a new Duc
     agent.get('/api/measurements/count')
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
+
+  it('should be able to get all active Years if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.get('/api/measurements/activeYears')
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
+          });
+      });
+  });
+
+  it('should show an error to get all active Years if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements/activeYears')
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to get all active Years if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements/activeYears')
+      .expect(403)
+      .end(function (err, res) {
+          done(err);
+      });
+    
+  });
+
+  it('should be able to get county record by years if logged in as admin', function (done) {
+    user.roles = ['admin'];
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new Duc
+        agent.get('/api/measurements/count/' + 1991)
+          .expect(200)
+          .end(function (err, res) {
+
+            should.not.exist(err);
+            should.exist(res);
+
+            done();
+          });
+      });
+  });
+
+  it('should show an error to get county record by years if logged in as user', function (done) {
+
+    user.save(function (){});
+
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Save a new Duc
+        agent.get('/api/measurements/count/' + 1991)
+          .expect(403)
+          .end(function (err, res) {
+            done(err);
+          });
+      });
+  });
+
+  it('should show an error to get county record by years if not logged in', function (done) {
+    // Save a new Duc
+    agent.get('/api/measurements/count/' + 1991)
       .expect(403)
       .end(function (err, res) {
           done(err);
@@ -619,7 +796,7 @@ describe('Duc CRUD tests', function () {
       });
   });
 
-  it('should be able to exmail result if logged in as admin', function (done) {
+  it('should be able to email result if logged in as admin', function (done) {
     user.roles = ['admin'];
 
     //save user to database
@@ -660,13 +837,13 @@ describe('Duc CRUD tests', function () {
           .send(data)
           .expect(400)
           .end(function (err, res) {
-            res.body.message.should.be.equal('Failure sending email_context');
+            res.body.message.should.be.equal('Failure sending email');
             done();
           });
       });
   });
 
-  it('should be able to exmail result if logged in as user', function (done) {
+  it('should be able to email result if logged in as user', function (done) {
 
     //save user to database
     user.save(function (){
@@ -706,7 +883,7 @@ describe('Duc CRUD tests', function () {
           .send(data)
           .expect(400)
           .end(function (err, res) {
-            res.body.message.should.be.equal('Failure sending email_context');
+            res.body.message.should.be.equal('Failure sending email');
             done();
           });
       });

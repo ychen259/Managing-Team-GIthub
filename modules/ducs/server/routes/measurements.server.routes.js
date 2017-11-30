@@ -13,7 +13,8 @@ module.exports = function(app) {
     // Ducs Routes
     app.route('/api/measurements').all(measurementsPolicy.isAllowed)
       .get(measurements.list)
-      .post(measurements.county, measurements.city, measurements.create);
+      .post(measurements.county, measurements.city,measurements.create)
+      .delete(measurements.deleteAll);
 
     app.route('/api/measurements/export').all(measurementsPolicy.isAllowed)
         .get(measurements.export);
@@ -21,6 +22,11 @@ module.exports = function(app) {
     app.route('/api/measurements/count').all(measurementsPolicy.isAllowed)
       .get(measurements.getCountyCounts);
 
+    app.route('/api/measurements/count/:year').all(measurementsPolicy.isAllowed)
+      .get(measurements.getCountyCountsByYear);
+
+    app.route('/api/measurements/activeYears').all(measurementsPolicy.isAllowed)
+      .get(measurements.getActiveYears);
 
     app.route('/api/measurements/:measureId').all(measurementsPolicy.isAllowed)
       .get(measurements.read)
